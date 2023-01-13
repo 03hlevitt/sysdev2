@@ -24,3 +24,5 @@ CREATE TABLE order_items (
   FOREIGN KEY (order_id) REFERENCES orders(id),
   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
 );
+
+insert into customer (name) values ('John Doe', 'Jane Doe', 'Joe Bloggs', 'James Penman');
