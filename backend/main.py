@@ -1,10 +1,10 @@
 import sqlite3
 
 
-def view_orders(customer):
+def view_orders_by_customer_id(customer_id):
     conn = sqlite3.connect('orders.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM customer;")
+    c.execute("SELECT * FROM orders WHERE customer_id = '%s'", customer_id)
     rows = c.fetchall()
     conn.close()
     return rows
