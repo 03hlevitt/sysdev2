@@ -50,7 +50,8 @@ def update_menu_item(item_name, **kwargs):
     return execute_sql(sql)
 
 def delete_menu_item(name):
-    sql = "DELETE FROM menu_items WHERE name = '%s'" % name
+    sql = """UPDATE menu_items SET active = 0 
+    WHERE menu_items.name = '%s'""" % name
     return execute_sql(sql)
 
 def init_tables():
