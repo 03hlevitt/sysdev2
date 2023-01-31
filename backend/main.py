@@ -1,6 +1,14 @@
 import sqlite3
 
 
+def execute_sql(sql):
+    conn = sqlite3.connect('orders.db')
+    c = conn.cursor()
+    c.execute(sql)
+    rows = c.fetchall()
+    conn.close()
+    return rows
+
 def view_orders_by_customer_id(customer_id):
     conn = sqlite3.connect('orders.db')
     c = conn.cursor()
@@ -8,6 +16,11 @@ def view_orders_by_customer_id(customer_id):
     rows = c.fetchall()
     conn.close()
     return rows
+
+
+def create_menu_item(name, price):
+    sql = ("")
+
 
 
 if __name__ == '__main__':
