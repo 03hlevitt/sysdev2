@@ -19,8 +19,29 @@ def view_orders_by_customer_id(customer_id):
 
 
 def create_menu_item(name, price):
-    sql = ("")
+    sql = "INSERT INTO menu_items (name, price) VALUES ('%s', '%s')" % (name, price)
+    return execute_sql(sql)
 
+
+def view_menu_items(**kwargs):
+    sql = "SELECT * FROM menu_items"
+    if kwargs:
+        sql += " WHERE "
+        for key, value in kwargs.items():
+            sql += "%s = '%s' AND " % (key, value)
+        sql = sql[:-5]
+    return execute_sql(sql)
+
+def update_menu_item(name, **kwargs):
+    sql = "UPDATE menu_items SET "
+    for key, value in kwargs.items():
+        sql += "%s = '%s', " % (key, value)
+    sql = sql[:-2] + " WHERE name = '%s'" % name
+    return execute_sql(sql)
+
+def delete_menu_item(name):
+    sql = "DELETE FROM menu_items WHERE name = '%s'" % name
+    return execute_sql(sql)
 
 
 if __name__ == '__main__':
