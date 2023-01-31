@@ -1,13 +1,20 @@
 import sqlite3
 
-
-def execute_sql(sql):
+def sql_attempt(sql):
     conn = sqlite3.connect('orders.db')
     c = conn.cursor()
     c.execute(sql)
     rows = c.fetchall()
     conn.close()
     return rows
+
+def execute_sql(sql):
+    try:
+        return sql_attempt(sql)
+    except sqlite3.OperationalError as e:
+        print(e)
+        init_tables()
+        return sql_attempt(sql)
 
 def view_orders_by_customer_id(customer_id):
     conn = sqlite3.connect('orders.db')
@@ -42,6 +49,19 @@ def update_menu_item(name, **kwargs):
 def delete_menu_item(name):
     sql = "DELETE FROM menu_items WHERE name = '%s'" % name
     return execute_sql(sql)
+
+def init_tables():
+    conn = sqlite3.connect('orders.db')
+    c = conn.cursor()
+    with open("./backend/models.sql", "r") as f:
+        sql = str(f.read())
+        print(sql)
+        try:
+            c.executescript(sql)
+            c.close()
+            conn.close()
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':
