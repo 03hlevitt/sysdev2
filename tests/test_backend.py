@@ -16,7 +16,7 @@ def test_update_menu_item():
 
 def test_delete_menu_item():
     main.delete_menu_item("test2")
-    assert main.view_menu_items() == []
+    assert main.view_menu_items()[0] == ("test2", 2, 0)
 
 # def test_view_orders_by_customer_id():
 #     assert main.view_orders_by_customer_id(1) == "test"

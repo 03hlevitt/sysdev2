@@ -5,6 +5,7 @@ def sql_attempt(sql):
     c = conn.cursor()
     c.execute(sql)
     rows = c.fetchall()
+    conn.commit()
     conn.close()
     return rows
 
@@ -27,6 +28,7 @@ def view_orders_by_customer_id(customer_id):
 
 def create_menu_item(name, price):
     sql = "INSERT INTO menu_items (name, price) VALUES ('%s', '%s')" % (name, price)
+    print("insert sql: ", sql)
     return execute_sql(sql)
 
 
@@ -37,13 +39,14 @@ def view_menu_items(**kwargs):
         for key, value in kwargs.items():
             sql += "%s = '%s' AND " % (key, value)
         sql = sql[:-5]
+    print(sql)
     return execute_sql(sql)
 
-def update_menu_item(name, **kwargs):
+def update_menu_item(item_name, **kwargs):
     sql = "UPDATE menu_items SET "
     for key, value in kwargs.items():
         sql += "%s = '%s', " % (key, value)
-    sql = sql[:-2] + " WHERE name = '%s'" % name
+    sql = sql[:-2] + " WHERE name = '%s'" % item_name
     return execute_sql(sql)
 
 def delete_menu_item(name):
