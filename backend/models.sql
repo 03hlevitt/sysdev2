@@ -1,28 +1,26 @@
-CREATE TABLE customer (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+PRAGMA foreign_keys = ON;
+CREATE TABLE IF NOT EXISTS customer (
+  id INTEGER PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
 );
-
-CREATE TABLE orders (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  FOREIGN KEY (customer_id) REFERENCES customer(id),
+CREATE TABLE IF NOT EXISTS orders (
+  id INTEGER PRIMARY KEY,
+  customer_id INTEGER,
   location VARCHAR(255) NOT NULL,
-  order_date DATETIME NOT NULL
+  order_date DATETIME NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES customer(id)
 );
-
-CREATE TABLE menu_items (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS menu_items (
+  id INTEGER PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   price DECIMAL(10, 2) NOT NULL
 );
-
-CREATE TABLE order_items (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  order_id INT NOT NULL,
-  menu_item_id INT NOT NULL,
-  quantity INT NOT NULL,
+CREATE TABLE IF NOT EXISTS order_items (
+  id INTEGER PRIMARY KEY,
+  order_id INTEGER NOT NULL,
+  menu_item_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL,
   FOREIGN KEY (order_id) REFERENCES orders(id),
   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
 );
-
-insert into customer (name) values ('John Doe', 'Jane Doe', 'Joe Bloggs', 'James Penman');
+insert into customer (name) values ('John Doe');
