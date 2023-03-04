@@ -5,6 +5,7 @@ import sqlite3
 # TODO: Location
 # TODO: base class
 # TODO: if customer_id and location are None, then get order from db
+# TODO: NewOrder and Existing order classes
 
 class Order:
     def __init__(self, customer_id, location, order_id=None) -> None:

@@ -2,6 +2,7 @@
 import sqlite3
 
 # if price is noe then get db
+# TODO: newItem and updateItem classes
 
 class Menu:
     def __init__(self, name, price=None):
