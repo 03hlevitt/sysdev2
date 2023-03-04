@@ -14,6 +14,7 @@ def test_menu_with_args():
 
 def test_save_menu():
     menu = Menu("test", 1)
+    menu.delete_from_db()
     menu.save()
     menu.get_menu_item("test")
     assert menu.name == "test"
@@ -21,12 +22,11 @@ def test_save_menu():
 
 def test_view_menu():
     menu = Menu("test", 1)
+    menu.delete_from_db()
     menu.save()
-    menu = Menu()
     assert menu.view_menu() == [("test", 1)]
 
-def test_delete_menu():
+def test_delete_from_db_menu():
     menu = Menu("test", 1)
-    menu.save()
-    menu.delete()
+    menu.delete_from_db()
     assert menu.view_menu() == []

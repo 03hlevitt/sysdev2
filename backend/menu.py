@@ -50,7 +50,7 @@ class Menu:
         """save the menu item stored in the object"""
         self.__execute_sql("INSERT INTO menu_items (name, price) VALUES ('%s', '%s')" % (self.name, self.price))
 
-    def delete(self):
+    def delete_from_db(self):
         """delete the menu item stored in the object"""
         self.__execute_sql("DELETE FROM menu_items WHERE name = '%s'" % self.name)
     
