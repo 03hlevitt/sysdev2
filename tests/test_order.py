@@ -48,6 +48,13 @@ def test_update_item_quanity():
     order.update_items("test", 1)
     assert order.view_order_items() == [("test", 1)]
 
+def test_update_item_quanity_to_0():
+    order = Order(1, 1, 1)
+    order.add_items("foobar", 2)
+    order.update_items("foobar", 0)
+    assert order.view_order_items() == [("test", 1)]
+    
+
 def test_delete_order():
     order = Order(1, 1, 1)
     order.delete()

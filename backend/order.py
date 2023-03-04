@@ -67,7 +67,6 @@ class Order:
         self.__execute_sql("INSERT INTO order_items (menu_item, quantity, order_id) VALUES ('%s', '%s', '%s')" % (name, quantity, self.order_id))
 
     def update_items(self, menu_item, quantity):
-        db_quantity = self.__execute_sql("SELECT quantity FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
         if quantity == 0:
             self.__execute_sql("DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
         else:
