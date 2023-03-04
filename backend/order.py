@@ -5,11 +5,24 @@ import datetime
 class Order:
     def __init__(self, customer_id=None, location=None, order_id=None) -> None:
         self.date = None
-        pass
+        self.customer_id = customer_id
+        self.location = location
+        self.id = order_id
     
     @property
     def order_id(self):
-        return self.order_id
+        if self.id is None:
+            order_id = self.__get_next_order_id()
+        else:
+            order_id = self.id
+        return order_id
+
+    def __get_next_order_id(self):
+        try:
+            orders = len(self.view_order_items())
+        except TypeError:
+            orders = 0
+        return orders + 1
 
     def set_order_date(self):
         self.date = datetime.datetime.utcnow() 

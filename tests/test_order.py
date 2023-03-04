@@ -5,7 +5,7 @@ from backend.order import Order
 
 def test_order():
     order = Order()
-    assert order.order_id == None
+    assert order.order_id == 1
     assert order.customer_id == None
     assert order.location == None
     assert order.date == None
