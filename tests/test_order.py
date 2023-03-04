@@ -4,6 +4,9 @@ from backend.menu import Menu
 
 from backend.order import Order
 
+
+# TODO: TEST DATES
+
 def test_order():
     order = Order()
     assert order.order_id == 1
@@ -31,6 +34,7 @@ def test_new_order():
     order = Order(1, 1)
     assert order.order_id == 2
 
+# TODO: change this so that it checks the number adds to quantity
 def test_add_item():
     menu = Menu("test", 1)
     menu.delete_from_db()

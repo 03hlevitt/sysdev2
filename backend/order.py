@@ -3,6 +3,8 @@ from datetime import datetime
 import sqlite3
 
 # TODO: Location
+# TODO: base class
+
 
 class Order:
     def __init__(self, customer_id=None, location=None, order_id=None) -> None:
