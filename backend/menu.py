@@ -1,4 +1,5 @@
 """all interactions with the menu"""
+import sqlite3
 
 class Menu:
     def __init__(self, name=None, price=None):
