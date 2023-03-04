@@ -21,4 +21,3 @@ CREATE TABLE IF NOT EXISTS order_items (
   FOREIGN KEY (order_id) REFERENCES orders(id),
   FOREIGN KEY (menu_item) REFERENCES menu_items(id)
 );
-insert into customer (name) values ('John Doe');

@@ -1,5 +1,6 @@
 """all interactions with orders"""
 from datetime import datetime
+import sqlite3
 
 
 class Order:
@@ -7,17 +8,55 @@ class Order:
         self.date = None
         self.customer_id = customer_id
         self.location = location
-        if order_id is None:
-            self.order_id = self.__get_next_order_id()
+        self.order_id_param = order_id
+
+    @property
+    def order_id(self):
+        if self.order_id_param is None:
+            print("getting next order id as no order id in params")
+            return self.__get_next_order_id()
         else:
-            self.order_id = order_id        
+            return self.order_id_param
+
+    def __init_tables(self):
+        conn = sqlite3.connect('orders.db')
+        c = conn.cursor()
+        with open("./backend/models.sql", "r") as f:
+            sql = str(f.read())
+            print(sql)
+            try:
+                c.executescript(sql)
+                c.close()
+                conn.close()
+            except Exception as e:
+                print(e)
+
+    def __sql_attempt(self, sql):
+        conn = sqlite3.connect('orders.db')
+        c = conn.cursor()
+        c.execute(sql)
+        rows = c.fetchall()
+        conn.commit()
+        conn.close()
+        return rows
+
+    def __execute_sql(self, sql):
+        try:
+            return self.__sql_attempt(sql)
+        except sqlite3.OperationalError as e:
+            print(e)
+            self.__init_tables()
+            return self.__sql_attempt(sql)        
 
     def __get_next_order_id(self):
         try:
-            orders = len(self.view_order_items())
-        except TypeError:
-            orders = 0
-        return orders + 1
+            orders_list = self.view_orders()
+            print("current orders in db:, %s", len(orders_list))
+            order_id = len(orders_list) + 1
+            return order_id
+        except TypeError as e:
+            print("no orders yet, so setting order id to one, %s", e)
+            return 1
 
     def set_order_date(self):
         self.date = datetime.utcnow() 
@@ -29,16 +68,16 @@ class Order:
         pass
 
     def view_orders(self):
-        pass
+        return self.__execute_sql("SELECT * FROM orders")
 
     def view_order_items(self):
         pass
 
     def save(self):
-        pass
+        self.__execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location, self.date))
 
     def delete(self):
-        pass
+        self.__execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
 
     def get_total(self):
         pass

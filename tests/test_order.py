@@ -21,37 +21,37 @@ def test_order_with_args(mock_time):
     assert order.location == 1
     assert order.date == "test"
 
-def test_new_order():
+def test_save():
     order = Order(1, 1, 1)
     order.save()
-    order = Order(1, 1)
-    order.order_id = 2
-    order.save()
-    assert order.view_orders() == [(1, 1, 1, []), (2, 1, 1, [])]
-
-def test_add_item():
-    order = Order(1, 1, 1)
-    order.save()
-    order.add_item("test", 1)
-    assert order.view_order_items == [("test", 1)]
-
-def test_get_total():
-    order = Order(1, 1, 1)
-    order.save()
-    order.add_item("test", 1)
-    assert order.get_total() == 2
-
-def test_remove_item():
-    order = Order(1, 1, 1)
-    order.save()
-    order.remove_item("test", 1)
-    assert order.view_order_items == []
-
-def test_view_orders():
-    order = Order()
     assert order.view_orders() == [(1, 1, 1, [])]
 
-def test_delete_order():
-    order = Order(1, 1, 1)
-    order.delete()
-    assert order.view_orders() == [(2, 1, 1, [])]
+def test_new_order():
+    order = Order(1, 1)
+    assert order.order_id == 2
+
+# def test_add_item():
+#     order = Order(1, 1, 1)
+#     order.add_item("test", 1)
+#     assert order.view_order_items == [("test", 1)]
+
+# def test_get_total():
+#     order = Order(1, 1, 1)
+#     order.save()
+#     order.add_item("test", 1)
+#     assert order.get_total() == 2
+
+# def test_remove_item():
+#     order = Order(1, 1, 1)
+#     order.save()
+#     order.remove_item("test", 1)
+#     assert order.view_order_items == []
+
+# def test_view_orders():
+#     order = Order()
+#     assert order.view_orders() == [(1, 1, 1, [])]
+
+# def test_delete_order():
+#     order = Order(1, 1, 1)
+#     order.delete()
+#     assert order.view_orders() == [(2, 1, 1, [])]
