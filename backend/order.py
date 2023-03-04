@@ -2,13 +2,16 @@
 from datetime import datetime
 import sqlite3
 
+from backend.common import DBClass
+
 # TODO: Location
 # TODO: base class
 # TODO: if customer_id and location are None, then get order from db
 # TODO: NewOrder and Existing order classes with show all as a class method
 
-class Order:
-    def __init__(self, customer_id, location, order_id=None) -> None:
+class Order(DBClass):
+    def __init__(self, customer_id=None, location=None, order_id=None) -> None:
+        super().__init__()
         self.date = None
         self.customer_id = customer_id
         self.location = location
@@ -21,37 +24,7 @@ class Order:
             return self.__get_next_order_id()
         else:
             return self.order_id_param
-
-    def __init_tables(self):
-        conn = sqlite3.connect('orders.db')
-        c = conn.cursor()
-        with open("./backend/models.sql", "r") as f:
-            sql = str(f.read())
-            print(sql)
-            try:
-                c.executescript(sql)
-                c.close()
-                conn.close()
-            except Exception as e:
-                print(e)
-
-    def __sql_attempt(self, sql):
-        conn = sqlite3.connect('orders.db')
-        c = conn.cursor()
-        c.execute(sql)
-        rows = c.fetchall()
-        conn.commit()
-        conn.close()
-        return rows
-
-    def __execute_sql(self, sql):
-        try:
-            return self.__sql_attempt(sql)
-        except sqlite3.OperationalError as e:
-            print(e)
-            self.__init_tables()
-            return self.__sql_attempt(sql)        
-
+        
     def __get_next_order_id(self):
         try:
             orders_list = self.view_orders()
@@ -67,49 +40,34 @@ class Order:
 
     def add_items(self, name, quantity):
         #  TODO: make composit key so cant add multiple of same item
-        self.__execute_sql("INSERT INTO order_items (menu_item, quantity, order_id) VALUES ('%s', '%s', '%s')" % (name, quantity, self.order_id))
+        self.execute_sql("INSERT INTO order_items (menu_item, quantity, order_id) VALUES ('%s', '%s', '%s')" % (name, quantity, self.order_id))
 
     def update_items(self, menu_item, quantity):
         if quantity == 0:
-            self.__execute_sql("DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
+            self.execute_sql("DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
         else:
-            self.__execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, menu_item))
+            self.execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, menu_item))
 
 
     def view_orders(self):
-        return self.__execute_sql("SELECT * FROM orders")
+        return self.execute_sql("SELECT * FROM orders")
 
     def view_order_items(self):
-        return self.__execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id)
+        return self.execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id)
 
 
     def save(self):
-        self.__execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location, self.date))
+        self.execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location, self.date))
 
     def delete(self):
-        self.__execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
-        self.__execute_sql("DELETE FROM order_items WHERE order_id = '%s'" % self.order_id)
+        self.execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
+        self.execute_sql("DELETE FROM order_items WHERE order_id = '%s'" % self.order_id)
 
     def get_total(self):
         order_items = self.view_order_items()
         total = 0
         for item in order_items:
             quantity = item[1]
-            price = self.__execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % item[0])[0][0]
+            price = self.execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % item[0])[0][0]
             total += price * quantity
         return total
-
-class orderItems:
-    def __init__(self, name=None, quanity=None, order_id=None) -> None:
-        self.name = name
-        self.quanity = quanity
-        self.order_id = order_id
-
-    def view_order_items(self):
-        pass
-
-    def save(self):
-        pass
-
-    def delete(self):
-        pass
