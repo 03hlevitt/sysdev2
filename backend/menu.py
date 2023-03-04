@@ -2,7 +2,7 @@
 import sqlite3
 
 # if price is noe then get db
-# TODO: newItem and updateItem class methods
+# TODO: newItem and updateItem Classes, with show all as a class method
 
 class Menu:
     def __init__(self, name, price=None):
