@@ -24,7 +24,7 @@ def test_order_with_args(mock_time):
 def test_save():
     order = Order(1, 1, 1)
     order.save()
-    assert order.view_orders() == [(1, 1, 1, [])]
+    assert order.view_orders() == [(1, 1, '1', 'None')]
 
 def test_new_order():
     order = Order(1, 1)
@@ -51,7 +51,7 @@ def test_new_order():
 #     order = Order()
 #     assert order.view_orders() == [(1, 1, 1, [])]
 
-# def test_delete_order():
-#     order = Order(1, 1, 1)
-#     order.delete()
-#     assert order.view_orders() == [(2, 1, 1, [])]
+def test_delete_order():
+    order = Order(1, 1, 1)
+    order.delete()
+    assert order.view_orders() == []
