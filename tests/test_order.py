@@ -6,6 +6,10 @@ from backend.order import Order
 
 
 # TODO: TEST DATES
+# TODO: TEST LOCATION
+# TODO: setup and teardown
+# TODO: more exceptions!
+# TODO: better logging of the whole thing
 
 def test_order():
     order = Order()

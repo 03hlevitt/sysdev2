@@ -1,8 +1,10 @@
 """all interactions with the menu"""
 import sqlite3
 
+# if price is noe then get db
+
 class Menu:
-    def __init__(self, name=None, price=None):
+    def __init__(self, name, price=None):
         self.name = name
         self.price = price
 

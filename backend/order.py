@@ -4,10 +4,10 @@ import sqlite3
 
 # TODO: Location
 # TODO: base class
-
+# TODO: if customer_id and location are None, then get order from db
 
 class Order:
-    def __init__(self, customer_id=None, location=None, order_id=None) -> None:
+    def __init__(self, customer_id, location, order_id=None) -> None:
         self.date = None
         self.customer_id = customer_id
         self.location = location
