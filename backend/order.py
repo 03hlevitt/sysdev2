@@ -86,9 +86,16 @@ class Order:
 
     def delete(self):
         self.__execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
+        self.__execute_sql("DELETE FROM order_items WHERE order_id = '%s'" % self.order_id)
 
     def get_total(self):
-        pass
+        order_items = self.view_order_items()
+        total = 0
+        for item in order_items:
+            quantity = item[1]
+            price = self.__execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % item[0])[0][0]
+            total += price * quantity
+        return total
 
 class orderItems:
     def __init__(self, name=None, quanity=None, order_id=None) -> None:

@@ -19,5 +19,5 @@ CREATE TABLE IF NOT EXISTS order_items (
   menu_item VARCHAR(255) NOT NULL,
   quantity INTEGER NOT NULL,
   FOREIGN KEY (order_id) REFERENCES orders(id),
-  FOREIGN KEY (menu_item) REFERENCES menu_items(id)
+  FOREIGN KEY (menu_item) REFERENCES menu_items(name)
 );
