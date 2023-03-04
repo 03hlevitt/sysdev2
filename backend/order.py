@@ -62,7 +62,7 @@ class Order:
         self.date = datetime.utcnow() 
 
     def add_items(self, name, quantity):
-        pass
+        self.__execute_sql("INSERT INTO order_items (menu_item, quantity, order_id) VALUES ('%s', '%s', '%s')" % (name, quantity, self.order_id))
 
     def remove_items(self):
         pass
@@ -71,7 +71,8 @@ class Order:
         return self.__execute_sql("SELECT * FROM orders")
 
     def view_order_items(self):
-        pass
+        return self.__execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id)
+
 
     def save(self):
         self.__execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location, self.date))

@@ -30,10 +30,10 @@ def test_new_order():
     order = Order(1, 1)
     assert order.order_id == 2
 
-# def test_add_item():
-#     order = Order(1, 1, 1)
-#     order.add_item("test", 1)
-#     assert order.view_order_items == [("test", 1)]
+def test_add_item():
+    order = Order(1, 1, 1)
+    order.add_items("test", 2)
+    assert order.view_order_items() == [("test", 2)]
 
 # def test_get_total():
 #     order = Order(1, 1, 1)
