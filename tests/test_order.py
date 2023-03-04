@@ -11,9 +11,9 @@ def test_order():
     assert order.date == None
 
 
-@patch('backend.order.datetime.datetime.utcnow')
+@patch('backend.order.datetime')
 def test_order_with_args(mock_time):
-    mock_time.return_value = "test"
+    mock_time.utcnow.return_value = "test"
     order = Order(1, 1, 1)
     order.set_order_date()
     assert order.order_id == 1

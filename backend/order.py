@@ -1,5 +1,5 @@
 """all interactions with orders"""
-import datetime
+from datetime import datetime
 
 
 class Order:
@@ -7,15 +7,10 @@ class Order:
         self.date = None
         self.customer_id = customer_id
         self.location = location
-        self.id = order_id
-    
-    @property
-    def order_id(self):
-        if self.id is None:
-            order_id = self.__get_next_order_id()
+        if order_id is None:
+            self.order_id = self.__get_next_order_id()
         else:
-            order_id = self.id
-        return order_id
+            self.order_id = order_id        
 
     def __get_next_order_id(self):
         try:
@@ -25,7 +20,7 @@ class Order:
         return orders + 1
 
     def set_order_date(self):
-        self.date = datetime.datetime.utcnow() 
+        self.date = datetime.utcnow() 
 
     def add_items(self, name, quantity):
         pass
