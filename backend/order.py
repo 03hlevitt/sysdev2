@@ -2,6 +2,7 @@
 from datetime import datetime
 import sqlite3
 
+# TODO: Location
 
 class Order:
     def __init__(self, customer_id=None, location=None, order_id=None) -> None:
@@ -62,10 +63,16 @@ class Order:
         self.date = datetime.utcnow() 
 
     def add_items(self, name, quantity):
+        #  TODO: make composit key so cant add multiple of same item
         self.__execute_sql("INSERT INTO order_items (menu_item, quantity, order_id) VALUES ('%s', '%s', '%s')" % (name, quantity, self.order_id))
 
-    def remove_items(self):
-        pass
+    def update_items(self, menu_item, quantity):
+        db_quantity = self.__execute_sql("SELECT quantity FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
+        if quantity == 0:
+            self.__execute_sql("DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
+        else:
+            self.__execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, menu_item))
+
 
     def view_orders(self):
         return self.__execute_sql("SELECT * FROM orders")

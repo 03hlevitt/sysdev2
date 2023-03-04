@@ -38,14 +38,13 @@ def test_add_item():
 # def test_get_total():
 #     order = Order(1, 1, 1)
 #     order.save()
-#     order.add_item("test", 1)
+#     order.add_item("test", 1)S
 #     assert order.get_total() == 2
 
-# def test_remove_item():
-#     order = Order(1, 1, 1)
-#     order.save()
-#     order.remove_item("test", 1)
-#     assert order.view_order_items == []
+def test_update_item_quanity():
+    order = Order(1, 1, 1)
+    order.update_items("test", 1)
+    assert order.view_order_items() == [("test", 1)]
 
 # def test_view_orders():
 #     order = Order()
