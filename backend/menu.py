@@ -38,19 +38,19 @@ class Menu:
 
     def view_menu(self):
         """view the menu"""
-        return self.__execute_sql("SELECT * FROM menu")
+        return self.__execute_sql("SELECT * FROM menu_items")
 
     def get_menu_item(self, kwargs):
         """get a menu item from the db and stoer it in the object"""
-        data = self.__execute_sql("SELECT * FROM menu WHERE name = '%s'" % kwargs)
+        data = self.__execute_sql("SELECT * FROM menu_items WHERE name = '%s'" % kwargs)
         self.name = data[0][0]
         self.price = data[0][1]
 
     def save(self):
         """save the menu item stored in the object"""
-        self.__execute_sql("INSERT INTO menu (name, price) VALUES ('%s', '%s')" % (self.name, self.price))
+        self.__execute_sql("INSERT INTO menu_items (name, price) VALUES ('%s', '%s')" % (self.name, self.price))
 
     def delete(self):
         """delete the menu item stored in the object"""
-        self.__execute_sql("DELETE FROM menu WHERE name = '%s'" % self.name)
+        self.__execute_sql("DELETE FROM menu_items WHERE name = '%s'" % self.name)
     
