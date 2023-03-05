@@ -1,6 +1,6 @@
 from unittest.mock import patch
 import pytest
-from backend.menu import Menu
+from backend.menu import Menu, newMenuItem
 
 from backend.order import Order, NewOrder, ExistingOrder
 
@@ -37,31 +37,31 @@ def test_new_order():
 
 # TODO: change this so that it checks the number adds to quantity
 def test_add_item():
-    menu = Menu("test", 1)
+    menu = newMenuItem("test", 1)
     menu.delete_from_db()
     menu.save()
-    order = Order(1, 1, 1)
+    order = ExistingOrder(1)
     order.add_items("test", 2)
     assert order.view_order_items() == [("test", 2)]
 
 def test_get_total():
-    order = Order(1, 1, 1)
+    order = ExistingOrder(1)
     assert order.get_total() == 2
 
 def test_update_item_quanity():
-    order = Order(1, 1, 1)
+    order = ExistingOrder(1)
     order.update_items("test", 1)
     assert order.view_order_items() == [("test", 1)]
 
 def test_update_item_quanity_to_0():
-    order = Order(1, 1, 1)
+    order = ExistingOrder(1)
     order.add_items("foobar", 2)
     order.update_items("foobar", 0)
     assert order.view_order_items() == [("test", 1)]
     
 
 def test_delete_order():
-    order = Order(1, 1, 1)
+    order = ExistingOrder(1)
     order.delete()
     assert order.view_orders() == []
     assert order.view_order_items() == []
