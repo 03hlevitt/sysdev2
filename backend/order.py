@@ -12,28 +12,7 @@ from backend.common import DBClass
 class Order(DBClass):
     def __init__(self, customer_id=None, location=None, order_id=None) -> None:
         super().__init__()
-        self.date = None
-        self.customer_id = customer_id
-        self.location = location
-        self.order_id_param = order_id
-
-    @property
-    def order_id(self):
-        if self.order_id_param is None:
-            print("getting next order id as no order id in params")
-            return self.__get_next_order_id()
-        else:
-            return self.order_id_param
-        
-    def __get_next_order_id(self):
-        try:
-            orders_list = self.view_orders()
-            print("current orders in db:, %s", len(orders_list))
-            order_id = len(orders_list) + 1
-            return order_id
-        except TypeError as e:
-            print("no orders yet, so setting order id to one, %s", e)
-            return 1
+        self.date = None # init to None so that it can be set to a datetime object later
 
     def set_order_date(self):
         self.date = datetime.utcnow() 
@@ -71,3 +50,35 @@ class Order(DBClass):
             price = self.execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % item[0])[0][0]
             total += price * quantity
         return total
+    
+
+class NewOrder(Order):
+    def __init__(self, customer_id, location):
+        super().__init__()
+        self.customer_id = customer_id
+        self.location = location
+
+    @property
+    def order_id(self):
+        try:
+            orders_list = self.view_orders()
+            print("current orders in db:, %s", len(orders_list))
+            order_id = len(orders_list) + 1
+            return order_id
+        except TypeError as e:
+            print("no orders yet, so setting order id to one, %s", e)
+            return 1
+        
+
+class ExistingOrder(Order):
+    def __init__(self, order_id):
+        super().__init__()
+        self.order_id = order_id
+
+    @property
+    def customer_id(self):
+        return self.execute_sql("SELECT customer_id FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+    
+    @property
+    def location(self):
+        return self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
