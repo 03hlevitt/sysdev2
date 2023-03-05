@@ -33,7 +33,7 @@ class Order(DBClass):
 
 
     def save(self):
-        self.execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location_words, self.date))
+        self.execute_sql("INSERT INTO orders (id, customer, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer, self.location_words, self.date))
 
     def delete(self):
         self.execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
@@ -50,9 +50,9 @@ class Order(DBClass):
     
 
 class NewOrder(Order):
-    def __init__(self, customer_id, location_co_ords):
+    def __init__(self, customer, location_co_ords):
         super().__init__()
-        self.customer_id = customer_id
+        self.customer = customer
         self.location_co_ords = location_co_ords
 
     @property
@@ -78,8 +78,8 @@ class ExistingOrder(Order):
         self.order_id = order_id
 
     @property
-    def customer_id(self):
-        return self.execute_sql("SELECT customer_id FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+    def customer(self):
+        return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
     
     @property
     def location_words(self):

@@ -1,13 +1,9 @@
 PRAGMA foreign_keys = ON;
-CREATE TABLE IF NOT EXISTS customer (
-  name VARCHAR(255) PRIMARY KEY NOT NULL
-);
 CREATE TABLE IF NOT EXISTS orders (
   id INTEGER PRIMARY KEY,
-  customer_id INTEGER,
+  customer VARCHAR(255) NOT NULL,
   location VARCHAR(255) NOT NULL,
-  order_date DATETIME NOT NULL,
-  FOREIGN KEY (customer_id) REFERENCES customer(id)
+  order_date DATETIME NOT NULL
 );
 CREATE TABLE IF NOT EXISTS menu_items (
   name VARCHAR(255) NOT NULL PRIMARY KEY,
