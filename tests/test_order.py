@@ -27,8 +27,10 @@ def test_order_with_args(mock_time):
 
 def test_save():
     order = NewOrder("mike", [51.521251, -0.203586])
+    order.set_order_date()
     order.save()
-    assert order.view_orders() == [(1, "mike", "index.home.raft", 'None')]
+    assert [(1, "mike", "index.home.raft")] in order.view_orders()
+    assert order.view_orders()[0][3] == order.date
 
 def test_new_order():
     order = NewOrder(1, [51.521251, -0.203586])

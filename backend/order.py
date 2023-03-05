@@ -4,7 +4,6 @@ import sqlite3
 
 from backend.common import DBClass, coordinates_to_words
 
-# TODO: customer
 
 class Order(DBClass):
     def __init__(self) -> None:
