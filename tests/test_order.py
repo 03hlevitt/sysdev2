@@ -19,11 +19,11 @@ def test_order():
 @patch('backend.order.datetime')
 def test_order_with_args(mock_time):
     mock_time.utcnow.return_value = "test"
-    order = NewOrder(1, 1)
+    order = NewOrder(1, [51.521251, -0.203586])
     order.set_order_date()
     assert order.order_id == 1
     assert order.customer_id == 1
-    assert order.location == 1
+    assert order.location_words == "index.home.raft"
     assert order.date == "test"
 
 def test_save():

@@ -1,13 +1,11 @@
 """all interactions with the menu"""
 import sqlite3
 from backend.common import DBClass
-# if price is noe then get db
-# TODO: newItem and updateItem Classes, with show all as a class method
 
 class Menu(DBClass):
     def __init__(self, name=None, price=None):
         super().__init__()
-
+    
     def view_menu(self):
         """view the menu"""
         return self.execute_sql("SELECT * FROM menu_items")

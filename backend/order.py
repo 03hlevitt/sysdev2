@@ -2,16 +2,13 @@
 from datetime import datetime
 import sqlite3
 
-from backend.common import DBClass
+from backend.common import DBClass, coordinates_to_words
 
 # TODO: Location
 # TODO: customer
-# TODO: base class
-# TODO: if customer_id and location are None, then get order from db
-# TODO: NewOrder and Existing order classes with show all as a class method
 
 class Order(DBClass):
-    def __init__(self, customer_id=None, location=None, order_id=None) -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.date = None # init to None so that it can be set to a datetime object later
 
@@ -37,7 +34,7 @@ class Order(DBClass):
 
 
     def save(self):
-        self.execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location, self.date))
+        self.execute_sql("INSERT INTO orders (id, customer_id, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer_id, self.location_words, self.date))
 
     def delete(self):
         self.execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
@@ -54,10 +51,10 @@ class Order(DBClass):
     
 
 class NewOrder(Order):
-    def __init__(self, customer_id, location):
+    def __init__(self, customer_id, location_co_ords):
         super().__init__()
         self.customer_id = customer_id
-        self.location = location
+        self.location_co_ords = location_co_ords
 
     @property
     def order_id(self):
@@ -70,6 +67,11 @@ class NewOrder(Order):
             print("no orders yet, so setting order id to one, %s", e)
             return 1
         
+    @property
+    def location_words(self):
+        return coordinates_to_words(self.location_co_ords[0], self.location_co_ords[1])
+
+        
 
 class ExistingOrder(Order):
     def __init__(self, order_id):
@@ -81,5 +83,5 @@ class ExistingOrder(Order):
         return self.execute_sql("SELECT customer_id FROM orders WHERE id = '%s'" % self.order_id)[0][0]
     
     @property
-    def location(self):
+    def location_words(self):
         return self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
