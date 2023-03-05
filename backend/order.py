@@ -5,6 +5,7 @@ import sqlite3
 from backend.common import DBClass
 
 # TODO: Location
+# TODO: customer
 # TODO: base class
 # TODO: if customer_id and location are None, then get order from db
 # TODO: NewOrder and Existing order classes with show all as a class method

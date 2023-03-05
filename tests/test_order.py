@@ -2,7 +2,7 @@ from unittest.mock import patch
 import pytest
 from backend.menu import Menu
 
-from backend.order import Order
+from backend.order import Order, NewOrder, ExistingOrder
 
 
 # TODO: TEST DATES
@@ -13,16 +13,13 @@ from backend.order import Order
 
 def test_order():
     order = Order()
-    assert order.order_id == 1
-    assert order.customer_id == None
-    assert order.location == None
     assert order.date == None
 
 
 @patch('backend.order.datetime')
 def test_order_with_args(mock_time):
     mock_time.utcnow.return_value = "test"
-    order = Order(1, 1, 1)
+    order = NewOrder(1, 1)
     order.set_order_date()
     assert order.order_id == 1
     assert order.customer_id == 1
