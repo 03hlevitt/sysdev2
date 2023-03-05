@@ -21,14 +21,14 @@ def test_order_with_args(mock_time):
     order = NewOrder("mike", [51.521251, -0.203586])
     order.set_order_date()
     assert order.order_id == 1
-    assert order.customer == 1
+    assert order.customer == "mike"
     assert order.location_words == "index.home.raft"
     assert order.date == "test"
 
 def test_save():
     order = NewOrder("mike", [51.521251, -0.203586])
     order.save()
-    assert order.view_orders() == [(1, 1, "index.home.raft", 'None')]
+    assert order.view_orders() == [(1, "mike", "index.home.raft", 'None')]
 
 def test_new_order():
     order = NewOrder(1, [51.521251, -0.203586])
