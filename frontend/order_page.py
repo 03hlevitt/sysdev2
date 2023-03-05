@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-class HomePage:
+class OrderPage:
     def __init__(self):
         self.root_home = Tk()
         self.root_home.title("home Page")
