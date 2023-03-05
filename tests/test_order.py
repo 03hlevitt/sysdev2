@@ -29,8 +29,7 @@ def test_save():
     order = NewOrder("mike", [51.521251, -0.203586])
     order.set_order_date()
     order.save()
-    assert [(1, "mike", "index.home.raft")] in order.view_orders()
-    assert order.view_orders()[0][3] == order.date
+    assert [(1, "mike", "index.home.raft", order.date.strftime('%Y-%m-%d %H:%M:%S.%f'))] == order.view_orders()
 
 def test_new_order():
     order = NewOrder(1, [51.521251, -0.203586])
