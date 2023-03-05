@@ -6,7 +6,6 @@ from backend.order import Order, NewOrder, ExistingOrder
 
 
 # TODO: TEST DATES
-# TODO: TEST LOCATION
 # TODO: setup and teardown
 # TODO: more exceptions!
 # TODO: better logging of the whole thing
