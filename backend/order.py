@@ -11,7 +11,15 @@ class Order(DBClass):
         self.date = None # init to None so that it can be set to a datetime object later
 
     def set_order_date(self):
-        self.date = datetime.utcnow() 
+        self.date = datetime.utcnow()
+
+    @property
+    def date_string(self):
+        try:
+            return self.date.strftime('%Y-%m-%d %H:%M:%S.%f')
+        except AttributeError as e:
+            print("date not set, set it with set_order_date(), %s", e)
+            return "date not set"
 
     def add_items(self, name, quantity):
         #  TODO: make composit key so cant add multiple of same item
