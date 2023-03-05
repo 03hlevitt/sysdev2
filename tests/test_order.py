@@ -27,12 +27,12 @@ def test_order_with_args(mock_time):
     assert order.date == "test"
 
 def test_save():
-    order = Order(1, 1, 1)
+    order = NewOrder(1, 1)
     order.save()
     assert order.view_orders() == [(1, 1, '1', 'None')]
 
 def test_new_order():
-    order = Order(1, 1)
+    order = NewOrder(1, 1)
     assert order.order_id == 2
 
 # TODO: change this so that it checks the number adds to quantity
