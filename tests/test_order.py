@@ -5,7 +5,6 @@ from backend.menu import Menu, newMenuItem
 from backend.order import Order, NewOrder, ExistingOrder
 
 
-# TODO: TEST DATES
 # TODO: setup and teardown
 # TODO: more exceptions!
 # TODO: better logging of the whole thing
