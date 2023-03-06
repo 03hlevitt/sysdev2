@@ -31,6 +31,7 @@ class Order(DBClass):
         else:
             self.execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, menu_item))
 
+    # TODO: update orders method
 
     def view_orders(self):
         return self.execute_sql("SELECT * FROM orders")
