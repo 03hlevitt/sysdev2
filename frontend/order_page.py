@@ -10,7 +10,7 @@ class orderListForm:
         
 
         def create_detailView(self):
-            detailsframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=300, height=400)
+            detailsframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
             detailsframe.grid(column=1, row=1, sticky=(N, E, S))
 
             detailsframe.columnconfigure(0, weight=1)
@@ -20,17 +20,11 @@ class orderListForm:
             detailsframe.rowconfigure(2, weight=1)
             detailsframe.rowconfigure(3, weight=1)
             detailsframe.rowconfigure(4, weight=1)
-            detailsframe.rowconfigure(5, weight=1)
-            detailsframe.rowconfigure(6, weight=1)
-            detailsframe.rowconfigure(7, weight=1)
-            detailsframe.rowconfigure(8, weight=1)
-            detailsframe.rowconfigure(9, weight=1)
-            detailsframe.rowconfigure(10, weight=1)
 
-            details_fname_label = ttk.Label(detailsframe, text='Order ID')
-            details_fname_label.grid(column=0, row=0)
-            details_fname = ttk.Entry(detailsframe, textvariable=order_id_value)
-            details_fname.grid(column=1, row=0)
+            # details_fname_label = ttk.Label(detailsframe, text='Order ID')
+            # details_fname_label.grid(column=0, row=0)
+            # details_fname = ttk.Entry(detailsframe, textvariable=order_id_value)
+            # details_fname.grid(column=1, row=0)
 
             details_lname_label = ttk.Label(detailsframe, text='Customer')
             details_lname_label.grid(column=0, row=1)
@@ -42,25 +36,25 @@ class orderListForm:
             details_street = ttk.Entry(detailsframe, textvariable=location_value)
             details_street.grid(column=1, row=2)
 
-            details_town_label = ttk.Label(detailsframe, text='Date')
-            details_town_label.grid(column=0, row=3)
-            details_town = ttk.Entry(detailsframe, textvariable=date_value)
-            details_town.grid(column=1, row=3)
+            # details_town_label = ttk.Label(detailsframe, text='Date')
+            # details_town_label.grid(column=0, row=3)
+            # details_town = ttk.Entry(detailsframe, textvariable=date_value)
+            # details_town.grid(column=1, row=3)
 
             cmdframe = ttk.Frame(detailsframe, borderwidth=0, width=100, height=50)
 
             # command frame
-            cmdframe.grid(column=0, row=11, sticky=(N, E, S))
+            cmdframe.grid(column=0, row=4, sticky=(N, E, S))
             self.cmdOk = ttk.Button(cmdframe, text="OK", state="disabled", command=update_order)
             self.cmdOk.grid(column=0, row=0)
 
-            self.cmdOrders = ttk.Button(cmdframe, text="Orders", state="disabled", command=go_to_menu)
+            self.cmdOrders = ttk.Button(cmdframe, text="Menu", state="enabled", command=go_to_menu)
             self.cmdOrders.grid(column=1, row=0)
 
             self.cmdAddorder = ttk.Button(cmdframe, text="Add order", state="active", command=make_order)
             self.cmdAddorder.grid(column=2, row=0)
 
-            listframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=300, height=400)
+            listframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
             listframe.grid(column=0, row=1, sticky=(N, W, E, S))
             listframe.rowconfigure(0, weight=1)
 
@@ -131,7 +125,7 @@ class orderListForm:
         root.mainloop()
 
     def get_orders(self):
-        return self.backend.get_orders()
+        return self.backend.view_orders()
 
     def update_order_backend(self, order_id, customer, location, date):
         self.backend.update_order(order_id, customer, location, date)
@@ -152,8 +146,7 @@ class orderListForm:
 
     def create_listTree(self, listframe):
         listtree = ttk.Treeview(listframe,
-                                column=("id", "customer", "location", "date", "town", "postcode", "county",
-                                        "phonelandline", "phonemobile", "email", "addliinfo", "deliveryinfo"),
+                                column=("id", "customer", "location", "date"),
                                 show='headings', selectmode='browse')
         listtree.heading('id', text='Id')
         listtree.heading('customer', text='customer')
@@ -194,8 +187,7 @@ fields = 'customer', 'location'
 
 
 class addOrderForm:
-    def __init__(self, engine):
-        self.engine = engine
+    def __init__(self):
         self.root = Tk()
         self.root.title("Nympton Add_order")
         self.entries = self.initUI(self.root, fields)
@@ -215,11 +207,12 @@ class addOrderForm:
             field = entry[0]
             text = entry[1].get()
             inputs.append(text)
-        self.Insert_Into(inputs)
+        self.add_order(inputs)
 
     def add_order(self, inputs):
         customer = inputs[0]
         location = inputs[1]
+        print("making new order with customer: " + customer + " and location: " + location + " .")
         new_order = self.backend.new_order(customer, location)
         new_order.set_order_date()
         new_order.save()
@@ -255,8 +248,8 @@ class addOrderForm:
     def destroy_both(self):
         self.root_error_msg.destroy()
         self.root.destroy()
-        orderListForm(self.engine)
+        orderListForm()
 
     def cancel(self):
         self.root.destroy()
-        orderListForm(self.engine)
+        orderListForm()
