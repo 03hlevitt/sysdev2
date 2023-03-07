@@ -22,12 +22,12 @@ class MenuPage:
             detailsframe.rowconfigure(3, weight=1)
             detailsframe.rowconfigure(4, weight=1)
 
-            details_lname_label = ttk.Label(detailsframe, text='item')
+            details_lname_label = ttk.Label(detailsframe, text='Item')
             details_lname_label.grid(column=0, row=1)
             details_lname = ttk.Entry(detailsframe, textvariable=item_value)
             details_lname.grid(column=1, row=1)
 
-            details_street_label = ttk.Label(detailsframe, text='price')
+            details_street_label = ttk.Label(detailsframe, text='Price')
             details_street_label.grid(column=0, row=2)
             details_street = ttk.Entry(detailsframe, textvariable=price_value)
             details_street.grid(column=1, row=2)
@@ -66,6 +66,12 @@ class MenuPage:
             root.destroy()
             addOrderForm()
 
+        def clear_selected_from_input():
+            item_value.set('')
+            price_value.set('')
+            update_buttons()
+            
+
         def listtreeitem_selected(event):
             for selected_item in listtree.selection():
                 item = self.get_existing_item(selected_item)
@@ -87,6 +93,7 @@ class MenuPage:
             dts_item = item_value.get()
 
             self.delete_item_backend(dts_item)
+            clear_selected_from_input()
             self.populate_listree(listtree)
             UpdateMsg('Item Deleted!')
 
