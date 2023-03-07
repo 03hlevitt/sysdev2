@@ -178,7 +178,7 @@ class addOrderForm:
 
         self.closeButton = Button(self.root, text="Cancel", command=self.cancel)
         self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch))
+        self.okButton = Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch(e)))
         self.okButton.pack(side=RIGHT)
         self.root.mainloop()
 
@@ -194,8 +194,8 @@ class addOrderForm:
         item = inputs[0]
         price = inputs[1]
         print("making new order with item: " + item + " and price: " + price + " .")
-        new_order = self.backend.new_order(item, price)
-        new_order.set_order_date()
+        backend = Backend()
+        new_order = backend.new_item(item, price)
         new_order.save()
 
     def initUI(self, root, fields):
