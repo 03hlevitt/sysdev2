@@ -117,7 +117,7 @@ class MenuPage:
         item.save()
 
     def get_existing_item(self, item):
-        return self.backend.get_existing_order(item)
+        return self.backend.existing_item(item)
 
     def populate_listree(self, listtree):
         orders = self.get_orders()
