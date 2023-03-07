@@ -45,6 +45,9 @@ class MenuPage:
             self.cmdAddorder = ttk.Button(cmdframe, text="add item", state="active", command=make_order)
             self.cmdAddorder.grid(column=2, row=0)
 
+            self.cmd_delete_order = ttk.Button(cmdframe, text="delete item", state="active", command=delete_item)
+            self.cmd_delete_order.grid(column=3, row=0)
+
             listframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
             listframe.grid(column=0, row=1, sticky=(N, W, E, S))
             listframe.rowconfigure(0, weight=1)
@@ -78,7 +81,14 @@ class MenuPage:
 
             self.update_item_backend(dts_item, dts_price)
             self.populate_listree(listtree)
-            UpdateMsg()
+            UpdateMsg('Update Successful!')
+
+        def delete_item():
+            dts_item = item_value.get()
+
+            self.delete_item_backend(dts_item)
+            self.populate_listree(listtree)
+            UpdateMsg('Item Deleted!')
 
         root = Tk()
         root.title("order List")
@@ -118,6 +128,10 @@ class MenuPage:
 
     def get_existing_item(self, item):
         return self.backend.existing_item(item)
+    
+    def delete_item_backend(self, item):
+        item = self.backend.existing_item(item)
+        item.delete_from_db()
 
     def populate_listree(self, listtree):
         listtree.delete(*listtree.get_children())
@@ -150,11 +164,11 @@ class MenuPage:
 
 
 class UpdateMsg:
-    def __init__(self):
+    def __init__(self, message):
         self.root_update_msg = Tk()
         self.root_update_msg.title("Success.")
         self.root_update_msg.geometry("400x100")
-        self.window_title_label = ttk.Label(self.root_update_msg, text='Update Successful!', font=("Arial", 15))
+        self.window_title_label = ttk.Label(self.root_update_msg, text=message, font=("Arial", 15))
         self.window_title_label.pack(side=TOP, pady=10)
         self.ok_button = ttk.Button(self.root_update_msg, text="OK", default="active", command=self.destroy)
         self.ok_button.pack(side=BOTTOM, pady=10)
@@ -189,6 +203,7 @@ class addOrderForm:
             text = entry[1].get()
             inputs.append(text)
         self.add_order(inputs)
+        self.cancel()
 
     def add_order(self, inputs):
         item = inputs[0]
