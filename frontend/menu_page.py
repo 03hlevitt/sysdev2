@@ -65,10 +65,10 @@ class MenuPage:
 
         def listtreeitem_selected(event):
             for selected_item in listtree.selection():
-                order_details = self.get_existing_item(selected_item)
+                item = self.get_existing_item(selected_item)
 
-                item_value.set(order_details[0])
-                price_value.set(order_details[1])
+                item_value.set(selected_item)
+                price_value.set(item.price)
 
             update_buttons()
 
