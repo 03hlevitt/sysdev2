@@ -1,4 +1,4 @@
-import tkinter
+from tkinter import *
 from tkinter import ttk
 from backend.main import Backend
 
@@ -83,7 +83,7 @@ class orderListForm:
             for selected_item in listtree.selection():
                 order_details = self.get_Oneorder(selected_item)
 
-                self.order_id_value.set(order_details[0])
+                order_id_value.set(order_details[0])
                 customer_value.set(order_details[1])
                 location_value.set(order_details[2])
                 date_value.set(order_details[3])
@@ -91,7 +91,7 @@ class orderListForm:
             update_buttons()
 
         def update_order():
-            dts_id = self.order_id_value.get()
+            dts_id = order_id_value.get()
             dts_customer = customer_value.get()
             dts_location = location_value.get()
             dts_date = date_value.get()
@@ -100,7 +100,7 @@ class orderListForm:
             root.destroy()
             UpdateMsg(self.engine)
 
-        root = tkinter.Tk()
+        root = Tk()
         root.title("order List")
         root.geometry("1100x600")
         root.rowconfigure(0, weight=1)
@@ -116,7 +116,7 @@ class orderListForm:
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
-        self.order_id_value = StringVar()
+        order_id_value = StringVar()
         customer_value = StringVar()
         location_value = StringVar()
         date_value = StringVar()
@@ -196,17 +196,17 @@ fields = 'customer', 'location'
 class addOrderForm:
     def __init__(self, engine):
         self.engine = engine
-        self.root = tkinter.Tk()
+        self.root = Tk()
         self.root.title("Nympton Add_order")
         self.entries = self.initUI(self.root, fields)
         self.root.bind('<Return>', (lambda event, e=self.entries: self.fetch(e)))
-        self.frame = tkinter.Frame(self.root, relief=RAISED, borderwidth=1)
+        self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
         self.frame.pack(fill=BOTH, expand=True)
 
-        self.closeButton = tkinter.Button(self.root, text="Cancel", command=self.cancel)
-        self.closeButton.pack(side=tkinter.RIGHT, padx=5, pady=5)
-        self.okButton = tkinter.Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch))
-        self.okButton.pack(side=tkinter.RIGHT)
+        self.closeButton = Button(self.root, text="Cancel", command=self.cancel)
+        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
+        self.okButton = Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch))
+        self.okButton.pack(side=RIGHT)
         self.root.mainloop()
 
     def fetch(self, entries):
@@ -227,25 +227,25 @@ class addOrderForm:
     def initUI(self, root, fields):
         entries = []
         for field in fields:
-            frame = tkinter.Frame(root)
-            frame.pack(fill=tkinter.X)
+            frame = Frame(root)
+            frame.pack(fill=X)
 
-            lbl = tkinter.Label(frame, text=field, width=20, anchor='w')
-            lbl.pack(side=tkinter.LEFT, padx=5, pady=5)
+            lbl = Label(frame, text=field, width=20, anchor='w')
+            lbl.pack(side=LEFT, padx=5, pady=5)
 
-            entry = tkinter.Entry(frame)
-            entry.pack(fill=tkinter.X, padx=5, expand=True)
+            entry = Entry(frame)
+            entry.pack(fill=X, padx=5, expand=True)
 
             entries.append((field, entry))
         return entries
 
     def message(self, message, command):
-        self.root_error_msg = tkinter.Tk()
+        self.root_error_msg = Tk()
         self.root_error_msg.title(message)
         self.root_error_msg.geometry("400x100")
-        self.window_title_label = tkinter.Label(self.root_error_msg, text=message, font=("Arial", 15))
+        self.window_title_label = Label(self.root_error_msg, text=message, font=("Arial", 15))
         self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = tkinter.Button(self.root_error_msg, text="OK", default="active", command=command)
+        self.ok_button = Button(self.root_error_msg, text="OK", default="active", command=command)
         self.ok_button.pack(side=BOTTOM, pady=10)
         self.root_error_msg.mainloop()
 
