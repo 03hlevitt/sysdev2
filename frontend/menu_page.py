@@ -159,7 +159,6 @@ class UpdateMsg:
         self.ok_button = ttk.Button(self.root_update_msg, text="OK", default="active", command=self.destroy)
         self.ok_button.pack(side=BOTTOM, pady=10)
         self.root_update_msg.mainloop()
-        orderListForm()
 
     def destroy(self):
         self.root_update_msg.destroy()
