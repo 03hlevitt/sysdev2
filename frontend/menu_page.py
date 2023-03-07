@@ -113,7 +113,7 @@ class MenuPage:
 
     def update_item_backend(self, item, price):
         item = self.backend.existing_item(item)
-        item.update_price(price)
+        item.update_price = price
         item.save()
 
     def get_existing_item(self, item):
