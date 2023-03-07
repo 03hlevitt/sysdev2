@@ -77,7 +77,7 @@ class MenuPage:
             dts_price = price_value.get()
 
             self.update_item_backend(dts_item, dts_price)
-            root.destroy()
+            self.populate_listree(listtree)
             UpdateMsg()
 
         root = Tk()
@@ -120,6 +120,7 @@ class MenuPage:
         return self.backend.existing_item(item)
 
     def populate_listree(self, listtree):
+        listtree.delete(*listtree.get_children())
         orders = self.get_orders()
 
         added_orders = []
@@ -149,8 +150,7 @@ class MenuPage:
 
 
 class UpdateMsg:
-    def __init__(self, engine):
-        self.engine = engine
+    def __init__(self):
         self.root_update_msg = Tk()
         self.root_update_msg.title("Success.")
         self.root_update_msg.geometry("400x100")
