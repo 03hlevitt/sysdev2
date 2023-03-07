@@ -92,7 +92,7 @@ class MenuPage:
         baseframe.columnconfigure(0, weight=3)
         baseframe.columnconfigure(1, weight=1)
 
-        window_title_label = ttk.Label(baseframe, text='orders', font=("Arial", 25))
+        window_title_label = ttk.Label(baseframe, text='Menu', font=("Arial", 25))
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
@@ -234,7 +234,7 @@ class addOrderForm:
 
     def cancel(self):
         self.root.destroy()
-        orderListForm()
+        MenuPage()
 
 
 if __name__ == "__main__":
