@@ -38,10 +38,10 @@ class MenuPage:
             self.cmdOk = ttk.Button(cmdframe, text="OK", state="disabled", command=update_order)
             self.cmdOk.grid(column=0, row=0)
 
-            self.cmdOrders = ttk.Button(cmdframe, text="Menu", state="enabled", command=go_to_menu)
+            self.cmdOrders = ttk.Button(cmdframe, text="Orders", state="enabled", command=got_to_orders)
             self.cmdOrders.grid(column=1, row=0)
 
-            self.cmdAddorder = ttk.Button(cmdframe, text="Add order", state="active", command=make_order)
+            self.cmdAddorder = ttk.Button(cmdframe, text="add item", state="active", command=make_order)
             self.cmdAddorder.grid(column=2, row=0)
 
             listframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
@@ -54,10 +54,10 @@ class MenuPage:
             self.cmdOk.config(state=ACTIVE)
             self.cmdOrders.config(state=ACTIVE)
 
-        def go_to_menu():
+        def got_to_orders():
             root.destroy()
-            from frontend.menu_page import menuPage
-            menuPage()
+            from frontend.orders_page import OrdersPage
+            OrdersPage()
 
         def make_order():
             root.destroy()
