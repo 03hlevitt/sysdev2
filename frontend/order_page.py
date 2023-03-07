@@ -2,12 +2,6 @@ import tkinter
 from tkinter import ttk
 from backend.main import Backend
 
-class OrderPage:
-    def __init__(self):
-        self.root_home = Tk()
-        self.root_home.title("home Page")
-        self.root_home.geometry("600x400")
-
 
 class orderListForm:
 
@@ -106,7 +100,7 @@ class orderListForm:
             root.destroy()
             UpdateMsg(self.engine)
 
-        root = Tk()
+        root = tkinter.Tk()
         root.title("order List")
         root.geometry("1100x600")
         root.rowconfigure(0, weight=1)

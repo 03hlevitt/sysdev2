@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import sys
-from frontend.order_page import OrderPage
+from frontend.order_page import orderListForm
 
 class menuPage:
     def __init__(self):
@@ -28,7 +28,7 @@ class menuPage:
     
     def order_page(self):
         self.root_menu.destroy()
-        OrderPage()
+        orderListForm()
 
 
 if __name__ == "__main__":
