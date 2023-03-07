@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from backend.main import Backend
+from frontend.order_page import orderListForm
 
 
 class MenuPage:
@@ -56,8 +57,7 @@ class MenuPage:
 
         def got_to_orders():
             root.destroy()
-            from frontend.orders_page import OrdersPage
-            OrdersPage()
+            orderListForm()
 
         def make_order():
             root.destroy()
