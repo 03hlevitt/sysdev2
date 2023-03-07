@@ -35,3 +35,8 @@ class existingMenuItem(Menu):
         data = self.execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % self.name)
         print(data)
         return data[0][0]
+    
+    # setter for price
+    @price.setter
+    def update_price(self, price):
+        self.price = price
