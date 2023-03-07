@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import sys
-from order_page import OrderPage
+from frontend.order_page import OrderPage
 
 class menuPage:
     def __init__(self):

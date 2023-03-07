@@ -1,5 +1,5 @@
-from menu import newMenuItem, existingMenuItem, Menu
-from order import Order, NewOrder, ExistingOrder
+from backend.menu import newMenuItem, existingMenuItem, Menu
+from backend.order import Order, NewOrder, ExistingOrder
 
 class Backend:
     """handle returning of objects for interacting with the database"""
