@@ -2,7 +2,7 @@
 from datetime import datetime
 import sqlite3
 
-from backend.common import DBClass, coordinates_to_words
+from backend.common import DBClass, coordinates_to_words, words_to_coordinates
 
 
 class Order(DBClass):
@@ -76,7 +76,8 @@ class NewOrder(Order):
         
     @property
     def location_words(self):
-        return coordinates_to_words(self.location_co_ords[0], self.location_co_ords[1])
+        co_ords = self.location_co_ords.split(",")
+        return coordinates_to_words(co_ords[0], co_ords[1])
 
         
 
@@ -84,11 +85,18 @@ class ExistingOrder(Order):
     def __init__(self, order_id):
         super().__init__()
         self.order_id = order_id
+        self.customer = self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+        self.location_words = self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+        self.location_co_ords = words_to_coordinates(self.location_words)
 
-    @property
-    def customer(self):
-        return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+    # @property
+    # def customer(self):
+    #     return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
     
-    @property
-    def location_words(self):
-        return self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+    # @property
+    # def location_words(self):
+    #     return self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+    
+    # @property
+    # def location_co_ords(self):
+    #     return words_to_coordinates(self.location_words)

@@ -5,12 +5,21 @@ import json
 
 def coordinates_to_words(lat, lon):
     key = os.environ.get('THREEWORDS_SUBSCRIPTION_KEY')
-    print("***", key)
     url = 'https://api.what3words.com/v3/convert-to-3wa'
     params = {"coordinates":f"{lat},{lon}","key":key}
+    print("***", params)
     r = requests.get(url, params = params)
     r_dict = json.loads(r.text)
+    print("***", r_dict)
     return r_dict["words"]
+
+def words_to_coordinates(words):
+    key = os.environ.get('THREEWORDS_SUBSCRIPTION_KEY')
+    url = 'https://api.what3words.com/v3/convert-to-coordinates'
+    params = {"words":words,"key":key}
+    r = requests.get(url, params = params)
+    r_dict = json.loads(r.text)
+    return r_dict["coordinates"]
 
 class DBClass:
     def __init_tables(self):
