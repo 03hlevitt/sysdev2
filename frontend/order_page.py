@@ -93,7 +93,8 @@ class orderListForm:
             UpdateMsg('Update Successful!')
 
         def delete_order():
-            self.delete_item_backend(id_value)
+            dts_id = id_value.get()
+            self.delete_item_backend(dts_id)
             clear_selected_from_input()
             self.populate_listree(listtree)
             UpdateMsg('Item Deleted!')
