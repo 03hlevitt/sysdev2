@@ -82,6 +82,7 @@ class MenuPage:
             update_buttons()
 
         def update_order():
+            #TODO: CHANGE THIS!
             dts_item = item_value.get()
             dts_price = price_value.get()
 

@@ -19,7 +19,9 @@ def words_to_coordinates(words):
     params = {"words":words,"key":key}
     r = requests.get(url, params = params)
     r_dict = json.loads(r.text)
-    return r_dict["coordinates"]
+    co_ords = r_dict["coordinates"]
+    co_ords_string = f"{co_ords['lat']},{co_ords['lng']}"
+    return co_ords_string
 
 class DBClass:
     def __init_tables(self):

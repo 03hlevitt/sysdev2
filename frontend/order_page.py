@@ -86,8 +86,9 @@ class orderListForm:
         def update_order():
             dts_customer = customer_value.get()
             dts_location = location_value.get()
+            dts_id = id_value.get()
 
-            self.update_item_backend(id_value, dts_customer, dts_location)
+            self.update_item_backend(dts_id, dts_customer, dts_location)
             self.populate_listree(listtree)
             UpdateMsg('Update Successful!')
 
