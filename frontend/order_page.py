@@ -53,7 +53,11 @@ class orderListForm:
             listframe.grid(column=0, row=1, sticky=(N, W, E, S))
             listframe.rowconfigure(0, weight=1)
 
-            return listframe
+            itemframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
+            itemframe.grid(column=2, row=1, sticky=(N, W, E, S))
+            itemframe.rowconfigure(0, weight=1)
+
+            return listframe, itemframe
 
         def update_buttons():
             self.cmdOk.config(state=ACTIVE)
@@ -110,6 +114,7 @@ class orderListForm:
         baseframe.rowconfigure(1, weight=4)
         baseframe.columnconfigure(0, weight=3)
         baseframe.columnconfigure(1, weight=1)
+        baseframe.columnconfigure(2, weight=1)
 
         window_title_label = ttk.Label(baseframe, text='Menu', font=("Arial", 25))
         window_title_label.grid(column=0, row=0)
@@ -119,8 +124,9 @@ class orderListForm:
         location_value = StringVar()
         id_value = StringVar()
 
-        list_frame = create_detail_view(self)
+        list_frame, item_frame = create_detail_view(self)
         listtree = self.create_listTree(list_frame)
+        listtree_2 = self.create_listTree_2(item_frame)
 
         listtree.bind('<<TreeviewSelect>>', listtreeitem_selected)
 
@@ -155,6 +161,27 @@ class orderListForm:
                 added_orders.append(orderValues)
 
     def create_listTree(self, listframe):
+        listtree = ttk.Treeview(listframe,
+                                column=("id", "customer", "location", "order_date"),
+                                show='headings', selectmode='browse')
+        listtree.heading('id', text='id')
+        listtree.heading('customer', text='customer')
+        listtree.heading('location', text='location')
+        listtree.heading('order_date', text='order date')
+        listtree.column('id', width=70)
+        listtree.column('customer', width=70)
+        listtree.column('location', width=70)
+        listtree.column('order_date', width=70)
+        listtree.tag_configure('font', font=('Arial', 10))
+        listtree.grid(column=0, row=0, sticky=(N, W, E, S))
+
+        treescrolly = ttk.Scrollbar(listframe, orient=VERTICAL, command=listtree.yview)
+        listtree.configure(yscrollcommand=treescrolly.set)
+        treescrolly.grid(column=3, row=0, sticky=(NS))
+
+        return listtree
+    
+    def create_listTree_2(self, listframe):
         listtree = ttk.Treeview(listframe,
                                 column=("id", "customer", "location", "order_date"),
                                 show='headings', selectmode='browse')
