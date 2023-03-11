@@ -1,5 +1,4 @@
 """all interactions with the menu"""
-import sqlite3
 from backend.common import DBClass
 
 
@@ -13,7 +12,8 @@ class Menu(DBClass):
 
     def delete_from_db(self):
         """delete the menu item stored in the object"""
-        self.execute_sql("DELETE FROM menu_items WHERE name = '%s'" % self.name)
+        self.execute_sql(
+            "DELETE FROM menu_items WHERE name = '%s'" % self.name)
 
 
 class newMenuItem(Menu):

@@ -10,6 +10,7 @@ def make_basic_input_box(self, column, row, title, frame):
     user_input_box.grid(column=column + 1, row=row)
     return input_value
 
+
 def make_password_input_box(self, column, row, title, frame):
     label = ttk.Label(frame, text=title)
     label.grid(column=column, row=row)

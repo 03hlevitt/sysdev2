@@ -1,6 +1,5 @@
 """all interactions with orders"""
 from datetime import datetime
-import sqlite3
 
 from backend.common import DBClass, coordinates_to_words, words_to_coordinates
 
@@ -9,7 +8,7 @@ class Order(DBClass):
     def __init__(self) -> None:
         super().__init__()
         self.date = (
-            None  # init to None so that it can be set to a datetime object later
+            None  # init to None so that it can be set to a datetime later
         )
 
     def set_order_date(self):
@@ -26,12 +25,14 @@ class Order(DBClass):
     def update_items(self, menu_item, quantity):
         if quantity == 0:
             self.execute_sql(
-                "DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'"
+                """DELETE FROM order_items WHERE
+                  order_id = '%s' AND menu_item = '%s'"""
                 % (self.order_id, menu_item)
             )
         else:
             self.execute_sql(
-                "UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'"
+                """UPDATE order_items SET quantity = '%s' WHERE
+                  order_id = '%s' AND menu_item = '%s'"""
                 % (quantity, self.order_id, menu_item)
             )
 
@@ -42,13 +43,15 @@ class Order(DBClass):
 
     def view_order_items(self):
         return self.execute_sql(
-            "SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'"
+            """SELECT menu_item, quantity FROM order_items
+              WHERE order_id = '%s'"""
             % self.order_id
         )
 
     def save(self):
         self.execute_sql(
-            "INSERT INTO orders (id, customer, location, order_date) VALUES ('%s', '%s', '%s', '%s')"
+            """INSERT INTO orders (id, customer, location, order_date)
+              VALUES ('%s', '%s', '%s', '%s')"""
             % (self.order_id, self.customer, self.location_words, self.date)
         )
 
@@ -107,14 +110,16 @@ class ExistingOrder(Order):
 
     def get_items(self):
         return self.execute_sql(
-            "SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'"
+            """SELECT menu_item, quantity FROM
+              order_items WHERE order_id = '%s'"""
             % self.order_id
         )
 
     def add_items(self, name, quantity):
         #  TODO: make composit key so cant add multiple of same item
         item = self.execute_sql(
-            "select * from order_items where order_id = '%s' and menu_item = '%s'"
+            """select * from order_items
+             where order_id = '%s' and menu_item = '%s'"""
             % (self.order_id, name)
         )
         if item:
@@ -122,12 +127,14 @@ class ExistingOrder(Order):
             name = item[0][1]
             quantity = int(quantity) + int(current_quantity)
             self.execute_sql(
-                "UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'"
+                """UPDATE order_items SET quantity = '%s'
+                  WHERE order_id = '%s' AND menu_item = '%s'"""
                 % (quantity, self.order_id, name)
             )
         else:
             str = (
-                "INSERT INTO order_items (order_id, menu_item, quantity) VALUES ('%s', '%s', '%s')"
+                """INSERT INTO order_items (order_id, menu_item, quantity)
+                  VALUES ('%s', '%s', '%s')"""
                 % (self.order_id, name, quantity)
             )
             print(str)
@@ -135,20 +142,9 @@ class ExistingOrder(Order):
 
     def remove_items(self, name):
         string = (
-            "DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'"
+            """DELETE FROM order_items
+              WHERE order_id = '%s' AND menu_item = '%s'"""
             % (self.order_id, name)
         )
         print(string)
         self.execute_sql(string)
-
-    # @property
-    # def customer(self):
-    #     return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
-
-    # @property
-    # def location_words(self):
-    #     return self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
-
-    # @property
-    # def location_co_ords(self):
-    #     return words_to_coordinates(self.location_words)
