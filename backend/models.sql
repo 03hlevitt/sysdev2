@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS menu_items (
   price DECIMAL(10, 2) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS order_items (
-  id INTEGER PRIMARY KEY,
   order_id INTEGER NOT NULL,
   menu_item VARCHAR(255) NOT NULL,
   quantity INTEGER NOT NULL,

@@ -46,6 +46,9 @@ class orderListForm:
             self.cmdAddorder = ttk.Button(cmdframe, text="add order", state="active", command=make_order)
             self.cmdAddorder.grid(column=2, row=0)
 
+            self.cmdAdd_item = ttk.Button(cmdframe, text="add item", state="active", command=add_item)
+            self.cmdAdd_item.grid(column=4, row=0)
+
             self.cmd_delete_order = ttk.Button(cmdframe, text="delete item", state="active", command=delete_order)
             self.cmd_delete_order.grid(column=3, row=0)
 
@@ -96,6 +99,12 @@ class orderListForm:
             self.update_item_backend(dts_id, dts_customer, dts_location)
             self.populate_listree(listtree)
             UpdateMsg('Update Successful!')
+
+
+        def add_item():
+            dts_id = id_value.get()
+            root.destroy()
+            addItemForm(dts_id)
 
         def delete_order():
             dts_id = id_value.get()
@@ -268,6 +277,77 @@ class addOrderForm:
         new_order = backend.new_order(customer, location)
         new_order.set_order_date()
         new_order.save()
+
+    def initUI(self, root, fields):
+        entries = []
+        for field in fields:
+            frame = Frame(root)
+            frame.pack(fill=X)
+
+            lbl = Label(frame, text=field, width=20, anchor='w')
+            lbl.pack(side=LEFT, padx=5, pady=5)
+
+            entry = Entry(frame)
+            entry.pack(fill=X, padx=5, expand=True)
+
+            entries.append((field, entry))
+        return entries
+
+    def message(self, message, command):
+        self.root_error_msg = Tk()
+        self.root_error_msg.title(message)
+        self.root_error_msg.geometry("400x100")
+        self.window_title_label = Label(self.root_error_msg, text=message, font=("Arial", 15))
+        self.window_title_label.pack(side=TOP, pady=10)
+        self.ok_button = Button(self.root_error_msg, text="OK", default="active", command=command)
+        self.ok_button.pack(side=BOTTOM, pady=10)
+        self.root_error_msg.mainloop()
+
+    def destroy(self):
+        self.root_error_msg.destroy()
+
+    def destroy_both(self):
+        self.root_error_msg.destroy()
+        self.root.destroy()
+        orderListForm()
+
+    def cancel(self):
+        self.root.destroy()
+        orderListForm()
+
+
+class addItemForm:
+    def __init__(self, order_id):
+        self.root = Tk()
+        self.root.title("Nympton Add_order")
+        self.entries = self.initUI(self.root, fields)
+        self.root.bind('<Return>', (lambda event, e=self.entries: self.fetch(e)))
+        self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
+        self.frame.pack(fill=BOTH, expand=True)
+        self.order_id = order_id
+        self.closeButton = Button(self.root, text="Cancel", command=self.cancel)
+        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
+        self.okButton = Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch(e)))
+        self.okButton.pack(side=RIGHT)
+        self.root.mainloop()
+
+    def fetch(self, entries):
+        inputs = []
+        for entry in entries:
+            field = entry[0]
+            text = entry[1].get()
+            inputs.append(text)
+        self.add_item(inputs)
+        self.cancel()
+
+    def add_item(self, inputs):
+        item = inputs[0]
+        quantity = inputs[1]
+        print("making new order with item: " + item + " and quantity: " + quantity + " .")
+        backend = Backend()
+        existing_order = backend.existing_order(self.order_id)
+        existing_order.add_item(item, quantity)
+        existing_order.save()
 
     def initUI(self, root, fields):
         entries = []
