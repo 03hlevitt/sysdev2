@@ -84,6 +84,7 @@ class orderListForm:
                 id_value.set(order.order_id)
                 customer_value.set(order.customer)
                 location_value.set(order.location_co_ords)
+                self.populate_itemsTree(order.order_id)
 
             update_buttons()
 
@@ -126,7 +127,7 @@ class orderListForm:
 
         list_frame, item_frame = create_detail_view(self)
         listtree = self.create_listTree(list_frame)
-        listtree_2 = self.create_listTree_2(item_frame)
+        self.itemstree = self.create_itemsTree(item_frame)
 
         listtree.bind('<<TreeviewSelect>>', listtreeitem_selected)
 
@@ -147,6 +148,22 @@ class orderListForm:
     def delete_item_backend(self, id_value):
         item = self.backend.existing_order(id_value)
         item.delete()
+
+    def get_items(self, order_id):
+        order = self.backend.existing_order(order_id)
+        return order.get_items()
+
+    def populate_itemsTree(self, order_id):
+        """get items from order and populate tree"""
+        self.itemstree.delete(*self.itemstree.get_children())
+        items = self.get_items(order_id)
+
+        added_items = []
+        for item in items:
+            itemValues = list(item)
+            if itemValues not in added_items:
+                added_items.append(itemValues)
+                self.itemstree.insert('', index='end', iid=itemValues[0], text=itemValues[0], values=(itemValues))
 
     def populate_listree(self, listtree):
         listtree.delete(*listtree.get_children())
@@ -181,18 +198,16 @@ class orderListForm:
 
         return listtree
     
-    def create_listTree_2(self, listframe):
+    def create_itemsTree(self, listframe):
         listtree = ttk.Treeview(listframe,
-                                column=("id", "customer", "location", "order_date"),
+                                column=("order_id", "menu_item", "quantity"),
                                 show='headings', selectmode='browse')
-        listtree.heading('id', text='id')
-        listtree.heading('customer', text='customer')
-        listtree.heading('location', text='location')
-        listtree.heading('order_date', text='order date')
-        listtree.column('id', width=70)
-        listtree.column('customer', width=70)
-        listtree.column('location', width=70)
-        listtree.column('order_date', width=70)
+        listtree.heading('order_id', text='order_id')
+        listtree.heading('menu_item', text='menu_item')
+        listtree.heading('quantity', text='quantity')
+        listtree.column('order_id', width=70)
+        listtree.column('menu_item', width=70)
+        listtree.column('quantity', width=70)
         listtree.tag_configure('font', font=('Arial', 10))
         listtree.grid(column=0, row=0, sticky=(N, W, E, S))
 

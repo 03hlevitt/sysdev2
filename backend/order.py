@@ -89,6 +89,8 @@ class ExistingOrder(Order):
         self.location_words = self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
         self.location_co_ords = words_to_coordinates(self.location_words)
 
+    def get_items(self):
+        return self.execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id)
     # @property
     # def customer(self):
     #     return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
