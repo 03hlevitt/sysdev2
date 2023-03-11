@@ -100,6 +100,11 @@ class ExistingOrder(Order):
             str = "INSERT INTO order_items (order_id, menu_item, quantity) VALUES ('%s', '%s', '%s')" % (self.order_id, name, quantity)
             print(str)
             self.execute_sql(str)
+
+    def remove_items(self, name):
+        string = "DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, name)
+        print(string)
+        self.execute_sql(string)
     # @property
     # def customer(self):
     #     return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]

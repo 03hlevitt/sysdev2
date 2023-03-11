@@ -49,6 +49,9 @@ class orderListForm:
             self.cmdAdd_item = ttk.Button(cmdframe, text="add item", state="active", command=add_item)
             self.cmdAdd_item.grid(column=4, row=0)
 
+            self.cmdremove_item = ttk.Button(cmdframe, text="remove item", state="active", command=remove_item)
+            self.cmdremove_item.grid(column=5, row=0)
+
             self.cmd_delete_order = ttk.Button(cmdframe, text="delete item", state="active", command=delete_order)
             self.cmd_delete_order.grid(column=3, row=0)
 
@@ -80,6 +83,10 @@ class orderListForm:
             location_value.set('')
             update_buttons()
             
+        def itemtreeitem_selected(event):
+            for selected_item in self.itemstree.selection():
+                item_value.set(selected_item)
+                update_buttons()
 
         def listtreeitem_selected(event):
             for selected_order in listtree.selection():
@@ -106,6 +113,15 @@ class orderListForm:
             root.destroy()
             addItemForm(dts_id)
 
+        def remove_item():
+            dts_id = id_value.get()
+            dts_item = item_value.get()
+            order = self.backend.existing_order(dts_id)
+            order.remove_items(dts_item)
+            self.populate_itemsTree(dts_id)
+            UpdateMsg('Item Deleted!')
+            
+
         def delete_order():
             dts_id = id_value.get()
             self.delete_item_backend(dts_id)
@@ -130,6 +146,7 @@ class orderListForm:
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
+        item_value = StringVar()
         customer_value = StringVar()
         location_value = StringVar()
         id_value = StringVar()
@@ -139,6 +156,7 @@ class orderListForm:
         self.itemstree = self.create_itemsTree(item_frame)
 
         listtree.bind('<<TreeviewSelect>>', listtreeitem_selected)
+        self.itemstree.bind('<<TreeviewSelect>>', itemtreeitem_selected)
 
         self.populate_listree(listtree)
 
