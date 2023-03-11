@@ -8,7 +8,9 @@ from backend.common import DBClass, coordinates_to_words, words_to_coordinates
 class Order(DBClass):
     def __init__(self) -> None:
         super().__init__()
-        self.date = None # init to None so that it can be set to a datetime object later
+        self.date = (
+            None  # init to None so that it can be set to a datetime object later
+        )
 
     def set_order_date(self):
         self.date = datetime.utcnow()
@@ -16,16 +18,22 @@ class Order(DBClass):
     @property
     def date_string(self):
         try:
-            return self.date.strftime('%Y-%m-%d %H:%M:%S.%f')
+            return self.date.strftime("%Y-%m-%d %H:%M:%S.%f")
         except AttributeError as e:
             print("date not set, set it with set_order_date(), %s", e)
             return "date not set"
 
     def update_items(self, menu_item, quantity):
         if quantity == 0:
-            self.execute_sql("DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
+            self.execute_sql(
+                "DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'"
+                % (self.order_id, menu_item)
+            )
         else:
-            self.execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, menu_item))
+            self.execute_sql(
+                "UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'"
+                % (quantity, self.order_id, menu_item)
+            )
 
     # TODO: update orders method
 
@@ -33,25 +41,34 @@ class Order(DBClass):
         return self.execute_sql("SELECT * FROM orders")
 
     def view_order_items(self):
-        return self.execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id)
-
+        return self.execute_sql(
+            "SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'"
+            % self.order_id
+        )
 
     def save(self):
-        self.execute_sql("INSERT INTO orders (id, customer, location, order_date) VALUES ('%s', '%s', '%s', '%s')" % (self.order_id, self.customer, self.location_words, self.date))
+        self.execute_sql(
+            "INSERT INTO orders (id, customer, location, order_date) VALUES ('%s', '%s', '%s', '%s')"
+            % (self.order_id, self.customer, self.location_words, self.date)
+        )
 
     def delete(self):
         self.execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
-        self.execute_sql("DELETE FROM order_items WHERE order_id = '%s'" % self.order_id)
+        self.execute_sql(
+            "DELETE FROM order_items WHERE order_id = '%s'" % self.order_id
+        )
 
     def get_total(self):
         order_items = self.view_order_items()
         total = 0
         for item in order_items:
             quantity = item[1]
-            price = self.execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % item[0])[0][0]
+            price = self.execute_sql(
+                "SELECT price FROM menu_items WHERE name = '%s'" % item[0]
+            )[0][0]
             total += price * quantity
         return total
-    
+
 
 class NewOrder(Order):
     def __init__(self, customer, location_co_ords):
@@ -69,50 +86,69 @@ class NewOrder(Order):
         except TypeError as e:
             print("no orders yet, so setting order id to one, %s", e)
             return 1
-        
+
     @property
     def location_words(self):
         co_ords = self.location_co_ords.split(",")
         return coordinates_to_words(co_ords[0], co_ords[1])
 
-        
 
 class ExistingOrder(Order):
     def __init__(self, order_id):
         super().__init__()
         self.order_id = order_id
-        self.customer = self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
-        self.location_words = self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+        self.customer = self.execute_sql(
+            "SELECT customer FROM orders WHERE id = '%s'" % self.order_id
+        )[0][0]
+        self.location_words = self.execute_sql(
+            "SELECT location FROM orders WHERE id = '%s'" % self.order_id
+        )[0][0]
         self.location_co_ords = words_to_coordinates(self.location_words)
 
     def get_items(self):
-        return self.execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id) 
+        return self.execute_sql(
+            "SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'"
+            % self.order_id
+        )
 
     def add_items(self, name, quantity):
         #  TODO: make composit key so cant add multiple of same item
-        item = self.execute_sql("select * from order_items where order_id = '%s' and menu_item = '%s'" % (self.order_id, name))
+        item = self.execute_sql(
+            "select * from order_items where order_id = '%s' and menu_item = '%s'"
+            % (self.order_id, name)
+        )
         if item:
             current_quantity = item[0][2]
             name = item[0][1]
             quantity = int(quantity) + int(current_quantity)
-            self.execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, name))
+            self.execute_sql(
+                "UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'"
+                % (quantity, self.order_id, name)
+            )
         else:
-            str = "INSERT INTO order_items (order_id, menu_item, quantity) VALUES ('%s', '%s', '%s')" % (self.order_id, name, quantity)
+            str = (
+                "INSERT INTO order_items (order_id, menu_item, quantity) VALUES ('%s', '%s', '%s')"
+                % (self.order_id, name, quantity)
+            )
             print(str)
             self.execute_sql(str)
 
     def remove_items(self, name):
-        string = "DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, name)
+        string = (
+            "DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'"
+            % (self.order_id, name)
+        )
         print(string)
         self.execute_sql(string)
+
     # @property
     # def customer(self):
     #     return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
-    
+
     # @property
     # def location_words(self):
     #     return self.execute_sql("SELECT location FROM orders WHERE id = '%s'" % self.order_id)[0][0]
-    
+
     # @property
     # def location_co_ords(self):
     #     return words_to_coordinates(self.location_words)

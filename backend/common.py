@@ -3,29 +3,32 @@ import requests
 import os
 import json
 
+
 def coordinates_to_words(lat, lon):
-    key = os.environ.get('THREEWORDS_SUBSCRIPTION_KEY')
-    url = 'https://api.what3words.com/v3/convert-to-3wa'
-    params = {"coordinates":f"{lat},{lon}","key":key}
+    key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
+    url = "https://api.what3words.com/v3/convert-to-3wa"
+    params = {"coordinates": f"{lat},{lon}", "key": key}
     print("***", params)
-    r = requests.get(url, params = params)
+    r = requests.get(url, params=params)
     r_dict = json.loads(r.text)
     print("***", r_dict)
     return r_dict["words"]
 
+
 def words_to_coordinates(words):
-    key = os.environ.get('THREEWORDS_SUBSCRIPTION_KEY')
-    url = 'https://api.what3words.com/v3/convert-to-coordinates'
-    params = {"words":words,"key":key}
-    r = requests.get(url, params = params)
+    key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
+    url = "https://api.what3words.com/v3/convert-to-coordinates"
+    params = {"words": words, "key": key}
+    r = requests.get(url, params=params)
     r_dict = json.loads(r.text)
     co_ords = r_dict["coordinates"]
     co_ords_string = f"{co_ords['lat']},{co_ords['lng']}"
     return co_ords_string
 
+
 class DBClass:
     def __init_tables(self):
-        conn = sqlite3.connect('orders.db')
+        conn = sqlite3.connect("orders.db")
         c = conn.cursor()
         with open("./backend/models.sql", "r") as f:
             sql = str(f.read())
@@ -38,7 +41,7 @@ class DBClass:
                 print(e)
 
     def __sql_attempt(self, sql):
-        conn = sqlite3.connect('orders.db')
+        conn = sqlite3.connect("orders.db")
         c = conn.cursor()
         c.execute(sql)
         rows = c.fetchall()
