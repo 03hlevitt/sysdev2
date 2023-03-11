@@ -1,4 +1,25 @@
-from tkinter import *
+from tkinter import (
+    StringVar,
+    N,
+    E,
+    S,
+    W,
+    ACTIVE,
+    Tk,
+    TOP,
+    BOTTOM,
+    Button,
+    Label,
+    Entry,
+    Frame,
+    LEFT,
+    RIGHT,
+    BOTH,
+    X,
+    VERTICAL,
+    NS,
+    RAISED,
+)
 from tkinter import ttk
 from backend.main import Backend
 
@@ -355,7 +376,6 @@ class addOrderForm:
     def fetch(self, entries):
         inputs = []
         for entry in entries:
-            field = entry[0]
             text = entry[1].get()
             inputs.append(text)
         self.add_order(inputs)
@@ -445,7 +465,6 @@ class addItemForm:
     def fetch(self, entries):
         inputs = []
         for entry in entries:
-            field = entry[0]
             text = entry[1].get()
             inputs.append(text)
         self.add_item(inputs)
