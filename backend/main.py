@@ -1,3 +1,5 @@
+"""handler class for returning objects for interacting with the db
+ or select all type functions"""
 from backend.menu import newMenuItem, existingMenuItem, Menu
 from backend.order import Order, NewOrder, ExistingOrder
 
