@@ -319,8 +319,8 @@ class addOrderForm:
 class addItemForm:
     def __init__(self, order_id):
         self.root = Tk()
-        self.root.title("Nympton Add_order")
-        self.entries = self.initUI(self.root, fields)
+        self.root.title("Add_item")
+        self.entries = self.initUI(self.root, ("menu_item", "quantity"))
         self.root.bind('<Return>', (lambda event, e=self.entries: self.fetch(e)))
         self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
         self.frame.pack(fill=BOTH, expand=True)
