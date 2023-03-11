@@ -242,11 +242,12 @@ class UpdateMsg:
         self.root_update_msg.destroy()
 
 
-fields = 'customer', 'location'
+
 
 
 class addOrderForm:
     def __init__(self):
+        fields = 'customer', 'location'
         self.root = Tk()
         self.root.title("Nympton Add_order")
         self.entries = self.initUI(self.root, fields)
@@ -318,9 +319,10 @@ class addOrderForm:
 
 class addItemForm:
     def __init__(self, order_id):
+        fields = 'menu_item', 'quantity'
         self.root = Tk()
         self.root.title("Add_item")
-        self.entries = self.initUI(self.root, ("menu_item", "quantity"))
+        self.entries = self.initUI(self.root, fields)
         self.root.bind('<Return>', (lambda event, e=self.entries: self.fetch(e)))
         self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
         self.frame.pack(fill=BOTH, expand=True)
@@ -346,8 +348,7 @@ class addItemForm:
         print("making new order with item: " + item + " and quantity: " + quantity + " .")
         backend = Backend()
         existing_order = backend.existing_order(self.order_id)
-        existing_order.add_item(item, quantity)
-        existing_order.save()
+        existing_order.add_items(item, quantity)
 
     def initUI(self, root, fields):
         entries = []

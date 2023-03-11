@@ -21,10 +21,6 @@ class Order(DBClass):
             print("date not set, set it with set_order_date(), %s", e)
             return "date not set"
 
-    def add_items(self, name, quantity):
-        #  TODO: make composit key so cant add multiple of same item
-        self.execute_sql("INSERT INTO order_items (menu_item, quantity, order_id) VALUES ('%s', '%s', '%s')" % (name, quantity, self.order_id))
-
     def update_items(self, menu_item, quantity):
         if quantity == 0:
             self.execute_sql("DELETE FROM order_items WHERE order_id = '%s' AND menu_item = '%s'" % (self.order_id, menu_item))
@@ -90,7 +86,20 @@ class ExistingOrder(Order):
         self.location_co_ords = words_to_coordinates(self.location_words)
 
     def get_items(self):
-        return self.execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id)
+        return self.execute_sql("SELECT menu_item, quantity FROM order_items WHERE order_id = '%s'" % self.order_id) 
+
+    def add_items(self, name, quantity):
+        #  TODO: make composit key so cant add multiple of same item
+        item = self.execute_sql("select * from order_items where order_id = '%s' and menu_item = '%s'" % (self.order_id, name))
+        if item:
+            current_quantity = item[0][2]
+            name = item[0][1]
+            quantity = int(quantity) + int(current_quantity)
+            self.execute_sql("UPDATE order_items SET quantity = '%s' WHERE order_id = '%s' AND menu_item = '%s'" % (quantity, self.order_id, name))
+        else:
+            str = "INSERT INTO order_items (order_id, menu_item, quantity) VALUES ('%s', '%s', '%s')" % (self.order_id, name, quantity)
+            print(str)
+            self.execute_sql(str)
     # @property
     # def customer(self):
     #     return self.execute_sql("SELECT customer FROM orders WHERE id = '%s'" % self.order_id)[0][0]
