@@ -1,4 +1,25 @@
-from tkinter import *
+from tkinter import (
+    StringVar,
+    N,
+    E,
+    S,
+    W,
+    ACTIVE,
+    Tk,
+    TOP,
+    BOTTOM,
+    Button,
+    Label,
+    Entry,
+    Frame,
+    LEFT,
+    RIGHT,
+    BOTH,
+    X,
+    VERTICAL,
+    NS,
+    RAISED,
+)
 from tkinter import ttk
 from backend.main import Backend
 from frontend.order_page import orderListForm
@@ -10,7 +31,11 @@ class MenuPage:
 
         def create_detail_view(self):
             detailsframe = ttk.Frame(
-                baseframe, borderwidth=10, relief="ridge", width=100, height=100
+                baseframe,
+                borderwidth=10,
+                relief="ridge",
+                width=100,
+                height=100,
             )
             detailsframe.grid(column=1, row=1, sticky=(N, E, S))
 
@@ -32,7 +57,9 @@ class MenuPage:
             details_street = ttk.Entry(detailsframe, textvariable=price_value)
             details_street.grid(column=1, row=2)
 
-            cmdframe = ttk.Frame(detailsframe, borderwidth=0, width=100, height=50)
+            cmdframe = ttk.Frame(
+                detailsframe, borderwidth=0, width=100, height=50
+            )
 
             # command frame
             cmdframe.grid(column=0, row=4, sticky=(N, E, S))
@@ -52,12 +79,19 @@ class MenuPage:
             self.cmdAddorder.grid(column=2, row=0)
 
             self.cmd_delete_order = ttk.Button(
-                cmdframe, text="delete item", state="active", command=delete_item
+                cmdframe,
+                text="delete item",
+                state="active",
+                command=delete_item,
             )
             self.cmd_delete_order.grid(column=3, row=0)
 
             listframe = ttk.Frame(
-                baseframe, borderwidth=10, relief="ridge", width=100, height=100
+                baseframe,
+                borderwidth=10,
+                relief="ridge",
+                width=100,
+                height=100,
             )
             listframe.grid(column=0, row=1, sticky=(N, W, E, S))
             listframe.rowconfigure(0, weight=1)
@@ -119,7 +153,9 @@ class MenuPage:
         baseframe.columnconfigure(0, weight=3)
         baseframe.columnconfigure(1, weight=1)
 
-        window_title_label = ttk.Label(baseframe, text="Menu", font=("Arial", 25))
+        window_title_label = ttk.Label(
+            baseframe, text="Menu", font=("Arial", 25)
+        )
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
@@ -170,7 +206,10 @@ class MenuPage:
 
     def create_listTree(self, listframe):
         listtree = ttk.Treeview(
-            listframe, column=("item", "price"), show="headings", selectmode="browse"
+            listframe,
+            column=("item", "price"),
+            show="headings",
+            selectmode="browse",
         )
         listtree.heading("item", text="item")
         listtree.heading("price", text="price")
@@ -179,7 +218,9 @@ class MenuPage:
         listtree.tag_configure("font", font=("Arial", 10))
         listtree.grid(column=0, row=0, sticky=(N, W, E, S))
 
-        treescrolly = ttk.Scrollbar(listframe, orient=VERTICAL, command=listtree.yview)
+        treescrolly = ttk.Scrollbar(
+            listframe, orient=VERTICAL, command=listtree.yview
+        )
         listtree.configure(yscrollcommand=treescrolly.set)
         treescrolly.grid(column=3, row=0, sticky=(NS))
 
@@ -196,7 +237,10 @@ class UpdateMsg:
         )
         self.window_title_label.pack(side=TOP, pady=10)
         self.ok_button = ttk.Button(
-            self.root_update_msg, text="OK", default="active", command=self.destroy
+            self.root_update_msg,
+            text="OK",
+            default="active",
+            command=self.destroy,
         )
         self.ok_button.pack(side=BOTTOM, pady=10)
         self.root_update_msg.mainloop()
@@ -213,14 +257,20 @@ class addOrderForm:
         self.root = Tk()
         self.root.title("Nympton Add_order")
         self.entries = self.initUI(self.root, fields)
-        self.root.bind("<Return>", (lambda event, e=self.entries: self.fetch(e)))
+        self.root.bind(
+            "<Return>", (lambda event, e=self.entries: self.fetch(e))
+        )
         self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
         self.frame.pack(fill=BOTH, expand=True)
 
-        self.closeButton = Button(self.root, text="Cancel", command=self.cancel)
+        self.closeButton = Button(
+            self.root, text="Cancel", command=self.cancel
+        )
         self.closeButton.pack(side=RIGHT, padx=5, pady=5)
         self.okButton = Button(
-            self.root, text="OK", command=(lambda e=self.entries: self.fetch(e))
+            self.root,
+            text="OK",
+            command=(lambda e=self.entries: self.fetch(e)),
         )
         self.okButton.pack(side=RIGHT)
         self.root.mainloop()
@@ -228,7 +278,6 @@ class addOrderForm:
     def fetch(self, entries):
         inputs = []
         for entry in entries:
-            field = entry[0]
             text = entry[1].get()
             inputs.append(text)
         self.add_order(inputs)
@@ -237,7 +286,13 @@ class addOrderForm:
     def add_order(self, inputs):
         item = inputs[0]
         price = inputs[1]
-        print("making new order with item: " + item + " and price: " + price + " .")
+        print(
+            "making new order with item: "
+            + item
+            + " and price: "
+            + price
+            + " ."
+        )
         backend = Backend()
         new_order = backend.new_item(item, price)
         new_order.save()
