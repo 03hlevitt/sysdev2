@@ -14,6 +14,7 @@ from common import (
 
 class OrderListForm(BasePage):
     """base order page"""
+
     def __init__(self):
         """constructure for the order page class"""
         super().__init__("Orders", "1600", "Orders")
@@ -88,6 +89,7 @@ class OrderListForm(BasePage):
             """go to the menu page"""
             self.root.destroy()
             from frontend.menu_page import MenuPage
+
             MenuPage()
 
         def make_order():
@@ -201,7 +203,7 @@ class OrderListForm(BasePage):
         """get items from order and populate tree
 
         Args:
-            order_id (string): order id to populate 
+            order_id (string): order id to populate
         """
         self.itemstree.delete(*self.itemstree.get_children())
         items = self.backend.existing_order(order_id)
@@ -223,7 +225,7 @@ class OrderListForm(BasePage):
         """create list tree for orders
 
         Args:
-            listframe (object): frame to put list tree into 
+            listframe (object): frame to put list tree into
 
         Returns:
             ttk.Treeview: list tree full of orders

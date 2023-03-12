@@ -114,7 +114,8 @@ class BaseAddForm:
             message (str): message to be displayed ot the user
             command (object): command after pressing the ok button
         """
-        self.root_error_msg = Tk() # defined outside init as we only want to show when somethign goes wrong!
+        self.root_error_msg = Tk()  # defined outside init
+        # as we only want to show when somethign goes wrong!
         self.root_error_msg.title(message)
         self.root_error_msg.geometry("400x100")
         self.window_title_label = Label(
@@ -133,16 +134,20 @@ class BaseAddForm:
 
     def return_back(self):
         """go back to main page"""
-        if self.page in ("order","item"):
+        if self.page in ("order", "item"):
             from frontend.order_page import (
                 OrderListForm,
-            )  # here to prevent circular imports but also to avoid repeated code
+            )  # here to prevent circular imports
+
+            # but also to avoid repeated code
 
             OrderListForm()
         if self.page == "menu":
             from frontend.menu_page import (
                 MenuPage,
-            )  # here to prevent circular imports but also to avoid repeated code
+            )  # here to prevent circular imports
+
+            # but also to avoid repeated code
 
             MenuPage()
 
@@ -283,8 +288,10 @@ def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
 
     Args:
         baseframe (Frame): base window frame ot put into
-        column (int, optional): column to place this into in the baseframe. Defaults to 0.
-        row (int, optional): row to place this into in the baseframe. Defaults to 1.
+        column (int, optional): column to place this into in the baseframe.
+          Defaults to 0.
+        row (int, optional): row to place this into in the baseframe.
+          Defaults to 1.
 
     Returns:
         Frame: frame for tree views
