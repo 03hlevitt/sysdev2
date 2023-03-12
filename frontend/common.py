@@ -88,6 +88,7 @@ class BaseAddForm:
     def destroy(self):
         self.root_error_msg.destroy()
 
+
 class UpdateMsg:
     def __init__(self, message):
         self.root_update_msg = Tk()
@@ -108,6 +109,7 @@ class UpdateMsg:
 
     def destroy(self):
         self.root_update_msg.destroy()
+
 
 class BasePage:
     def __init__(self, title, geometry, title_text):
@@ -154,14 +156,15 @@ class BasePage:
                 )
                 added_orders.append(orderValues)
 
+
 def create_details_frame(baseframe):
     details_frame = ttk.Frame(
-                baseframe,
-                borderwidth=10,
-                relief="ridge",
-                width=100,
-                height=100,
-            )
+        baseframe,
+        borderwidth=10,
+        relief="ridge",
+        width=100,
+        height=100,
+    )
     details_frame.grid(column=1, row=1, sticky=(N, E, S))
 
     details_frame.columnconfigure(0, weight=1)
@@ -172,6 +175,7 @@ def create_details_frame(baseframe):
     details_frame.rowconfigure(3, weight=1)
     details_frame.rowconfigure(4, weight=1)
     return details_frame
+
 
 def create_list_frame(baseframe, column=0, row=1):
     listframe = ttk.Frame(
@@ -185,14 +189,14 @@ def create_list_frame(baseframe, column=0, row=1):
     listframe.rowconfigure(0, weight=1)
     return listframe
 
+
 def create_cmdframe(detailsframe):
-    cmdframe = ttk.Frame(
-                detailsframe, borderwidth=0, width=100, height=50
-            )
+    cmdframe = ttk.Frame(detailsframe, borderwidth=0, width=100, height=50)
 
     # command frame
     cmdframe.grid(column=0, row=4, sticky=(N, E, S))
     return cmdframe
+
 
 def configure_listree(listtree, listframe):
     listtree.tag_configure("font", font=("Arial", 10))
@@ -204,4 +208,3 @@ def configure_listree(listtree, listframe):
     listtree.configure(yscrollcommand=treescrolly.set)
     treescrolly.grid(column=3, row=0, sticky=(NS))
     return listtree
-    

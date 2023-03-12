@@ -1,16 +1,15 @@
-from tkinter import (
-    StringVar,
-    N,
-    E,
-    S,
-    W,
-    ACTIVE,
-    VERTICAL,
-    NS
-)
+from tkinter import StringVar, N, E, S, W, ACTIVE, VERTICAL, NS
 from tkinter import ttk
 from backend.main import Backend
-from common import UpdateMsg, BaseAddForm, BasePage, create_details_frame, configure_listree, create_list_frame, create_cmdframe
+from common import (
+    UpdateMsg,
+    BaseAddForm,
+    BasePage,
+    create_details_frame,
+    configure_listree,
+    create_list_frame,
+    create_cmdframe,
+)
 
 
 class orderListForm(BasePage):
@@ -191,7 +190,6 @@ class orderListForm(BasePage):
                     text=itemValues[0],
                     values=(itemValues),
                 )
-
 
     def create_listTree(self, listframe):
         listtree = ttk.Treeview(

@@ -11,7 +11,15 @@ from tkinter import (
 from tkinter import ttk
 from backend.main import Backend
 from frontend.order_page import orderListForm
-from frontend.common import BaseAddForm, UpdateMsg, BasePage, create_details_frame, create_list_frame, create_cmdframe, configure_listree
+from frontend.common import (
+    BaseAddForm,
+    UpdateMsg,
+    BasePage,
+    create_details_frame,
+    create_list_frame,
+    create_cmdframe,
+    configure_listree,
+)
 
 
 class MenuPage(BasePage):
@@ -32,7 +40,7 @@ class MenuPage(BasePage):
             details_street = ttk.Entry(detailsframe, textvariable=price_value)
             details_street.grid(column=1, row=2)
             cmdframe = create_cmdframe(detailsframe)
-            
+
             self.cmdOk = ttk.Button(
                 cmdframe, text="OK", state="disabled", command=update_order
             )
@@ -115,7 +123,7 @@ class MenuPage(BasePage):
         self.populate_listree(listtree, "menu")
 
     def get_orders(self):
-        return 
+        return
 
     def update_item_backend(self, item, price):
         item = self.backend.existing_item(item)
