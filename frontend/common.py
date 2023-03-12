@@ -1,11 +1,9 @@
 """common utils code used in the front end"""
 from tkinter import (
-    StringVar,
     N,
     E,
     S,
     W,
-    ACTIVE,
     Tk,
     TOP,
     BOTTOM,
@@ -26,7 +24,9 @@ from backend.main import Backend
 
 
 class BaseAddForm:
-    def __init__(self, fields, title):
+    def __init__(self, page, fields, title, order_id=None):
+        self.order_id = order_id
+        self.page = page
         self.root = Tk()
         self.root.title(title)
         self.entries = self.initUI(self.root, fields)
@@ -53,8 +53,30 @@ class BaseAddForm:
         for entry in entries:
             text = entry[1].get()
             inputs.append(text)
-        self.add_order(inputs)
+        self.add(inputs)
         self.cancel()
+
+    def add(self, inputs: list):
+        """add the item to backend
+
+        Args:
+            inputs (list): inputs from the form
+        """
+        input_1 = inputs[0]
+        input_2 = inputs[1]
+        backend = Backend()
+        if self.page == "menu":
+            new_order = backend.new_item(input_1, input_2)
+            new_order.save()
+        if self.page == "order":
+            new_order = backend.new_order(input_1, input_2)
+            new_order.set_order_date()
+            new_order.save()
+        if self.page == "item":
+            existing_order = backend.existing_order(self.order_id)
+            existing_order.add_items(input_1, input_2)
+        
+
 
     def initUI(self, root, fields):
         entries = []
@@ -87,6 +109,23 @@ class BaseAddForm:
 
     def destroy(self):
         self.root_error_msg.destroy()
+
+    def return_back(self):
+        if self.page == "order" or "item":
+            from frontend.order_page import orderListForm # here to prevent circular imports but also to avoid repeated code
+            orderListForm()
+        if self.page == "menu":
+            from frontend.menu_page import MenuPage # here to prevent circular imports but also to avoid repeated code
+            MenuPage()
+
+    def destroy_both(self):
+        self.root_error_msg.destroy()
+        self.root.destroy()
+        self.return_back()
+        
+    def cancel(self):
+        self.root.destroy()
+        self.return_back()
 
 
 class UpdateMsg:
