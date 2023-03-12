@@ -23,13 +23,15 @@ from tkinter import (
 from tkinter import ttk
 from backend.main import Backend
 from frontend.order_page import orderListForm
+from frontend.common import BaseAddForm, UpdateMsg, BasePage
 
 
-class MenuPage:
+class MenuPage(BasePage):
     def __init__(self):
+        super().__init__("menu page", "1100x600", "menu page")
         self.backend = Backend()
 
-        def create_detail_view(self):
+        def create_detail_view(self, baseframe):
             detailsframe = ttk.Frame(
                 baseframe,
                 borderwidth=10,
@@ -103,11 +105,11 @@ class MenuPage:
             self.cmdOrders.config(state=ACTIVE)
 
         def got_to_orders():
-            root.destroy()
+            self.root.destroy()
             orderListForm()
 
         def make_order():
-            root.destroy()
+            self.root.destroy()
             addOrderForm()
 
         def clear_selected_from_input():
@@ -141,38 +143,18 @@ class MenuPage:
             self.populate_listree(listtree)
             UpdateMsg("Item Deleted!")
 
-        root = Tk()
-        root.title("order List")
-        root.geometry("1100x600")
-        root.rowconfigure(0, weight=1)
-
-        baseframe = ttk.Frame(root)
-        baseframe.grid(column=0, row=0, sticky=(N, W, E, S))
-        baseframe.rowconfigure(0, weight=1)
-        baseframe.rowconfigure(1, weight=4)
-        baseframe.columnconfigure(0, weight=3)
-        baseframe.columnconfigure(1, weight=1)
-
-        window_title_label = ttk.Label(
-            baseframe, text="Menu", font=("Arial", 25)
-        )
-        window_title_label.grid(column=0, row=0)
-        window_title_label.place(relx=0.0, rely=0.0)
-
         item_value = StringVar()
         price_value = StringVar()
 
-        list_frame = create_detail_view(self)
+        list_frame = create_detail_view(self, self.baseframe)
         listtree = self.create_listTree(list_frame)
 
         listtree.bind("<<TreeviewSelect>>", listtreeitem_selected)
 
         self.populate_listree(listtree)
 
-        root.mainloop()
-
     def get_orders(self):
-        return self.backend.view_menu()
+        return 
 
     def update_item_backend(self, item, price):
         item = self.backend.existing_item(item)
@@ -185,24 +167,6 @@ class MenuPage:
     def delete_item_backend(self, item):
         item = self.backend.existing_item(item)
         item.delete_from_db()
-
-    def populate_listree(self, listtree):
-        listtree.delete(*listtree.get_children())
-        orders = self.get_orders()
-
-        added_orders = []
-        for order in orders:
-            orderValues = list(order)
-
-            if orderValues not in added_orders:  # catching duplicates
-                listtree.insert(
-                    "",
-                    index="end",
-                    iid=orderValues[0],
-                    text=orderValues[0],
-                    values=(orderValues),
-                )
-                added_orders.append(orderValues)
 
     def create_listTree(self, listframe):
         listtree = ttk.Treeview(
@@ -227,61 +191,10 @@ class MenuPage:
         return listtree
 
 
-class UpdateMsg:
-    def __init__(self, message):
-        self.root_update_msg = Tk()
-        self.root_update_msg.title("Success.")
-        self.root_update_msg.geometry("400x100")
-        self.window_title_label = ttk.Label(
-            self.root_update_msg, text=message, font=("Arial", 15)
-        )
-        self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = ttk.Button(
-            self.root_update_msg,
-            text="OK",
-            default="active",
-            command=self.destroy,
-        )
-        self.ok_button.pack(side=BOTTOM, pady=10)
-        self.root_update_msg.mainloop()
-
-    def destroy(self):
-        self.root_update_msg.destroy()
-
-
-fields = "item", "price"
-
-
-class addOrderForm:
-    def __init__(self):
-        self.root = Tk()
-        self.root.title("Nympton Add_order")
-        self.entries = self.initUI(self.root, fields)
-        self.root.bind(
-            "<Return>", (lambda event, e=self.entries: self.fetch(e))
-        )
-        self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
-        self.frame.pack(fill=BOTH, expand=True)
-
-        self.closeButton = Button(
-            self.root, text="Cancel", command=self.cancel
-        )
-        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(
-            self.root,
-            text="OK",
-            command=(lambda e=self.entries: self.fetch(e)),
-        )
-        self.okButton.pack(side=RIGHT)
-        self.root.mainloop()
-
-    def fetch(self, entries):
-        inputs = []
-        for entry in entries:
-            text = entry[1].get()
-            inputs.append(text)
-        self.add_order(inputs)
-        self.cancel()
+class addOrderForm(BaseAddForm):
+    def __init__(self, fields):
+        super().__init__(fields)
+        self.root.title("Add Menu Item")
 
     def add_order(self, inputs):
         item = inputs[0]
@@ -297,35 +210,6 @@ class addOrderForm:
         new_order = backend.new_item(item, price)
         new_order.save()
 
-    def initUI(self, root, fields):
-        entries = []
-        for field in fields:
-            frame = Frame(root)
-            frame.pack(fill=X)
-
-            lbl = Label(frame, text=field, width=20, anchor="w")
-            lbl.pack(side=LEFT, padx=5, pady=5)
-
-            entry = Entry(frame)
-            entry.pack(fill=X, padx=5, expand=True)
-
-            entries.append((field, entry))
-        return entries
-
-    def message(self, message, command):
-        self.root_error_msg = Tk()
-        self.root_error_msg.title(message)
-        self.root_error_msg.geometry("400x100")
-        self.window_title_label = Label(
-            self.root_error_msg, text=message, font=("Arial", 15)
-        )
-        self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = Button(
-            self.root_error_msg, text="OK", default="active", command=command
-        )
-        self.ok_button.pack(side=BOTTOM, pady=10)
-        self.root_error_msg.mainloop()
-
     def destroy(self):
         self.root_error_msg.destroy()
 
@@ -337,7 +221,3 @@ class addOrderForm:
     def cancel(self):
         self.root.destroy()
         MenuPage()
-
-
-if __name__ == "__main__":
-    MenuPage()

@@ -350,10 +350,10 @@ class UpdateMsg:
 
 
 class addOrderForm:
-    def __init__(self):
+    def __init__(self, fields):
         fields = "customer", "location"
         self.root = Tk()
-        self.root.title("Nympton Add_order")
+        self.root.title("Add_order")
         self.entries = self.initUI(self.root, fields)
         self.root.bind(
             "<Return>", (lambda event, e=self.entries: self.fetch(e))
@@ -524,7 +524,3 @@ class addItemForm:
     def cancel(self):
         self.root.destroy()
         orderListForm()
-
-
-if __name__ == "__main__":
-    orderListForm()
