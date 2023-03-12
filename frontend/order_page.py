@@ -1,7 +1,7 @@
 """order page ui"""
 from tkinter import StringVar, ACTIVE
 from tkinter import ttk
-from common import (
+from frontend.common import (
     UpdateMsg,
     BaseAddForm,
     BasePage,

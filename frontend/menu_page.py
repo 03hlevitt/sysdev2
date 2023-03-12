@@ -5,7 +5,7 @@ from tkinter import (
 )
 from tkinter import ttk
 from backend.main import Backend
-from frontend.order_page import orderListForm
+from frontend.order_page import OrderListForm
 from frontend.common import (
     BaseAddForm,
     UpdateMsg,
@@ -84,7 +84,7 @@ class MenuPage(BasePage):
         def got_to_orders():
             """go to the orders page"""
             self.root.destroy()
-            orderListForm()
+            OrderListForm()
 
         def add_item():
             """generate the add item page"""
@@ -173,3 +173,6 @@ class MenuPage(BasePage):
         listtree = configure_listree(listtree, listframe)
 
         return listtree
+
+if __name__ == "__main___":
+    MenuPage()
