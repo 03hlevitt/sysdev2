@@ -31,23 +31,23 @@ class BaseAddForm:
         self.page = page
         self.root = Tk()
         self.root.title(title)
-        self.entries = self.initUI(self.root, fields)
+        self.entries = self.init_ui(self.root, fields)
         self.root.bind(
             "<Return>", (lambda event, e=self.entries: self.fetch(e))
         )
         self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
         self.frame.pack(fill=BOTH, expand=True)
 
-        self.closeButton = Button(
+        self.close_button = Button(
             self.root, text="Cancel", command=self.cancel
         )
-        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(
+        self.close_button.pack(side=RIGHT, padx=5, pady=5)
+        self.ok_button = Button(
             self.root,
             text="OK",
             command=(lambda e=self.entries: self.fetch(e)),
         )
-        self.okButton.pack(side=RIGHT)
+        self.ok_button.pack(side=RIGHT)
         self.root.mainloop()
 
     def fetch(self, entries: tuple):
@@ -83,7 +83,7 @@ class BaseAddForm:
             existing_order = backend.existing_order(self.order_id)
             existing_order.add_items(input_1, input_2)
 
-    def initUI(self, root: Frame, fields: tuple) -> tuple:
+    def init_ui(self, root: Frame, fields: tuple) -> tuple:
         """initialise what is shown in the window namely labels and input boxes
 
         Args:
@@ -114,7 +114,7 @@ class BaseAddForm:
             message (str): message to be displayed ot the user
             command (object): command after pressing the ok button
         """
-        self.root_error_msg = Tk()
+        self.root_error_msg = Tk() # defined outside init as we only want to show when somethign goes wrong!
         self.root_error_msg.title(message)
         self.root_error_msg.geometry("400x100")
         self.window_title_label = Label(
@@ -133,7 +133,7 @@ class BaseAddForm:
 
     def return_back(self):
         """go back to main page"""
-        if self.page == "order" or "item":
+        if self.page in ("order","item"):
             from frontend.order_page import (
                 OrderListForm,
             )  # here to prevent circular imports but also to avoid repeated code
@@ -226,7 +226,8 @@ class BasePage:
 
         Args:
             listtree (ttk.Treeview): tk tree view to populate
-            page (str): what type of page is it to tell the function what type of data to populate with
+            page (str): what type of page its in,
+              to tell the function what type of data to populate with.
         """
         listtree.delete(*listtree.get_children())
         if page == "menu":
@@ -236,17 +237,17 @@ class BasePage:
 
         added_orders = []
         for order in orders:
-            orderValues = list(order)
+            values = list(order)
 
-            if orderValues not in added_orders:  # catching duplicates
+            if values not in added_orders:  # catching duplicates
                 listtree.insert(
                     "",
                     index="end",
-                    iid=orderValues[0],
-                    text=orderValues[0],
-                    values=(orderValues),
+                    iid=values[0],
+                    text=values[0],
+                    values=(values),
                 )
-                added_orders.append(orderValues)
+                added_orders.append(values)
 
 
 def create_details_frame(baseframe: Frame()) -> Frame():
