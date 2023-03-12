@@ -26,9 +26,9 @@ from backend.main import Backend
 
 
 class BaseAddForm:
-    def __init__(self, fields):
+    def __init__(self, fields, title):
         self.root = Tk()
-        self.root.title("Add_order")
+        self.root.title(title)
         self.entries = self.initUI(self.root, fields)
         self.root.bind(
             "<Return>", (lambda event, e=self.entries: self.fetch(e))
@@ -118,7 +118,7 @@ class BasePage:
         self.root.geometry(geometry)
         self.root.rowconfigure(0, weight=1)
 
-        self.baseframe = ttk.Frame(root)
+        self.baseframe = ttk.Frame(self.root)
         self.baseframe.grid(column=0, row=0, sticky=(N, W, E, S))
         self.baseframe.rowconfigure(0, weight=1)
         self.baseframe.rowconfigure(1, weight=4)

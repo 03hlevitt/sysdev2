@@ -5,30 +5,19 @@ from tkinter import (
     S,
     W,
     ACTIVE,
-    Tk,
-    TOP,
-    BOTTOM,
-    Button,
-    Label,
-    Entry,
-    Frame,
-    LEFT,
-    RIGHT,
-    BOTH,
-    X,
     VERTICAL,
-    NS,
-    RAISED,
+    NS
 )
 from tkinter import ttk
 from backend.main import Backend
+from common import UpdateMsg, BaseAddForm, BasePage
 
 
-class orderListForm:
+class orderListForm(BasePage):
     def __init__(self):
-        self.backend = Backend()
+        super().__init__("Orders", "1600", "Orders")
 
-        def create_detail_view(self):
+        def create_detail_view(self, baseframe):
             detailsframe = ttk.Frame(
                 baseframe,
                 borderwidth=10,
@@ -129,14 +118,15 @@ class orderListForm:
             self.cmdOrders.config(state=ACTIVE)
 
         def go_to_menu():
-            root.destroy()
+            self.root.destroy()
             from frontend.menu_page import MenuPage
 
             MenuPage()
 
         def make_order():
-            root.destroy()
-            addOrderForm()
+            self.root.destroy()
+            fields = "customer", "location"
+            addOrderForm(fields)
 
         def clear_selected_from_input():
             customer_value.set("")
@@ -169,8 +159,9 @@ class orderListForm:
 
         def add_item():
             dts_id = id_value.get()
-            root.destroy()
-            addItemForm(dts_id)
+            self.root.destroy()
+            fields = "menu_item", "quantity"
+            addItemForm(dts_id, fields)
 
         def remove_item():
             dts_id = id_value.get()
@@ -187,31 +178,12 @@ class orderListForm:
             self.populate_listree(listtree)
             UpdateMsg("Item Deleted!")
 
-        root = Tk()
-        root.title("order List")
-        root.geometry("1100x600")
-        root.rowconfigure(0, weight=1)
-
-        baseframe = ttk.Frame(root)
-        baseframe.grid(column=0, row=0, sticky=(N, W, E, S))
-        baseframe.rowconfigure(0, weight=1)
-        baseframe.rowconfigure(1, weight=4)
-        baseframe.columnconfigure(0, weight=3)
-        baseframe.columnconfigure(1, weight=1)
-        baseframe.columnconfigure(2, weight=1)
-
-        window_title_label = ttk.Label(
-            baseframe, text="Menu", font=("Arial", 25)
-        )
-        window_title_label.grid(column=0, row=0)
-        window_title_label.place(relx=0.0, rely=0.0)
-
         item_value = StringVar()
         customer_value = StringVar()
         location_value = StringVar()
         id_value = StringVar()
 
-        list_frame, item_frame = create_detail_view(self)
+        list_frame, item_frame = create_detail_view(self, self.baseframe)
         listtree = self.create_listTree(list_frame)
         self.itemstree = self.create_itemsTree(item_frame)
 
@@ -219,8 +191,6 @@ class orderListForm:
         self.itemstree.bind("<<TreeviewSelect>>", itemtreeitem_selected)
 
         self.populate_listree(listtree)
-
-        root.mainloop()
 
     def get_orders(self):
         return self.backend.view_orders()
@@ -327,59 +297,9 @@ class orderListForm:
         return listtree
 
 
-class UpdateMsg:
-    def __init__(self, message):
-        self.root_update_msg = Tk()
-        self.root_update_msg.title("Success.")
-        self.root_update_msg.geometry("400x100")
-        self.window_title_label = ttk.Label(
-            self.root_update_msg, text=message, font=("Arial", 15)
-        )
-        self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = ttk.Button(
-            self.root_update_msg,
-            text="OK",
-            default="active",
-            command=self.destroy,
-        )
-        self.ok_button.pack(side=BOTTOM, pady=10)
-        self.root_update_msg.mainloop()
-
-    def destroy(self):
-        self.root_update_msg.destroy()
-
-
 class addOrderForm:
     def __init__(self, fields):
-        fields = "customer", "location"
-        self.root = Tk()
-        self.root.title("Add_order")
-        self.entries = self.initUI(self.root, fields)
-        self.root.bind(
-            "<Return>", (lambda event, e=self.entries: self.fetch(e))
-        )
-        self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
-        self.frame.pack(fill=BOTH, expand=True)
-
-        self.closeButton = Button(
-            self.root, text="Cancel", command=self.cancel
-        )
-        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(
-            self.root,
-            text="OK",
-            command=(lambda e=self.entries: self.fetch(e)),
-        )
-        self.okButton.pack(side=RIGHT)
-        self.root.mainloop()
-
-    def fetch(self, entries):
-        inputs = []
-        for entry in entries:
-            text = entry[1].get()
-            inputs.append(text)
-        self.add_order(inputs)
-        self.cancel()
+        super().__init__(fields, "Add_order")
 
     def add_order(self, inputs):
         customer = inputs[0]
@@ -396,38 +316,6 @@ class addOrderForm:
         new_order.set_order_date()
         new_order.save()
 
-    def initUI(self, root, fields):
-        entries = []
-        for field in fields:
-            frame = Frame(root)
-            frame.pack(fill=X)
-
-            lbl = Label(frame, text=field, width=20, anchor="w")
-            lbl.pack(side=LEFT, padx=5, pady=5)
-
-            entry = Entry(frame)
-            entry.pack(fill=X, padx=5, expand=True)
-
-            entries.append((field, entry))
-        return entries
-
-    def message(self, message, command):
-        self.root_error_msg = Tk()
-        self.root_error_msg.title(message)
-        self.root_error_msg.geometry("400x100")
-        self.window_title_label = Label(
-            self.root_error_msg, text=message, font=("Arial", 15)
-        )
-        self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = Button(
-            self.root_error_msg, text="OK", default="active", command=command
-        )
-        self.ok_button.pack(side=BOTTOM, pady=10)
-        self.root_error_msg.mainloop()
-
-    def destroy(self):
-        self.root_error_msg.destroy()
-
     def destroy_both(self):
         self.root_error_msg.destroy()
         self.root.destroy()
@@ -438,29 +326,10 @@ class addOrderForm:
         orderListForm()
 
 
-class addItemForm:
-    def __init__(self, order_id):
-        fields = "menu_item", "quantity"
-        self.root = Tk()
-        self.root.title("Add_item")
-        self.entries = self.initUI(self.root, fields)
-        self.root.bind(
-            "<Return>", (lambda event, e=self.entries: self.fetch(e))
-        )
-        self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
-        self.frame.pack(fill=BOTH, expand=True)
+class addItemForm(BaseAddForm):
+    def __init__(self, order_id, fields):
+        super().__init__(fields, "Add_item")
         self.order_id = order_id
-        self.closeButton = Button(
-            self.root, text="Cancel", command=self.cancel
-        )
-        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(
-            self.root,
-            text="OK",
-            command=(lambda e=self.entries: self.fetch(e)),
-        )
-        self.okButton.pack(side=RIGHT)
-        self.root.mainloop()
 
     def fetch(self, entries):
         inputs = []
@@ -483,38 +352,6 @@ class addItemForm:
         backend = Backend()
         existing_order = backend.existing_order(self.order_id)
         existing_order.add_items(item, quantity)
-
-    def initUI(self, root, fields):
-        entries = []
-        for field in fields:
-            frame = Frame(root)
-            frame.pack(fill=X)
-
-            lbl = Label(frame, text=field, width=20, anchor="w")
-            lbl.pack(side=LEFT, padx=5, pady=5)
-
-            entry = Entry(frame)
-            entry.pack(fill=X, padx=5, expand=True)
-
-            entries.append((field, entry))
-        return entries
-
-    def message(self, message, command):
-        self.root_error_msg = Tk()
-        self.root_error_msg.title(message)
-        self.root_error_msg.geometry("400x100")
-        self.window_title_label = Label(
-            self.root_error_msg, text=message, font=("Arial", 15)
-        )
-        self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = Button(
-            self.root_error_msg, text="OK", default="active", command=command
-        )
-        self.ok_button.pack(side=BOTTOM, pady=10)
-        self.root_error_msg.mainloop()
-
-    def destroy(self):
-        self.root_error_msg.destroy()
 
     def destroy_both(self):
         self.root_error_msg.destroy()

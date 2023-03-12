@@ -5,20 +5,8 @@ from tkinter import (
     S,
     W,
     ACTIVE,
-    Tk,
-    TOP,
-    BOTTOM,
-    Button,
-    Label,
-    Entry,
-    Frame,
-    LEFT,
-    RIGHT,
-    BOTH,
-    X,
     VERTICAL,
     NS,
-    RAISED,
 )
 from tkinter import ttk
 from backend.main import Backend
@@ -110,7 +98,8 @@ class MenuPage(BasePage):
 
         def make_order():
             self.root.destroy()
-            addOrderForm()
+            fields = "item", "price"
+            addOrderForm(fields)
 
         def clear_selected_from_input():
             item_value.set("")
