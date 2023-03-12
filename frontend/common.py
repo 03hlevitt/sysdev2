@@ -24,6 +24,8 @@ from backend.main import Backend
 
 
 class BaseAddForm:
+    """base form for adding things to the db"""
+
     def __init__(self, page, fields, title, order_id=None):
         self.order_id = order_id
         self.page = page
@@ -48,7 +50,12 @@ class BaseAddForm:
         self.okButton.pack(side=RIGHT)
         self.root.mainloop()
 
-    def fetch(self, entries):
+    def fetch(self, entries: tuple):
+        """get input text to list to input to backend
+
+        Args:
+            entries (tuple): tkinter input fields, .get() transforms to strings
+        """
         inputs = []
         for entry in entries:
             text = entry[1].get()
@@ -75,10 +82,17 @@ class BaseAddForm:
         if self.page == "item":
             existing_order = backend.existing_order(self.order_id)
             existing_order.add_items(input_1, input_2)
-        
 
+    def initUI(self, root: Frame, fields: tuple) -> tuple:
+        """initialise what is shown in the window namely labels and input boxes
 
-    def initUI(self, root, fields):
+        Args:
+            root (Frame): root frame
+            fields (tuple): fields to be labled
+
+        Returns:
+            tuple: _description_
+        """
         entries = []
         for field in fields:
             frame = Frame(root)
@@ -93,7 +107,13 @@ class BaseAddForm:
             entries.append((field, entry))
         return entries
 
-    def message(self, message, command):
+    def message(self, message: str, command: object):
+        """displays message to user
+
+        Args:
+            message (str): message to be displayed ot the user
+            command (object): command after pressing the ok button
+        """
         self.root_error_msg = Tk()
         self.root_error_msg.title(message)
         self.root_error_msg.geometry("400x100")
@@ -108,28 +128,45 @@ class BaseAddForm:
         self.root_error_msg.mainloop()
 
     def destroy(self):
+        """destroy root error message"""
         self.root_error_msg.destroy()
 
     def return_back(self):
+        """go back to main page"""
         if self.page == "order" or "item":
-            from frontend.order_page import orderListForm # here to prevent circular imports but also to avoid repeated code
-            orderListForm()
+            from frontend.order_page import (
+                OrderListForm,
+            )  # here to prevent circular imports but also to avoid repeated code
+
+            OrderListForm()
         if self.page == "menu":
-            from frontend.menu_page import MenuPage # here to prevent circular imports but also to avoid repeated code
+            from frontend.menu_page import (
+                MenuPage,
+            )  # here to prevent circular imports but also to avoid repeated code
+
             MenuPage()
 
     def destroy_both(self):
+        """destroy error message and input window"""
         self.root_error_msg.destroy()
         self.root.destroy()
         self.return_back()
-        
+
     def cancel(self):
+        """cancel action to go back to main page, on cancel button"""
         self.root.destroy()
         self.return_back()
 
 
 class UpdateMsg:
-    def __init__(self, message):
+    """display message when something is succesfully updated or otherwise"""
+
+    def __init__(self, message: str):
+        """constructor for class for displaying update messages
+
+        Args:
+            message (str): message to be displayed
+        """
         self.root_update_msg = Tk()
         self.root_update_msg.title("Success.")
         self.root_update_msg.geometry("400x100")
@@ -147,11 +184,21 @@ class UpdateMsg:
         self.root_update_msg.mainloop()
 
     def destroy(self):
+        """destroy window"""
         self.root_update_msg.destroy()
 
 
 class BasePage:
-    def __init__(self, title, geometry, title_text):
+    """common code for displaying pages with a command area and listrees"""
+
+    def __init__(self, title: str, geometry: str, title_text: str):
+        """constructor for main page superclass
+
+        Args:
+            title (_type_): title of window
+            geometry (_type_): size of window
+            title_text (_type_): title text that is displayed
+        """
         self.backend = Backend()
 
         self.root = Tk()
@@ -174,7 +221,13 @@ class BasePage:
 
         self.root.mainloop()
 
-    def populate_listree(self, listtree, page):
+    def populate_listree(self, listtree: ttk.Treeview, page: str):
+        """populate a tree view with data
+
+        Args:
+            listtree (ttk.Treeview): tk tree view to populate
+            page (str): what type of page is it to tell the function what type of data to populate with
+        """
         listtree.delete(*listtree.get_children())
         if page == "menu":
             orders = self.backend.view_menu()
@@ -196,7 +249,15 @@ class BasePage:
                 added_orders.append(orderValues)
 
 
-def create_details_frame(baseframe):
+def create_details_frame(baseframe: Frame()) -> Frame():
+    """create main command panel in the middle of the page
+
+    Args:
+        baseframe (Frame): base frame of the window to place in
+
+    Returns:
+        Frame: frame to use for cmd buttons etc.
+    """
     details_frame = ttk.Frame(
         baseframe,
         borderwidth=10,
@@ -216,7 +277,17 @@ def create_details_frame(baseframe):
     return details_frame
 
 
-def create_list_frame(baseframe, column=0, row=1):
+def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
+    """create a frame for tree views
+
+    Args:
+        baseframe (Frame): base window frame ot put into
+        column (int, optional): column to place this into in the baseframe. Defaults to 0.
+        row (int, optional): row to place this into in the baseframe. Defaults to 1.
+
+    Returns:
+        Frame: frame for tree views
+    """
     listframe = ttk.Frame(
         baseframe,
         borderwidth=10,
@@ -229,7 +300,15 @@ def create_list_frame(baseframe, column=0, row=1):
     return listframe
 
 
-def create_cmdframe(detailsframe):
+def create_cmdframe(detailsframe: Frame) -> Frame:
+    """command frame to put buttons into
+
+    Args:
+        detailsframe (Frame): control panel to place into
+
+    Returns:
+        Frame: a command frame
+    """
     cmdframe = ttk.Frame(detailsframe, borderwidth=0, width=100, height=50)
 
     # command frame
@@ -237,7 +316,18 @@ def create_cmdframe(detailsframe):
     return cmdframe
 
 
-def configure_listree(listtree, listframe):
+def configure_listree(
+    listtree: ttk.Treeview, listframe: Frame
+) -> ttk.Treeview:
+    """configure a tree view for the main pages
+
+    Args:
+        listtree (ttk.Treeview): tree view to configure
+        listframe (Frame): frame which tree veiw is placed
+
+    Returns:
+        ttk.Treeview: configured tree view
+    """
     listtree.tag_configure("font", font=("Arial", 10))
     listtree.grid(column=0, row=0, sticky=(N, W, E, S))
 
