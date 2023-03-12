@@ -10,7 +10,7 @@ from tkinter import (
 )
 from tkinter import ttk
 from backend.main import Backend
-from common import UpdateMsg, BaseAddForm, BasePage
+from common import UpdateMsg, BaseAddForm, BasePage, create_details_frame, configure_listree, create_list_frame, create_cmdframe
 
 
 class orderListForm(BasePage):
@@ -18,43 +18,23 @@ class orderListForm(BasePage):
         super().__init__("Orders", "1600", "Orders")
 
         def create_detail_view(self, baseframe):
-            detailsframe = ttk.Frame(
-                baseframe,
-                borderwidth=10,
-                relief="ridge",
-                width=100,
-                height=100,
-            )
-            detailsframe.grid(column=1, row=1, sticky=(N, E, S))
+            detailsframe = create_details_frame(baseframe)
 
-            detailsframe.columnconfigure(0, weight=1)
-            detailsframe.columnconfigure(1, weight=1)
-            detailsframe.rowconfigure(0, weight=1)
-            detailsframe.rowconfigure(1, weight=1)
-            detailsframe.rowconfigure(2, weight=1)
-            detailsframe.rowconfigure(3, weight=1)
-            detailsframe.rowconfigure(4, weight=1)
-
-            details_lname_label = ttk.Label(detailsframe, text="Customer")
-            details_lname_label.grid(column=0, row=1)
-            details_lname = ttk.Entry(
+            details_customer_label = ttk.Label(detailsframe, text="customer")
+            details_customer_label.grid(column=0, row=1)
+            details_customer = ttk.Entry(
                 detailsframe, textvariable=customer_value
             )
-            details_lname.grid(column=1, row=2)
+            details_customer.grid(column=1, row=2)
 
-            details_street_label = ttk.Label(detailsframe, text="location")
-            details_street_label.grid(column=0, row=2)
-            details_street = ttk.Entry(
+            details_location_label = ttk.Label(detailsframe, text="location")
+            details_location_label.grid(column=0, row=2)
+            details_location = ttk.Entry(
                 detailsframe, textvariable=location_value
             )
-            details_street.grid(column=1, row=3)
+            details_location.grid(column=1, row=3)
 
-            cmdframe = ttk.Frame(
-                detailsframe, borderwidth=0, width=100, height=50
-            )
-
-            # command frame
-            cmdframe.grid(column=0, row=4, sticky=(N, E, S))
+            cmdframe = create_cmdframe(detailsframe)
             self.cmdOk = ttk.Button(
                 cmdframe, text="OK", state="disabled", command=update_order
             )
@@ -91,25 +71,9 @@ class orderListForm(BasePage):
             )
             self.cmd_delete_order.grid(column=3, row=0)
 
-            listframe = ttk.Frame(
-                baseframe,
-                borderwidth=10,
-                relief="ridge",
-                width=100,
-                height=100,
-            )
-            listframe.grid(column=0, row=1, sticky=(N, W, E, S))
-            listframe.rowconfigure(0, weight=1)
+            listframe = create_list_frame(baseframe)
 
-            itemframe = ttk.Frame(
-                baseframe,
-                borderwidth=10,
-                relief="ridge",
-                width=100,
-                height=100,
-            )
-            itemframe.grid(column=2, row=1, sticky=(N, W, E, S))
-            itemframe.rowconfigure(0, weight=1)
+            itemframe = create_list_frame(baseframe, 2, 1)
 
             return listframe, itemframe
 
@@ -154,7 +118,7 @@ class orderListForm(BasePage):
             dts_id = id_value.get()
 
             self.update_item_backend(dts_id, dts_customer, dts_location)
-            self.populate_listree(listtree)
+            self.populate_listree(listtree, "order")
             UpdateMsg("Update Successful!")
 
         def add_item():
@@ -228,23 +192,6 @@ class orderListForm(BasePage):
                     values=(itemValues),
                 )
 
-    def populate_listree(self, listtree):
-        listtree.delete(*listtree.get_children())
-        orders = self.get_orders()  # TODO change this to string date at end
-
-        added_orders = []
-        for order in orders:
-            orderValues = list(order)
-
-            if orderValues not in added_orders:  # catching duplicates
-                listtree.insert(
-                    "",
-                    index="end",
-                    iid=orderValues[0],
-                    text=orderValues[0],
-                    values=(orderValues),
-                )
-                added_orders.append(orderValues)
 
     def create_listTree(self, listframe):
         listtree = ttk.Treeview(
@@ -261,14 +208,7 @@ class orderListForm(BasePage):
         listtree.column("customer", width=70)
         listtree.column("location", width=70)
         listtree.column("order_date", width=70)
-        listtree.tag_configure("font", font=("Arial", 10))
-        listtree.grid(column=0, row=0, sticky=(N, W, E, S))
-
-        treescrolly = ttk.Scrollbar(
-            listframe, orient=VERTICAL, command=listtree.yview
-        )
-        listtree.configure(yscrollcommand=treescrolly.set)
-        treescrolly.grid(column=3, row=0, sticky=(NS))
+        listtree = configure_listree(listtree, listframe)
 
         return listtree
 
@@ -285,14 +225,7 @@ class orderListForm(BasePage):
         listtree.column("order_id", width=70)
         listtree.column("menu_item", width=70)
         listtree.column("quantity", width=70)
-        listtree.tag_configure("font", font=("Arial", 10))
-        listtree.grid(column=0, row=0, sticky=(N, W, E, S))
-
-        treescrolly = ttk.Scrollbar(
-            listframe, orient=VERTICAL, command=listtree.yview
-        )
-        listtree.configure(yscrollcommand=treescrolly.set)
-        treescrolly.grid(column=3, row=0, sticky=(NS))
+        listtree = configure_listree(listtree, listframe)
 
         return listtree
 

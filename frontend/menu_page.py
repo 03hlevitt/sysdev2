@@ -11,7 +11,7 @@ from tkinter import (
 from tkinter import ttk
 from backend.main import Backend
 from frontend.order_page import orderListForm
-from frontend.common import BaseAddForm, UpdateMsg, BasePage
+from frontend.common import BaseAddForm, UpdateMsg, BasePage, create_details_frame, create_list_frame, create_cmdframe, configure_listree
 
 
 class MenuPage(BasePage):
@@ -20,22 +20,7 @@ class MenuPage(BasePage):
         self.backend = Backend()
 
         def create_detail_view(self, baseframe):
-            detailsframe = ttk.Frame(
-                baseframe,
-                borderwidth=10,
-                relief="ridge",
-                width=100,
-                height=100,
-            )
-            detailsframe.grid(column=1, row=1, sticky=(N, E, S))
-
-            detailsframe.columnconfigure(0, weight=1)
-            detailsframe.columnconfigure(1, weight=1)
-            detailsframe.rowconfigure(0, weight=1)
-            detailsframe.rowconfigure(1, weight=1)
-            detailsframe.rowconfigure(2, weight=1)
-            detailsframe.rowconfigure(3, weight=1)
-            detailsframe.rowconfigure(4, weight=1)
+            detailsframe = create_details_frame(baseframe)
 
             details_lname_label = ttk.Label(detailsframe, text="Item")
             details_lname_label.grid(column=0, row=1)
@@ -46,13 +31,8 @@ class MenuPage(BasePage):
             details_street_label.grid(column=0, row=2)
             details_street = ttk.Entry(detailsframe, textvariable=price_value)
             details_street.grid(column=1, row=2)
-
-            cmdframe = ttk.Frame(
-                detailsframe, borderwidth=0, width=100, height=50
-            )
-
-            # command frame
-            cmdframe.grid(column=0, row=4, sticky=(N, E, S))
+            cmdframe = create_cmdframe(detailsframe)
+            
             self.cmdOk = ttk.Button(
                 cmdframe, text="OK", state="disabled", command=update_order
             )
@@ -76,15 +56,7 @@ class MenuPage(BasePage):
             )
             self.cmd_delete_order.grid(column=3, row=0)
 
-            listframe = ttk.Frame(
-                baseframe,
-                borderwidth=10,
-                relief="ridge",
-                width=100,
-                height=100,
-            )
-            listframe.grid(column=0, row=1, sticky=(N, W, E, S))
-            listframe.rowconfigure(0, weight=1)
+            listframe = create_list_frame(baseframe)
 
             return listframe
 
@@ -140,7 +112,7 @@ class MenuPage(BasePage):
 
         listtree.bind("<<TreeviewSelect>>", listtreeitem_selected)
 
-        self.populate_listree(listtree)
+        self.populate_listree(listtree, "menu")
 
     def get_orders(self):
         return 
@@ -168,14 +140,7 @@ class MenuPage(BasePage):
         listtree.heading("price", text="price")
         listtree.column("item", width=70)
         listtree.column("price", width=70)
-        listtree.tag_configure("font", font=("Arial", 10))
-        listtree.grid(column=0, row=0, sticky=(N, W, E, S))
-
-        treescrolly = ttk.Scrollbar(
-            listframe, orient=VERTICAL, command=listtree.yview
-        )
-        listtree.configure(yscrollcommand=treescrolly.set)
-        treescrolly.grid(column=3, row=0, sticky=(NS))
+        listtree = configure_listree(listtree, listframe)
 
         return listtree
 

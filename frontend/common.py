@@ -153,3 +153,55 @@ class BasePage:
                     values=(orderValues),
                 )
                 added_orders.append(orderValues)
+
+def create_details_frame(baseframe):
+    details_frame = ttk.Frame(
+                baseframe,
+                borderwidth=10,
+                relief="ridge",
+                width=100,
+                height=100,
+            )
+    details_frame.grid(column=1, row=1, sticky=(N, E, S))
+
+    details_frame.columnconfigure(0, weight=1)
+    details_frame.columnconfigure(1, weight=1)
+    details_frame.rowconfigure(0, weight=1)
+    details_frame.rowconfigure(1, weight=1)
+    details_frame.rowconfigure(2, weight=1)
+    details_frame.rowconfigure(3, weight=1)
+    details_frame.rowconfigure(4, weight=1)
+    return details_frame
+
+def create_list_frame(baseframe, column=0, row=1):
+    listframe = ttk.Frame(
+        baseframe,
+        borderwidth=10,
+        relief="ridge",
+        width=100,
+        height=100,
+    )
+    listframe.grid(column=column, row=row, sticky=(N, W, E, S))
+    listframe.rowconfigure(0, weight=1)
+    return listframe
+
+def create_cmdframe(detailsframe):
+    cmdframe = ttk.Frame(
+                detailsframe, borderwidth=0, width=100, height=50
+            )
+
+    # command frame
+    cmdframe.grid(column=0, row=4, sticky=(N, E, S))
+    return cmdframe
+
+def configure_listree(listtree, listframe):
+    listtree.tag_configure("font", font=("Arial", 10))
+    listtree.grid(column=0, row=0, sticky=(N, W, E, S))
+
+    treescrolly = ttk.Scrollbar(
+        listframe, orient=VERTICAL, command=listtree.yview
+    )
+    listtree.configure(yscrollcommand=treescrolly.set)
+    treescrolly.grid(column=3, row=0, sticky=(NS))
+    return listtree
+    
