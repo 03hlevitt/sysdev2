@@ -258,6 +258,7 @@ class orderListForm:
         if self.page_type == "order":
             root.title("Order Page")
             root.geometry("1400x600")
+            item_value = StringVar()
         else:
             root.title("Menu Page")
             root.geometry("1100x600")
@@ -279,8 +280,7 @@ class orderListForm:
         input1_variable = StringVar()
         input2_variable = StringVar()
         id_value = StringVar()
-        if self.page_type == "order":
-            item_value = StringVar()
+            
 
         list_frame, item_frame = create_detail_view(self)
         listtree = self.create_list_tree(list_frame)
@@ -399,14 +399,12 @@ class orderListForm:
         """
         listtree = ttk.Treeview(
             listframe,
-            column=("order_id", "menu_item", "quantity"),
+            column=("menu_item", "quantity"),
             show="headings",
             selectmode="browse",
         )
-        listtree.heading("order_id", text="order_id")
         listtree.heading("menu_item", text="menu_item")
         listtree.heading("quantity", text="quantity")
-        listtree.column("order_id", width=70)
         listtree.column("menu_item", width=70)
         listtree.column("quantity", width=70)
         listtree = configure_listree(listtree, listframe)
