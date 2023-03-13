@@ -26,7 +26,7 @@ class Menu(DBClass):
 
 class NewMenuItem(Menu):
     """instantiates a new menu item object"""
-    def __init__(self, name: str, price: int):
+    def __init__(self, name: str, price_input: str):
         """constructor for a new menu item
 
         Args:
@@ -34,7 +34,13 @@ class NewMenuItem(Menu):
             price (int): price fo menu item
         """
         super().__init__(name)
-        self.price = price
+        self.__price_input = price_input
+
+    @property
+    def price(self):
+        if not self.__price_input.isdigit():
+            raise ValueError("Price must be a number")
+        return self.__price_input
 
     def save(self):
         """save the menu item stored in the object"""
@@ -53,22 +59,29 @@ class ExistingMenuItem(Menu):
             name (str): unqiue name for menu item already in db
         """
         super().__init__(name)
-        self.price = self._get_price()
+        self._price = self.execute_sql(
+            "SELECT price FROM menu_items WHERE name = '%s'" % self.name
+        )[0][0]
 
-    def _get_price(self) -> int:
+    @property
+    def price(self) -> int:
         """fetches price of a menu item from the db
 
         Returns:
             int: price of menu item
         """
-        data = self.execute_sql(
-            "SELECT price FROM menu_items WHERE name = '%s'" % self.name
-        )
-        print(data)
-        return data[0][0]
+        return self._price
+    
+    @price.setter
+    def price(self, value: str):
+        """setter for price out of safety"""
+        if not value.isdigit():
+            raise ValueError("Price must be a number")
+        self._price = value
 
     def save(self):
         """save the menu item stored in the object to the db"""
+        print("********", self.price)
         self.execute_sql(
             "UPDATE menu_items SET price = '%s' WHERE name = '%s'"
             % (self.price, self.name)

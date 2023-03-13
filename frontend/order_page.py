@@ -1,6 +1,7 @@
 """order page ui"""
 from tkinter import *
 from tkinter import ttk
+from sqlite3 import IntegrityError
 from backend.main import Backend
 from custom.exceptions import NoKeyError, WhatThreeWordsError
 from functools import wraps
@@ -29,12 +30,18 @@ def handle_db_exceptions(func):
     def decorated(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except IntegrityError as error:
+            print(error)
+            UpdateMsg("operation failed - is the item unique?")
+        except ValueError as error:
+            print(error)
+            UpdateMsg("Please enter a valid integer for price!")
         except NotImplementedError as error:
             print(error)
             UpdateMsg("Item does not exist! - check the Menu!")
         except Exception as error:
-            UpdateMsg("Something went wrong!")
             print(error)
+            UpdateMsg("Something went wrong!")
     return decorated
 
 def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
@@ -211,12 +218,13 @@ class orderListForm:
             """sets buttons to desired state when an order item is selected"""
             self.cmd_remove_item.config(state="active")
 
-        def update_buttons_to_default():
+        def update_buttons_to_default(page):
             """sets buttons to default state"""
             self.cmd_update.config(state="disabled")
             self.cmd_delete.config(state="disabled")
-            self.cmd_remove_item.config(state="disabled")
-            self.cmd_add_item.config(state="disabled")
+            if page == "order":
+                self.cmd_remove_item.config(state="disabled")
+                self.cmd_add_item.config(state="disabled")
 
         def go_to_menu():
             """go to the menu page"""
@@ -240,11 +248,11 @@ class orderListForm:
             fields = "item", "price"
             BaseAddForm("menu", fields, "order")
 
-        def clear_selected_from_input():
+        def clear_selected_from_input(page):
             """clear text from input boxes and reset buttons"""
             input1_variable.set('')
             input2_variable.set('')
-            update_buttons_to_default()
+            update_buttons_to_default(page)
 
         def items_tree_selected(event: object):
             """populate input boxes with values selected in item list tree
@@ -313,7 +321,7 @@ class orderListForm:
             """delete and order entirely"""
             dts_id = id_value.get()
             self.delete_order_backend(dts_id)
-            clear_selected_from_input()
+            clear_selected_from_input("order")
             self.populate_listree(listtree)
             UpdateMsg("Order Deleted!")
 
@@ -322,7 +330,7 @@ class orderListForm:
             dts_item = input1_variable.get()
 
             self.delete_menu_item_backend(dts_item)
-            clear_selected_from_input()
+            clear_selected_from_input("menu")
             self.populate_listree(listtree)
             UpdateMsg("Item Deleted!")
 
@@ -380,10 +388,11 @@ class orderListForm:
 
         root.mainloop()
     
-    def update_menu_item_backend(self, item, price):
+    @handle_db_exceptions
+    def update_menu_item_backend(self, item, new_price):
         """update the price of an item in the backend"""
         item = self.backend.existing_item(item)
-        item.update_price(price)
+        item.price = new_price
         item.save()
 
     def update_order_backend(self, order_id: int, customer: str, location: str):
@@ -537,7 +546,7 @@ class UpdateMsg:
             message (str): message to be displayed
         """
         self.root_update_msg = Tk()
-        self.root_update_msg.title("Success.")
+        self.root_update_msg.title("UPDATE")
         self.root_update_msg.geometry("400x100")
         self.window_title_label = ttk.Label(
             self.root_update_msg, text=message, font=("Arial", 15)

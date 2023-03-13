@@ -83,12 +83,12 @@ class DBClass:
         Returns:
             list: return from db
         """
-        conn = sqlite3.connect("orders.db")
-        cursor = conn.cursor()
+        self.conn = sqlite3.connect("orders.db")
+        cursor = self.conn.cursor()
         cursor.execute(sql)
         rows = cursor.fetchall()
-        conn.commit()
-        conn.close()
+        self.conn.commit()
+        self.conn.close()
         return rows
 
     def execute_sql(self, sql: str) -> list:
@@ -102,7 +102,8 @@ class DBClass:
         """
         try:
             return self.__sql_attempt(sql)
-        except sqlite3.OperationalError as error:
-            print(error)
-            self.init_tables()
-            return self.__sql_attempt(sql)
+        except sqlite3.Error as error:
+            self.conn.rollback()
+            self.conn.close()
+            print("rolling back to prevnt db lock")
+            raise error
