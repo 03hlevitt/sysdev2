@@ -4,14 +4,82 @@ from tkinter import ttk
 from backend.main import Backend
 
 
+def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
+    """create a frame for tree views
+
+    Args:
+        baseframe (Frame): base window frame ot put into
+        column (int, optional): column to place this into in the baseframe.
+          Defaults to 0.
+        row (int, optional): row to place this into in the baseframe.
+          Defaults to 1.
+
+    Returns:
+        Frame: frame for tree views
+    """
+    listframe = ttk.Frame(
+        baseframe,
+        borderwidth=10,
+        relief="ridge",
+        width=100,
+        height=100,
+    )
+    listframe.grid(column=column, row=row, sticky=(N, W, E, S))
+    listframe.rowconfigure(0, weight=1)
+    return listframe
+
+
+def create_cmdframe(detailsframe: Frame) -> Frame:
+    """command frame to put buttons into
+
+    Args:
+        detailsframe (Frame): control panel to place into
+
+    Returns:
+        Frame: a command frame
+    """
+    cmdframe = ttk.Frame(detailsframe, borderwidth=0, width=100, height=50)
+
+    # command frame
+    cmdframe.grid(column=0, row=4, sticky=(N, E, S))
+    return cmdframe
+
+
+def configure_listree(
+    listtree: ttk.Treeview, listframe: Frame
+) -> ttk.Treeview:
+    """configure a tree view for the main pages
+
+    Args:
+        listtree (ttk.Treeview): tree view to configure
+        listframe (Frame): frame which tree veiw is placed
+
+    Returns:
+        ttk.Treeview: configured tree view
+    """
+    listtree.tag_configure("font", font=("Arial", 10))
+    listtree.grid(column=0, row=0, sticky=(N, W, E, S))
+
+    treescrolly = ttk.Scrollbar(
+        listframe, orient=VERTICAL, command=listtree.yview
+    )
+    listtree.configure(yscrollcommand=treescrolly.set)
+    treescrolly.grid(column=3, row=0, sticky=(NS))
+    return listtree
+
+
+
 class orderListForm:
+    """base order page"""
 
     def __init__(self):
+        """constructure for the order page class"""
         self.backend = Backend()
-        
 
         def create_detail_view(self):
-            detailsframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
+            """create three panels with control panel in the middle"""
+            detailsframe = ttk.Frame(
+                baseframe, borderwidth=10, relief="ridge", width=100, height=100)
             detailsframe.grid(column=1, row=1, sticky=(N, E, S))
 
             detailsframe.columnconfigure(0, weight=1)
@@ -22,51 +90,63 @@ class orderListForm:
             detailsframe.rowconfigure(3, weight=1)
             detailsframe.rowconfigure(4, weight=1)
 
-
             details_lname_label = ttk.Label(detailsframe, text='Customer')
             details_lname_label.grid(column=0, row=1)
-            details_lname = ttk.Entry(detailsframe, textvariable=customer_value)
+            details_lname = ttk.Entry(
+                detailsframe, textvariable=customer_value)
             details_lname.grid(column=1, row=2)
 
             details_street_label = ttk.Label(detailsframe, text='location')
             details_street_label.grid(column=0, row=2)
-            details_street = ttk.Entry(detailsframe, textvariable=location_value)
+            details_street = ttk.Entry(
+                detailsframe, textvariable=location_value)
             details_street.grid(column=1, row=3)
 
-
-            cmdframe = ttk.Frame(detailsframe, borderwidth=0, width=100, height=50)
-
-            # command frame
-            cmdframe.grid(column=0, row=4, sticky=(N, E, S))
-            self.cmdOk = ttk.Button(cmdframe, text="OK", state="disabled", command=update_order)
+            cmdframe = create_cmdframe(detailsframe)
+            self.cmdOk = ttk.Button(
+                cmdframe, text="OK", state="disabled", command=update_order
+            )
             self.cmdOk.grid(column=0, row=0)
 
-            self.cmdOrders = ttk.Button(cmdframe, text="Orders", state="enabled", command=go_to_menu)
+            self.cmdOrders = ttk.Button(
+                cmdframe, text="Menu", state="enabled", command=go_to_menu
+            )
             self.cmdOrders.grid(column=1, row=0)
 
-            self.cmdAddorder = ttk.Button(cmdframe, text="add order", state="active", command=make_order)
+            self.cmdAddorder = ttk.Button(
+                cmdframe, text="add order", state="active", command=make_order
+            )
             self.cmdAddorder.grid(column=2, row=0)
 
-            self.cmdAdd_item = ttk.Button(cmdframe, text="add item", state="active", command=add_item)
+            self.cmdAdd_item = ttk.Button(
+                cmdframe, text="add item", state="active", command=add_item
+            )
             self.cmdAdd_item.grid(column=4, row=0)
 
-            self.cmdremove_item = ttk.Button(cmdframe, text="remove item", state="active", command=remove_item)
+            self.cmdremove_item = ttk.Button(
+                cmdframe,
+                text="remove item",
+                state="active",
+                command=remove_item,
+            )
             self.cmdremove_item.grid(column=5, row=0)
 
-            self.cmd_delete_order = ttk.Button(cmdframe, text="delete item", state="active", command=delete_order)
+            self.cmd_delete_order = ttk.Button(
+                cmdframe,
+                text="delete item",
+                state="active",
+                command=delete_order,
+            )
             self.cmd_delete_order.grid(column=3, row=0)
 
-            listframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
-            listframe.grid(column=0, row=1, sticky=(N, W, E, S))
-            listframe.rowconfigure(0, weight=1)
+            listframe = create_list_frame(baseframe)
 
-            itemframe = ttk.Frame(baseframe, borderwidth=10, relief="ridge", width=100, height=100)
-            itemframe.grid(column=2, row=1, sticky=(N, W, E, S))
-            itemframe.rowconfigure(0, weight=1)
+            itemframe = create_list_frame(baseframe, 2, 1)
 
             return listframe, itemframe
 
         def update_buttons():
+            """set buttons to an active state"""
             self.cmdOk.config(state=ACTIVE)
             self.cmdOrders.config(state=ACTIVE)
 
@@ -77,13 +157,14 @@ class orderListForm:
 
         def make_order():
             root.destroy()
-            addOrderForm()
+            fields = "customer", "location"
+            BaseAddForm("order", fields, "Add_order")
 
         def clear_selected_from_input():
             customer_value.set('')
             location_value.set('')
             update_buttons()
-            
+
         def itemtreeitem_selected(event):
             for selected_item in self.itemstree.selection():
                 item_value.set(selected_item)
@@ -108,11 +189,11 @@ class orderListForm:
             self.populate_listree(listtree)
             UpdateMsg('Update Successful!')
 
-
         def add_item():
             dts_id = id_value.get()
             root.destroy()
-            addItemForm(dts_id)
+            fields = "menu_item", "quantity"
+            BaseAddForm("item", fields, "Add_item", dts_id)
 
         def remove_item():
             dts_id = id_value.get()
@@ -121,7 +202,6 @@ class orderListForm:
             order.remove_items(dts_item)
             self.populate_itemsTree(dts_id)
             UpdateMsg('Item Deleted!')
-            
 
         def delete_order():
             dts_id = id_value.get()
@@ -143,7 +223,8 @@ class orderListForm:
         baseframe.columnconfigure(1, weight=1)
         baseframe.columnconfigure(2, weight=1)
 
-        window_title_label = ttk.Label(baseframe, text='Menu', font=("Arial", 25))
+        window_title_label = ttk.Label(
+            baseframe, text='Menu', font=("Arial", 25))
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
@@ -153,7 +234,7 @@ class orderListForm:
         id_value = StringVar()
 
         list_frame, item_frame = create_detail_view(self)
-        listtree = self.create_listTree(list_frame)
+        listtree = self.create_list_tree(list_frame)
         self.itemstree = self.create_itemsTree(item_frame)
 
         listtree.bind('<<TreeviewSelect>>', listtreeitem_selected)
@@ -172,7 +253,7 @@ class orderListForm:
         item.location_co_ords = location
         item.set_order_date()
         item.save()
-    
+
     def delete_item_backend(self, id_value):
         item = self.backend.existing_order(id_value)
         item.delete()
@@ -191,23 +272,26 @@ class orderListForm:
             itemValues = list(item)
             if itemValues not in added_items:
                 added_items.append(itemValues)
-                self.itemstree.insert('', index='end', iid=itemValues[0], text=itemValues[0], values=(itemValues))
+                self.itemstree.insert(
+                    '', index='end', iid=itemValues[0], text=itemValues[0], values=(itemValues))
 
     def populate_listree(self, listtree):
         listtree.delete(*listtree.get_children())
-        orders = self.get_orders() # TODO change this to string date at end
+        orders = self.get_orders()  # TODO change this to string date at end
 
         added_orders = []
         for order in orders:
             orderValues = list(order)
 
             if orderValues not in added_orders:  # catching duplicates
-                listtree.insert('', index='end', iid=orderValues[0], text=orderValues[0], values=(orderValues))
+                listtree.insert(
+                    '', index='end', iid=orderValues[0], text=orderValues[0], values=(orderValues))
                 added_orders.append(orderValues)
 
-    def create_listTree(self, listframe):
+    def create_list_tree(self, listframe):
         listtree = ttk.Treeview(listframe,
-                                column=("id", "customer", "location", "order_date"),
+                                column=("id", "customer",
+                                        "location", "order_date"),
                                 show='headings', selectmode='browse')
         listtree.heading('id', text='id')
         listtree.heading('customer', text='customer')
@@ -217,15 +301,10 @@ class orderListForm:
         listtree.column('customer', width=70)
         listtree.column('location', width=70)
         listtree.column('order_date', width=70)
-        listtree.tag_configure('font', font=('Arial', 10))
-        listtree.grid(column=0, row=0, sticky=(N, W, E, S))
-
-        treescrolly = ttk.Scrollbar(listframe, orient=VERTICAL, command=listtree.yview)
-        listtree.configure(yscrollcommand=treescrolly.set)
-        treescrolly.grid(column=3, row=0, sticky=(NS))
+        listtree = configure_listree(listtree, listframe)
 
         return listtree
-    
+
     def create_itemsTree(self, listframe):
         listtree = ttk.Treeview(listframe,
                                 column=("order_id", "menu_item", "quantity"),
@@ -239,85 +318,13 @@ class orderListForm:
         listtree.tag_configure('font', font=('Arial', 10))
         listtree.grid(column=0, row=0, sticky=(N, W, E, S))
 
-        treescrolly = ttk.Scrollbar(listframe, orient=VERTICAL, command=listtree.yview)
+        treescrolly = ttk.Scrollbar(
+            listframe, orient=VERTICAL, command=listtree.yview)
         listtree.configure(yscrollcommand=treescrolly.set)
         treescrolly.grid(column=3, row=0, sticky=(NS))
 
         return listtree
 
-
-
-
-class addOrderForm:
-    def __init__(self):
-        fields = 'customer', 'location'
-        self.root = Tk()
-        self.root.title("Nympton Add_order")
-        self.entries = self.initUI(self.root, fields)
-        self.root.bind('<Return>', (lambda event, e=self.entries: self.fetch(e)))
-        self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
-        self.frame.pack(fill=BOTH, expand=True)
-
-        self.closeButton = Button(self.root, text="Cancel", command=self.cancel)
-        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch(e)))
-        self.okButton.pack(side=RIGHT)
-        self.root.mainloop()
-
-    def fetch(self, entries):
-        inputs = []
-        for entry in entries:
-            field = entry[0]
-            text = entry[1].get()
-            inputs.append(text)
-        self.add_order(inputs)
-        self.cancel()
-
-    def add_order(self, inputs):
-        customer = inputs[0]
-        location = inputs[1]
-        print("making new order with customer: " + customer + " and location: " + location + " .")
-        backend = Backend()
-        new_order = backend.new_order(customer, location)
-        new_order.set_order_date()
-        new_order.save()
-
-    def initUI(self, root, fields):
-        entries = []
-        for field in fields:
-            frame = Frame(root)
-            frame.pack(fill=X)
-
-            lbl = Label(frame, text=field, width=20, anchor='w')
-            lbl.pack(side=LEFT, padx=5, pady=5)
-
-            entry = Entry(frame)
-            entry.pack(fill=X, padx=5, expand=True)
-
-            entries.append((field, entry))
-        return entries
-
-    def message(self, message, command):
-        self.root_error_msg = Tk()
-        self.root_error_msg.title(message)
-        self.root_error_msg.geometry("400x100")
-        self.window_title_label = Label(self.root_error_msg, text=message, font=("Arial", 15))
-        self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = Button(self.root_error_msg, text="OK", default="active", command=command)
-        self.ok_button.pack(side=BOTTOM, pady=10)
-        self.root_error_msg.mainloop()
-
-    def destroy(self):
-        self.root_error_msg.destroy()
-
-    def destroy_both(self):
-        self.root_error_msg.destroy()
-        self.root.destroy()
-        orderListForm()
-
-    def cancel(self):
-        self.root.destroy()
-        orderListForm()
 
 class UpdateMsg:
     """display message when something is succesfully updated or otherwise"""
@@ -349,46 +356,82 @@ class UpdateMsg:
         self.root_update_msg.destroy()
 
 
-class addItemForm:
-    def __init__(self, order_id):
-        fields = 'menu_item', 'quantity'
+class BaseAddForm:
+    """base form for adding things to the db"""
+
+    def __init__(self, page, fields, title, order_id=None):
+        self.order_id = order_id
+        self.page = page
         self.root = Tk()
-        self.root.title("Add_item")
-        self.entries = self.initUI(self.root, fields)
-        self.root.bind('<Return>', (lambda event, e=self.entries: self.fetch(e)))
+        self.root.title(title)
+        self.entries = self.init_ui(self.root, fields)
+        self.root.bind(
+            "<Return>", (lambda event, e=self.entries: self.fetch(e))
+        )
         self.frame = Frame(self.root, relief=RAISED, borderwidth=1)
         self.frame.pack(fill=BOTH, expand=True)
-        self.order_id = order_id
-        self.closeButton = Button(self.root, text="Cancel", command=self.cancel)
-        self.closeButton.pack(side=RIGHT, padx=5, pady=5)
-        self.okButton = Button(self.root, text="OK", command=(lambda e=self.entries: self.fetch(e)))
-        self.okButton.pack(side=RIGHT)
+
+        self.close_button = Button(
+            self.root, text="Cancel", command=self.cancel
+        )
+        self.close_button.pack(side=RIGHT, padx=5, pady=5)
+        self.ok_button = Button(
+            self.root,
+            text="OK",
+            command=(lambda e=self.entries: self.fetch(e)),
+        )
+        self.ok_button.pack(side=RIGHT)
         self.root.mainloop()
 
-    def fetch(self, entries):
+    def fetch(self, entries: tuple):
+        """get input text to list to input to backend
+
+        Args:
+            entries (tuple): tkinter input fields, .get() transforms to strings
+        """
         inputs = []
         for entry in entries:
-            field = entry[0]
             text = entry[1].get()
             inputs.append(text)
-        self.add_item(inputs)
+        self.add(inputs)
         self.cancel()
 
-    def add_item(self, inputs):
-        item = inputs[0]
-        quantity = inputs[1]
-        print("making new order with item: " + item + " and quantity: " + quantity + " .")
-        backend = Backend()
-        existing_order = backend.existing_order(self.order_id)
-        existing_order.add_items(item, quantity)
+    def add(self, inputs: list):
+        """add the item to backend
 
-    def initUI(self, root, fields):
+        Args:
+            inputs (list): inputs from the form
+        """
+        input_1 = inputs[0]
+        input_2 = inputs[1]
+        backend = Backend()
+        if self.page == "menu":
+            new_order = backend.new_item(input_1, input_2)
+            new_order.save()
+        if self.page == "order":
+            new_order = backend.new_order(input_1, input_2)
+            new_order.set_order_date()
+            new_order.save()
+        if self.page == "item":
+            existing_order = backend.existing_order(self.order_id)
+            existing_order.add_items(input_1, input_2)
+
+    def init_ui(self, root: Frame, fields: tuple) -> tuple:
+        """initialise what is shown in the window namely labels and input boxes
+
+        Args:
+            root (Frame): root frame
+            fields (tuple): fields to be labled
+
+        Returns:
+            tuple: _description_
+        """
         entries = []
         for field in fields:
             frame = Frame(root)
             frame.pack(fill=X)
 
-            lbl = Label(frame, text=field, width=20, anchor='w')
+            lbl = Label(frame, text=field, width=20, anchor="w")
             lbl.pack(side=LEFT, padx=5, pady=5)
 
             entry = Entry(frame)
@@ -397,27 +440,60 @@ class addItemForm:
             entries.append((field, entry))
         return entries
 
-    def message(self, message, command):
-        self.root_error_msg = Tk()
+    def message(self, message: str, command: object):
+        """displays message to user
+
+        Args:
+            message (str): message to be displayed ot the user
+            command (object): command after pressing the ok button
+        """
+        self.root_error_msg = Tk()  # defined outside init
+        # as we only want to show when somethign goes wrong!
         self.root_error_msg.title(message)
         self.root_error_msg.geometry("400x100")
-        self.window_title_label = Label(self.root_error_msg, text=message, font=("Arial", 15))
+        self.window_title_label = Label(
+            self.root_error_msg, text=message, font=("Arial", 15)
+        )
         self.window_title_label.pack(side=TOP, pady=10)
-        self.ok_button = Button(self.root_error_msg, text="OK", default="active", command=command)
+        self.ok_button = Button(
+            self.root_error_msg, text="OK", default="active", command=command
+        )
         self.ok_button.pack(side=BOTTOM, pady=10)
         self.root_error_msg.mainloop()
 
     def destroy(self):
+        """destroy root error message"""
         self.root_error_msg.destroy()
+
+    def return_back(self):
+        """go back to main page"""
+        if self.page in ("order", "item"):
+            from frontend.order_page import (
+                OrderListForm,
+            )  # here to prevent circular imports
+
+            # but also to avoid repeated code
+
+            OrderListForm()
+        if self.page == "menu":
+            from frontend.menu_page import (
+                MenuPage,
+            )  # here to prevent circular imports
+
+            # but also to avoid repeated code
+
+            MenuPage()
 
     def destroy_both(self):
+        """destroy error message and input window"""
         self.root_error_msg.destroy()
         self.root.destroy()
-        orderListForm()
+        self.return_back()
 
     def cancel(self):
+        """cancel action to go back to main page, on cancel button"""
         self.root.destroy()
-        orderListForm()
+        self.return_back()
 
 
 if __name__ == "__main__":
