@@ -253,8 +253,12 @@ class orderListForm:
 
 
         root = Tk()
-        root.title("order List")
-        root.geometry("1100x600")
+        if self.page_type == "order":
+            root.title("Order Page")
+            root.geometry("1400x600")
+        else:
+            root.title("Menu Page")
+            root.geometry("1100x600")
         root.rowconfigure(0, weight=1)
 
         baseframe = ttk.Frame(root)
@@ -266,7 +270,7 @@ class orderListForm:
         baseframe.columnconfigure(2, weight=1)
 
         window_title_label = ttk.Label(
-            baseframe, text='Menu', font=("Arial", 25))
+            baseframe, text=self.page_type, font=("Arial", 25))
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
@@ -277,7 +281,7 @@ class orderListForm:
 
         list_frame, item_frame = create_detail_view(self)
         listtree = self.create_list_tree(list_frame)
-        self.itemstree = self.create_itemsTree(item_frame)
+        self.itemstree = self.create_items_tree(item_frame)
 
         listtree.bind('<<TreeviewSelect>>', list_tree_selected)
         self.itemstree.bind('<<TreeviewSelect>>', items_tree_selected)
