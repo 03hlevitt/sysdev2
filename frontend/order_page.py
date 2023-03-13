@@ -5,7 +5,7 @@ from backend.main import Backend
 from custom.exceptions import NoKeyError, WhatThreeWordsError
 from functools import wraps
 
-def handle_exceptions(func):
+def handle_3words_exceptions(func):
     @wraps(func)
     def decorated(*args, **kwargs):
         try:
@@ -19,6 +19,19 @@ def handle_exceptions(func):
         except WhatThreeWordsError as error:
             UpdateMsg("Something went wrong with the what three words api!")
             print(error)
+        except Exception as error:
+            UpdateMsg("Something went wrong!")
+            print(error)
+    return decorated
+
+def handle_db_exceptions(func):
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except NotImplementedError as error:
+            print(error)
+            UpdateMsg("Item does not exist! - check the Menu!")
         except Exception as error:
             UpdateMsg("Something went wrong!")
             print(error)
@@ -239,7 +252,7 @@ class orderListForm:
 
             update_buttons_list_tree()
 
-        @handle_exceptions
+        @handle_3words_exceptions
         def update_order():
             """update the values attributed to an order by order id"""
             dts_customer = input1_variable.get()
@@ -500,7 +513,8 @@ class BaseAddForm:
         self.add(inputs)
         self.cancel()
 
-    @handle_exceptions
+    @handle_3words_exceptions
+    @handle_db_exceptions
     def add(self, inputs: list):
         """add the item to backend
 

@@ -196,29 +196,33 @@ class ExistingOrder(Order):
             name (str): name of menu item (must be unique!)
             quantity (int): amount of the item to add the db
         """
-        item = self.execute_sql(
-            """select * from order_items
-             where order_id = '%s' and menu_item = '%s'"""
-            % (self.order_id, name)
-        )
-        if item:
-            current_quantity = item[0][2]
-            name = item[0][1]
-            quantity = int(quantity) + int(current_quantity)
-            self.execute_sql(
-                """UPDATE order_items SET quantity = '%s'
-                  WHERE order_id = '%s' AND menu_item = '%s'"""
-                % (quantity, self.order_id, name)
-            )
+        if not self.execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % name):
+            print("item not in menu")
+            raise NotImplementedError("item not in menu")
         else:
-            string = """INSERT INTO order_items (order_id, menu_item, quantity)
-                  VALUES ('%s', '%s', '%s')""" % (
-                self.order_id,
-                name,
-                quantity,
+            item = self.execute_sql(
+                """select * from order_items
+                where order_id = '%s' and menu_item = '%s'"""
+                % (self.order_id, name)
             )
-            print(string)
-            self.execute_sql(string)
+            if item:
+                current_quantity = item[0][2]
+                name = item[0][1]
+                quantity = int(quantity) + int(current_quantity)
+                self.execute_sql(
+                    """UPDATE order_items SET quantity = '%s'
+                    WHERE order_id = '%s' AND menu_item = '%s'"""
+                    % (quantity, self.order_id, name)
+                )
+            else:
+                string = """INSERT INTO order_items (order_id, menu_item, quantity)
+                    VALUES ('%s', '%s', '%s')""" % (
+                    self.order_id,
+                    name,
+                    quantity,
+                )
+                print(string)
+                self.execute_sql(string)
 
     def remove_items(self, name: str):
         """remove an item and all of its quantities from the db
