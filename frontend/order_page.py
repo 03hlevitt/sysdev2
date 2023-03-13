@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 from backend.main import Backend
+from custom.exceptions import NoKeyError, WhatThreeWordsError
 
 
 def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
@@ -81,7 +82,7 @@ class orderListForm:
             """create three panels with control panel in the middle"""
             if page_type == "order":
                 cmdframe_config = {
-                    "OK":update_order,
+                    "Update":update_order,
                     "Back":go_to_menu,
                     "Create":make_order,
                     "Delete":delete_order,
@@ -90,7 +91,7 @@ class orderListForm:
                 input2 = "Location"
             else:
                 cmdframe_config = {
-                    "OK":update_item,
+                    "Update":update_item,
                     "Back":go_to_orders,
                     "Create":make_item,
                     "Delete":delete_item,
@@ -119,10 +120,10 @@ class orderListForm:
                 detailsframe, textvariable=input2_variable)
             details_street.grid(column=1, row=2)
             cmdframe = create_cmdframe(detailsframe)
-            self.cmd_ok = ttk.Button(
-                cmdframe, text="OK", state="disabled", command=cmdframe_config["OK"]
+            self.cmd_update = ttk.Button(
+                cmdframe, text="Update", state="disabled", command=cmdframe_config["Update"]
             )
-            self.cmd_ok.grid(column=0, row=0)
+            self.cmd_update.grid(column=0, row=0)
 
             self.cmd_back = ttk.Button(
                 cmdframe, text="Menu", state="active", command=cmdframe_config["Back"]
@@ -164,20 +165,20 @@ class orderListForm:
 
         def update_buttons_list_tree():
             """sets buttons to desired state when an order/menu item is selected"""
-            self.cmd_ok.config(state=ACTIVE)
-            self.cmd_delete.config(state=ACTIVE)
-            self.cmd_add_item.config(state=ACTIVE)
+            self.cmd_update.config(state="active")
+            self.cmd_delete.config(state="active")
+            self.cmd_add_item.config(state="active")
 
         def update_buttons_items_tree():
             """sets buttons to desired state when an order item is selected"""
-            self.cmd_remove_item.config(state=ACTIVE)
+            self.cmd_remove_item.config(state="active")
 
         def update_buttons_to_default():
             """sets buttons to default state"""
-            self.cmd_ok.config(state=DISABLED)
-            self.cmd_delete.config(state=DISABLED)
-            self.cmd_remove_item.config(state=DISABLED)
-            self.cmd_add_item.config(state=DISABLED)
+            self.cmd_update.config(state="disabled")
+            self.cmd_delete.config(state="disabled")
+            self.cmd_remove_item.config(state="disabled")
+            self.cmd_add_item.config(state="disabled")
 
         def go_to_menu():
             """go to the menu page"""
@@ -224,10 +225,22 @@ class orderListForm:
             dts_customer = input1_variable.get()
             dts_location = input2_variable.get()
             dts_id = id_value.get()
-
-            self.update_item_backend(dts_id, dts_customer, dts_location)
-            self.populate_listree(listtree)
-            UpdateMsg("Update Successful!")
+            try:
+                self.update_order_backend(dts_id, dts_customer, dts_location)
+                self.populate_listree(listtree)
+                UpdateMsg("Update Successful!")
+            except ValueError as error:
+                UpdateMsg("Please enter valid co ordinates!")
+                print(error)
+            except NoKeyError as error:
+                UpdateMsg("Please Ensure there is a valid api key!")
+                print(error)
+            except WhatThreeWordsError as error:
+                UpdateMsg("Something went wrong with the what three words api!")
+                print(error)
+            except Exception as error:
+                UpdateMsg("Something went wrong!")
+                print(error)
 
         def add_item():
             """add an item to an order"""
@@ -296,7 +309,7 @@ class orderListForm:
     def get_orders(self):
         return self.backend.view_orders()
 
-    def update_item_backend(self, order_id: int, customer: str, location: str):
+    def update_order_backend(self, order_id: int, customer: str, location: str):
         """backend methods to update an item in the db
         Args:
             id (int): order if
@@ -307,7 +320,7 @@ class orderListForm:
         item.customer = customer
         item.location_co_ords = location
         item.set_order_date()
-        item.save()
+        item.update_order()
 
     def delete_order_backend(self, id_value: str):
         """delete an order from the order DB
@@ -552,9 +565,7 @@ class BaseAddForm:
     def return_back(self):
         """go back to main page"""
         if self.page in ("order", "item"):
-            from frontend.order_page import (
-                OrderListForm,
-            )  # here to prevent circular imports
+            orderListForm("order")
 
             # but also to avoid repeated code
 

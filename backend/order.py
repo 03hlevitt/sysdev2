@@ -137,7 +137,7 @@ class NewOrder(Order):
     def save(self):
         """save teh order stored in the object to the database"""
         self.execute_sql(
-            """INSERT INTO orders (id, customer, location, order_date)
+            """INSERT INTO orders (id, customer, location, date)
               VALUES ('%s', '%s', '%s', '%s')"""
             % (self.order_id, self.customer, self.location_words, self.date)
         )
@@ -156,7 +156,26 @@ class ExistingOrder(Order):
         self.location_words = self.execute_sql(
             "SELECT location FROM orders WHERE id = '%s'" % self.order_id
         )[0][0]
-        self.location_co_ords = words_to_coordinates(self.location_words)
+
+    @property
+    def location_co_ords(self):
+        """converts what three words to co ords
+
+        Returns:
+            str: lat and long in a string e.g. "1,1"
+        """
+        return words_to_coordinates(self.location_words)
+
+    @location_co_ords.setter
+    def location_co_ords(self, value):
+        """converts what co ords to what three words
+
+        Args:
+            value (str): lat and long in a string e.g. "1,1"
+        """
+        co_ords = value.split(",")
+        self.location_words = coordinates_to_words(co_ords[0], co_ords[1])
+        
 
     def update_order(self):
         """updates order in db with new values stored in object"""

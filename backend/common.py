@@ -3,6 +3,7 @@ import os
 import json
 import sqlite3
 import requests
+from custom.exceptions import NoKeyError, WhatThreeWordsError
 
 
 def coordinates_to_words(lat: str, lon: str) -> dict:
@@ -15,14 +16,25 @@ def coordinates_to_words(lat: str, lon: str) -> dict:
     Returns:
         dict: threewords location string
     """
-    key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
-    url = "https://api.what3words.com/v3/convert-to-3wa"
-    params = {"coordinates": f"{lat},{lon}", "key": key}
-    print("***", params)
-    response = requests.get(url, params=params, timeout=30)
-    response_dict = json.loads(response.text)
-    print("***", response_dict)
-    return response_dict["words"]
+    try:
+        key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
+        url = "https://api.what3words.com/v3/convert-to-3wa"
+        params = {"coordinates": f"{lat},{lon}", "key": key}
+        print("***", params)
+        response = requests.get(url, params=params, timeout=30)
+        response_dict = json.loads(response.text)
+        print("***", response_dict)
+        return response_dict["words"]
+    except KeyError as error:
+        if response_dict["error"]["code"] == "BadCoordinates":
+            raise ValueError("Bad co ords")
+            print(error)
+        elif response_dict["error"]["code"] == "InvalidKey":
+            raise NoKeyError("No key found")
+            print(error)
+        else:
+            raise WhatThreeWordsError("Unknown error")
+            print(error)    
 
 
 def words_to_coordinates(words: str) -> str:
