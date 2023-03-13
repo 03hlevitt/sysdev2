@@ -200,11 +200,12 @@ class orderListForm:
 
             return listframe, itemframe
 
-        def update_buttons_list_tree():
+        def update_buttons_list_tree(page):
             """sets buttons to desired state when an order/menu item is selected"""
             self.cmd_update.config(state="active")
             self.cmd_delete.config(state="active")
-            self.cmd_add_item.config(state="active")
+            if page == "order":
+                self.cmd_add_item.config(state="active")
 
         def update_buttons_items_tree():
             """sets buttons to desired state when an order item is selected"""
@@ -254,7 +255,7 @@ class orderListForm:
                 item_value.set(selected_item)
                 update_buttons_items_tree()
 
-        def list_tree_selected(event: object):
+        def order_tree_selected(event: object):
             """populate input boxes with values selected in order list tree
             Args:
                 event (object): event when clicking on order list tree
@@ -266,7 +267,21 @@ class orderListForm:
                 input2_variable.set(order.location_co_ords)
                 self.populate_items_tree(order.order_id)
 
-            update_buttons_list_tree()
+            update_buttons_list_tree("order")
+
+        def menu_tree_selected(event: object):
+            """set values for later inputs when selecting the listree
+
+            Args:
+                event (object): user selecting the listree
+            """
+            for selected_item in listtree.selection():
+                item = self.backend.existing_item(selected_item)
+
+                input1_variable.set(selected_item)
+                input2_variable.set(item.price)
+
+            update_buttons_list_tree("menu")
 
         @handle_3words_exceptions
         def update_order():
@@ -355,9 +370,11 @@ class orderListForm:
             self.itemstree = self.create_items_tree(item_frame)
             self.itemstree.bind('<<TreeviewSelect>>', items_tree_selected)
 
-        listtree = self.create_list_tree(list_frame)
-        listtree.bind('<<TreeviewSelect>>', list_tree_selected)
-        
+            listtree = self.create_order_tree(list_frame)
+            listtree.bind('<<TreeviewSelect>>', order_tree_selected)
+        else:
+            listtree = self.create_menu_tree(list_frame)
+            listtree.bind('<<TreeviewSelect>>', menu_tree_selected)
 
         self.populate_listree(listtree)
 
@@ -444,7 +461,29 @@ class orderListForm:
                 )
                 added_orders.append(values)
 
-    def create_list_tree(self, listframe: object) -> ttk.Treeview:
+    def create_menu_tree(self, listframe: object) -> ttk.Treeview:
+        """create tkinter treeview of menu
+
+        Args:
+            listframe (object): tk inter frame to put list tree in
+
+        Returns:
+            ttk.Treeview: list tree
+        """
+        listtree = ttk.Treeview(
+            listframe,
+            column=("item", "price"),
+            show="headings",
+            selectmode="browse",
+        )
+        listtree.heading("item", text="item")
+        listtree.heading("price", text="price")
+        listtree.column("item", width=70)
+        listtree.column("price", width=70)
+        listtree = configure_listree(listtree, listframe)
+        return listtree
+
+    def create_order_tree(self, listframe: object) -> ttk.Treeview:
         """create list tree for orders
         Args:
             listframe (object): frame to put list tree into
