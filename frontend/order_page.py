@@ -183,16 +183,22 @@ class orderListForm:
             orderListForm("menu")
 
         def make_order():
+            """generate the add order page"""
             root.destroy()
             fields = "customer", "location"
-            BaseAddForm("order", fields, "Add_order")
+            BaseAddForm("order", fields, "Make an Order")
 
         def clear_selected_from_input():
+            """clear text from input boxes and reset buttons"""
             customer_value.set('')
             location_value.set('')
             update_buttons_to_default()
 
-        def itemtreeitem_selected(event):
+        def itemtreeitem_selected(event: object):
+            """populate input boxes with values selected in item list tree
+            Args:
+                event (object): event when clicking on item list tree
+            """
             for selected_item in self.itemstree.selection():
                 item_value.set(selected_item)
                 update_buttons_items_tree()
@@ -203,7 +209,7 @@ class orderListForm:
                 id_value.set(order.order_id)
                 customer_value.set(order.customer)
                 location_value.set(order.location_co_ords)
-                self.populate_itemsTree(order.order_id)
+                self.populate_items_tree(order.order_id)
 
             update_buttons_list_tree()
 
@@ -227,7 +233,7 @@ class orderListForm:
             dts_item = item_value.get()
             order = self.backend.existing_order(dts_id)
             order.remove_items(dts_item)
-            self.populate_itemsTree(dts_id)
+            self.populate_items_tree(dts_id)
             UpdateMsg('Item Deleted!')
 
         def delete_order():
@@ -289,18 +295,27 @@ class orderListForm:
         order = self.backend.existing_order(order_id)
         return order.get_items()
 
-    def populate_itemsTree(self, order_id):
-        """get items from order and populate tree"""
+    def populate_items_tree(self, order_id: str):
+        """get items from order and populate tree
+        Args:
+            order_id (string): order id to populate
+        """
         self.itemstree.delete(*self.itemstree.get_children())
-        items = self.get_items(order_id)
+        order = self.backend.existing_order(order_id)
+        items = order.view_order_items()
 
         added_items = []
         for item in items:
-            itemValues = list(item)
-            if itemValues not in added_items:
-                added_items.append(itemValues)
+            item_values = list(item)
+            if item_values not in added_items:
+                added_items.append(item_values)
                 self.itemstree.insert(
-                    '', index='end', iid=itemValues[0], text=itemValues[0], values=(itemValues))
+                    "",
+                    index="end",
+                    iid=item_values[0],
+                    text=item_values[0],
+                    values=(item_values),
+                )
 
     def populate_listree(self, listtree):
         listtree.delete(*listtree.get_children())
