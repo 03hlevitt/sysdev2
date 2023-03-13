@@ -123,11 +123,13 @@ class orderListForm:
                 input2 = "Location"
             else:
                 cmdframe_config = {
-                    "Update":update_item,
+                    "Update":update_menu_item,
                     "Back":go_to_orders,
-                    "Create":make_item,
-                    "Delete":delete_item,
+                    "Create":add_menu_item,
+                    "Delete":delete_menu_item,
                 }
+                input1 = "Item"
+                input2 = "Price"
             detailsframe = ttk.Frame(
                 baseframe, borderwidth=10, relief="ridge", width=100, height=100)
             detailsframe.grid(column=1, row=1, sticky=(N, E, S))
@@ -158,7 +160,7 @@ class orderListForm:
             self.cmd_update.grid(column=0, row=0)
 
             self.cmd_back = ttk.Button(
-                cmdframe, text="Menu", state="active", command=cmdframe_config["Back"]
+                cmdframe, text="Return", state="active", command=cmdframe_config["Back"]
             )
             self.cmd_back.grid(column=1, row=0)
 
@@ -191,7 +193,10 @@ class orderListForm:
 
             listframe = create_list_frame(baseframe)
 
-            itemframe = create_list_frame(baseframe, 2, 1)
+            if page_type == "order":
+                itemframe = create_list_frame(baseframe, 2, 1)
+            else:
+                itemframe = None
 
             return listframe, itemframe
 
@@ -217,11 +222,22 @@ class orderListForm:
             root.destroy()
             orderListForm("menu")
 
+        def go_to_orders():
+            """go to the order page"""
+            root.destroy()
+            orderListForm("order")
+
         def make_order():
             """generate the add order page"""
             root.destroy()
             fields = "customer", "location"
             BaseAddForm("order", fields, "Make an Order")
+
+        def add_menu_item():
+            """generate the add item page"""
+            root.destroy()
+            fields = "item", "price"
+            BaseAddForm("menu", fields, "order")
 
         def clear_selected_from_input():
             """clear text from input boxes and reset buttons"""
@@ -286,6 +302,24 @@ class orderListForm:
             self.populate_listree(listtree)
             UpdateMsg("Order Deleted!")
 
+        def delete_menu_item():
+            """delete a menu item from the backend"""
+            dts_item = input1_variable.get()
+
+            self.delete_menu_item_backend(dts_item)
+            clear_selected_from_input()
+            self.populate_listree(listtree)
+            UpdateMsg("Item Deleted!")
+
+        def update_menu_item():
+            """update the price of an item in the backend"""
+            dts_item = input1_variable.get()
+            dts_price = input2_variable.get()
+
+            self.update_menu_item_backend(dts_item, dts_price)
+            self.populate_listree(listtree)
+            UpdateMsg("Update Successful!")
+
 
         root = Tk()
         if self.page_type == "order":
@@ -294,7 +328,7 @@ class orderListForm:
             item_value = StringVar()
         else:
             root.title("Menu Page")
-            root.geometry("1100x600")
+            root.geometry("900x600")
         root.rowconfigure(0, weight=1)
 
         baseframe = ttk.Frame(root)
@@ -316,18 +350,24 @@ class orderListForm:
             
 
         list_frame, item_frame = create_detail_view(self)
-        listtree = self.create_list_tree(list_frame)
-        self.itemstree = self.create_items_tree(item_frame)
 
+        if self.page_type == "order":
+            self.itemstree = self.create_items_tree(item_frame)
+            self.itemstree.bind('<<TreeviewSelect>>', items_tree_selected)
+
+        listtree = self.create_list_tree(list_frame)
         listtree.bind('<<TreeviewSelect>>', list_tree_selected)
-        self.itemstree.bind('<<TreeviewSelect>>', items_tree_selected)
+        
 
         self.populate_listree(listtree)
 
         root.mainloop()
-
-    def get_orders(self):
-        return self.backend.view_orders()
+    
+    def update_menu_item_backend(self, item, price):
+        """update the price of an item in the backend"""
+        item = self.backend.existing_item(item)
+        item.update_price(price)
+        item.save()
 
     def update_order_backend(self, order_id: int, customer: str, location: str):
         """backend methods to update an item in the db
@@ -349,6 +389,11 @@ class orderListForm:
         """
         item = self.backend.existing_order(id_value)
         item.delete()
+
+    def delete_menu_item_backend(self, item):
+        """deete an item from the db"""
+        item = self.backend.existing_item(item)
+        item.delete_from_db()
 
     def populate_items_tree(self, order_id: str):
         """get items from order and populate tree
@@ -588,18 +633,8 @@ class BaseAddForm:
         """go back to main page"""
         if self.page in ("order", "item"):
             orderListForm("order")
-
-            # but also to avoid repeated code
-
-            OrderListForm()
         if self.page == "menu":
-            from frontend.menu_page import (
-                MenuPage,
-            )  # here to prevent circular imports
-
-            # but also to avoid repeated code
-
-            MenuPage()
+            orderListForm("menu")
 
     def destroy_both(self):
         """destroy error message and input window"""
