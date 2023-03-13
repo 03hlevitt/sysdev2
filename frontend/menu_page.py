@@ -173,3 +173,6 @@ class MenuPage(BasePage):
         listtree = configure_listree(listtree, listframe)
 
         return listtree
+
+if __name__ == "__main___":
+    MenuPage()
