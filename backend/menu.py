@@ -6,7 +6,7 @@ from backend.common import DBClass
 
 class Menu(DBClass):
     """SUperclass with basic methods for interacting with the menu"""
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name = name
 
     def view_menu(self)->list:
