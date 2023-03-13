@@ -178,9 +178,9 @@ class orderListForm:
             self.cmd_add_item.config(state=DISABLED)
 
         def go_to_menu():
+            """go to the menu page"""
             root.destroy()
-            from frontend.menu_page import MenuPage
-            MenuPage()
+            orderListForm("menu")
 
         def make_order():
             root.destroy()
