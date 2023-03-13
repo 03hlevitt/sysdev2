@@ -79,6 +79,22 @@ class orderListForm:
 
         def create_detail_view(self):
             """create three panels with control panel in the middle"""
+            if page_type == "order":
+                cmdframe_config = {
+                    "OK":update_order,
+                    "Back":go_to_menu,
+                    "Create":make_order,
+                    "Delete":delete_order,
+                }
+                input1 = "Customer"
+                input2 = "Location"
+            else:
+                cmdframe_config = {
+                    "OK":update_item,
+                    "Back":go_to_orders,
+                    "Create":make_item,
+                    "Delete":delete_item,
+                }
             detailsframe = ttk.Frame(
                 baseframe, borderwidth=10, relief="ridge", width=100, height=100)
             detailsframe.grid(column=1, row=1, sticky=(N, E, S))
@@ -91,31 +107,17 @@ class orderListForm:
             detailsframe.rowconfigure(3, weight=1)
             detailsframe.rowconfigure(4, weight=1)
 
-            details_lname_label = ttk.Label(detailsframe, text='Customer')
+            details_lname_label = ttk.Label(detailsframe, text=input1)
             details_lname_label.grid(column=0, row=1)
             details_lname = ttk.Entry(
-                detailsframe, textvariable=customer_value)
-            details_lname.grid(column=1, row=2)
+                detailsframe, textvariable=input1_variable)
+            details_lname.grid(column=1, row=1)
 
-            details_street_label = ttk.Label(detailsframe, text='location')
+            details_street_label = ttk.Label(detailsframe, text=input2)
             details_street_label.grid(column=0, row=2)
             details_street = ttk.Entry(
-                detailsframe, textvariable=location_value)
-            details_street.grid(column=1, row=3)
-            if page_type == "order":
-                cmdframe_config = {
-                    "OK":update_order,
-                    "Back":go_to_menu,
-                    "Create":make_order,
-                    "Delete":delete_order,
-                }
-            else:
-                cmdframe_config = {
-                    "OK":update_item,
-                    "Back":go_to_orders,
-                    "Create":make_item,
-                    "Delete":delete_item,
-                }
+                detailsframe, textvariable=input2_variable)
+            details_street.grid(column=1, row=2)
             cmdframe = create_cmdframe(detailsframe)
             self.cmd_ok = ttk.Button(
                 cmdframe, text="OK", state="disabled", command=cmdframe_config["OK"]
@@ -190,8 +192,8 @@ class orderListForm:
 
         def clear_selected_from_input():
             """clear text from input boxes and reset buttons"""
-            customer_value.set('')
-            location_value.set('')
+            input1_variable.set('')
+            input2_variable.set('')
             update_buttons_to_default()
 
         def items_tree_selected(event: object):
@@ -211,16 +213,16 @@ class orderListForm:
             for selected_order in listtree.selection():
                 order = self.backend.existing_order(selected_order)
                 id_value.set(order.order_id)
-                customer_value.set(order.customer)
-                location_value.set(order.location_co_ords)
+                input1_variable.set(order.customer)
+                input2_variable.set(order.location_co_ords)
                 self.populate_items_tree(order.order_id)
 
             update_buttons_list_tree()
 
         def update_order():
             """update the values attributed to an order by order id"""
-            dts_customer = customer_value.get()
-            dts_location = location_value.get()
+            dts_customer = input1_variable.get()
+            dts_location = input2_variable.get()
             dts_id = id_value.get()
 
             self.update_item_backend(dts_id, dts_customer, dts_location)
@@ -274,10 +276,11 @@ class orderListForm:
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
-        item_value = StringVar()
-        customer_value = StringVar()
-        location_value = StringVar()
+        input1_variable = StringVar()
+        input2_variable = StringVar()
         id_value = StringVar()
+        if self.page_type == "order":
+            item_value = StringVar()
 
         list_frame, item_frame = create_detail_view(self)
         listtree = self.create_list_tree(list_frame)
