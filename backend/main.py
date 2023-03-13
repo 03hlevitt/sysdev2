@@ -1,13 +1,13 @@
 """handler class for returning objects for interacting with the db
  or select all type functions"""
-from backend.menu import newMenuItem, existingMenuItem, Menu
+from backend.menu import NewMenuItem, ExistingMenuItem, Menu
 from backend.order import Order, NewOrder, ExistingOrder
 
 
 class Backend:
     """handle returning of objects for interacting with the database"""
 
-    def new_item(self, name: str, price: int) -> newMenuItem:
+    def new_item(self, name: str, price: int) -> NewMenuItem:
         """instantiates a new item object
 
         Args:
@@ -15,20 +15,20 @@ class Backend:
             price (int): Price
 
         Returns:
-            newMenuItem: instanciated object
+            NewMenuItem: instanciated object
         """
-        return newMenuItem(name, price)
+        return NewMenuItem(name, price)
 
-    def existing_item(self, name: str) -> existingMenuItem:
+    def existing_item(self, name: str) -> ExistingMenuItem:
         """instantiates an existing item object
 
         Args:
             name (str): of existing menu item
 
         Returns:
-            existingMenuItem: instantiates object
+            ExistingMenuItem: instantiates object
         """
-        return existingMenuItem(name)
+        return ExistingMenuItem(name)
 
     @classmethod
     def view_menu(cls) -> list:
