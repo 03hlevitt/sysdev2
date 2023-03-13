@@ -72,9 +72,10 @@ def configure_listree(
 class orderListForm:
     """base order page"""
 
-    def __init__(self):
+    def __init__(self, page_type):
         """constructure for the order page class"""
         self.backend = Backend()
+        self.page_type = page_type
 
         def create_detail_view(self):
             """create three panels with control panel in the middle"""
@@ -101,43 +102,57 @@ class orderListForm:
             details_street = ttk.Entry(
                 detailsframe, textvariable=location_value)
             details_street.grid(column=1, row=3)
-
+            if page_type == "order":
+                cmdframe_config = {
+                    "OK":update_order,
+                    "Back":go_to_menu,
+                    "Create":make_order,
+                    "Delete":add_item,
+                }
+            else:
+                cmdframe_config = {
+                    "OK":update_item,
+                    "Back":go_to_orders,
+                    "Create":make_item,
+                    "Delete":delete_item,
+                }
             cmdframe = create_cmdframe(detailsframe)
-            self.cmdOk = ttk.Button(
-                cmdframe, text="OK", state="disabled", command=update_order
+            self.cmd_ok = ttk.Button(
+                cmdframe, text="OK", state="disabled", command=cmdframe_config["OK"]
             )
-            self.cmdOk.grid(column=0, row=0)
+            self.cmd_ok.grid(column=0, row=0)
 
-            self.cmdOrders = ttk.Button(
-                cmdframe, text="Menu", state="enabled", command=go_to_menu
+            self.cmd_back = ttk.Button(
+                cmdframe, text="Menu", state="active", command=cmdframe_config["Back"]
             )
-            self.cmdOrders.grid(column=1, row=0)
+            self.cmd_back.grid(column=1, row=0)
 
-            self.cmdAddorder = ttk.Button(
-                cmdframe, text="add order", state="active", command=make_order
+            self.cmd_add = ttk.Button(
+                cmdframe, text="Create", state="active", command=cmdframe_config["Create"]
             )
-            self.cmdAddorder.grid(column=2, row=0)
+            self.cmd_add.grid(column=2, row=0)
 
-            self.cmdAdd_item = ttk.Button(
-                cmdframe, text="add item", state="active", command=add_item
+            self.cmd_delete = ttk.Button(
+                cmdframe, text="Delete", state="disabled", command=cmdframe_config["Delete"]
             )
-            self.cmdAdd_item.grid(column=4, row=0)
+            self.cmd_delete.grid(column=3, row=0)
 
-            self.cmdremove_item = ttk.Button(
-                cmdframe,
-                text="remove item",
-                state="active",
-                command=remove_item,
-            )
-            self.cmdremove_item.grid(column=5, row=0)
+            if page_type == "order":
+                self.cmd_remove_item = ttk.Button(
+                    cmdframe,
+                    text="remove items from an order",
+                    state="disabled",
+                    command=remove_item,
+                )
+                self.cmd_remove_item.grid(column=5, row=0)
 
-            self.cmd_delete_order = ttk.Button(
-                cmdframe,
-                text="delete item",
-                state="active",
-                command=delete_order,
-            )
-            self.cmd_delete_order.grid(column=3, row=0)
+                self.cmd_add_item = ttk.Button(
+                    cmdframe,
+                    text="add items to an order",
+                    state="disabled",
+                    command=add_item,
+                )
+                self.cmd_add_item.grid(column=4, row=0)
 
             listframe = create_list_frame(baseframe)
 
@@ -145,10 +160,22 @@ class orderListForm:
 
             return listframe, itemframe
 
-        def update_buttons():
-            """set buttons to an active state"""
-            self.cmdOk.config(state=ACTIVE)
-            self.cmdOrders.config(state=ACTIVE)
+        def update_buttons_list_tree():
+            """sets buttons to desired state when an order/menu item is selected"""
+            self.cmd_ok.config(state=ACTIVE)
+            self.cmd_delete.config(state=ACTIVE)
+            self.cmd_add_item.config(state=ACTIVE)
+
+        def update_buttons_items_tree():
+            """sets buttons to desired state when an order item is selected"""
+            self.cmd_remove_item.config(state=ACTIVE)
+
+        def update_buttons_to_default():
+            """sets buttons to default state"""
+            self.cmd_ok.config(state=DISABLED)
+            self.cmd_delete.config(state=DISABLED)
+            self.cmd_remove_item.config(state=DISABLED)
+            self.cmd_add_item.config(state=DISABLED)
 
         def go_to_menu():
             root.destroy()
@@ -163,12 +190,12 @@ class orderListForm:
         def clear_selected_from_input():
             customer_value.set('')
             location_value.set('')
-            update_buttons()
+            update_buttons_to_default()
 
         def itemtreeitem_selected(event):
             for selected_item in self.itemstree.selection():
                 item_value.set(selected_item)
-                update_buttons()
+                update_buttons_items_tree()
 
         def listtreeitem_selected(event):
             for selected_order in listtree.selection():
@@ -178,7 +205,7 @@ class orderListForm:
                 location_value.set(order.location_co_ords)
                 self.populate_itemsTree(order.order_id)
 
-            update_buttons()
+            update_buttons_list_tree()
 
         def update_order():
             dts_customer = customer_value.get()
@@ -497,4 +524,4 @@ class BaseAddForm:
 
 
 if __name__ == "__main__":
-    orderListForm()
+    orderListForm("order")
