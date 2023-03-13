@@ -3,7 +3,26 @@ from tkinter import *
 from tkinter import ttk
 from backend.main import Backend
 from custom.exceptions import NoKeyError, WhatThreeWordsError
+from functools import wraps
 
+def handle_exceptions(func):
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError as error:
+            UpdateMsg("Please enter valid co ordinates!")
+            print(error)
+        except NoKeyError as error:
+            UpdateMsg("Please Ensure there is a valid api key!")
+            print(error)
+        except WhatThreeWordsError as error:
+            UpdateMsg("Something went wrong with the what three words api!")
+            print(error)
+        except Exception as error:
+            UpdateMsg("Something went wrong!")
+            print(error)
+    return decorated
 
 def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
     """create a frame for tree views
@@ -220,27 +239,15 @@ class orderListForm:
 
             update_buttons_list_tree()
 
+        @handle_exceptions
         def update_order():
             """update the values attributed to an order by order id"""
             dts_customer = input1_variable.get()
             dts_location = input2_variable.get()
             dts_id = id_value.get()
-            try:
-                self.update_order_backend(dts_id, dts_customer, dts_location)
-                self.populate_listree(listtree)
-                UpdateMsg("Update Successful!")
-            except ValueError as error:
-                UpdateMsg("Please enter valid co ordinates!")
-                print(error)
-            except NoKeyError as error:
-                UpdateMsg("Please Ensure there is a valid api key!")
-                print(error)
-            except WhatThreeWordsError as error:
-                UpdateMsg("Something went wrong with the what three words api!")
-                print(error)
-            except Exception as error:
-                UpdateMsg("Something went wrong!")
-                print(error)
+            self.update_order_backend(dts_id, dts_customer, dts_location)
+            self.populate_listree(listtree)
+            UpdateMsg("Update Successful!")
 
         def add_item():
             """add an item to an order"""
@@ -493,6 +500,7 @@ class BaseAddForm:
         self.add(inputs)
         self.cancel()
 
+    @handle_exceptions
     def add(self, inputs: list):
         """add the item to backend
 

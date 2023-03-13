@@ -131,8 +131,12 @@ class NewOrder(Order):
         Returns:
             str: what threee words str separated by . e.g. "hello.my.name"
         """
-        co_ords = self.location_co_ords.split(",")
-        return coordinates_to_words(co_ords[0], co_ords[1])
+        try:
+            co_ords = self.location_co_ords.split(",")
+            return coordinates_to_words(co_ords[0], co_ords[1])
+        except IndexError as error:
+            print("location co ords not set, %s", error)
+            raise ValueError("location co ords not set, %s", error)
 
     def save(self):
         """save teh order stored in the object to the database"""
