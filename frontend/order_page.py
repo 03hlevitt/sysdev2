@@ -107,7 +107,7 @@ class orderListForm:
                     "OK":update_order,
                     "Back":go_to_menu,
                     "Create":make_order,
-                    "Delete":add_item,
+                    "Delete":delete_order,
                 }
             else:
                 cmdframe_config = {
@@ -194,7 +194,7 @@ class orderListForm:
             location_value.set('')
             update_buttons_to_default()
 
-        def itemtreeitem_selected(event: object):
+        def items_tree_selected(event: object):
             """populate input boxes with values selected in item list tree
             Args:
                 event (object): event when clicking on item list tree
@@ -203,7 +203,11 @@ class orderListForm:
                 item_value.set(selected_item)
                 update_buttons_items_tree()
 
-        def listtreeitem_selected(event):
+        def list_tree_selected(event: object):
+            """populate input boxes with values selected in order list tree
+            Args:
+                event (object): event when clicking on order list tree
+            """
             for selected_order in listtree.selection():
                 order = self.backend.existing_order(selected_order)
                 id_value.set(order.order_id)
@@ -214,34 +218,39 @@ class orderListForm:
             update_buttons_list_tree()
 
         def update_order():
+            """update the values attributed to an order by order id"""
             dts_customer = customer_value.get()
             dts_location = location_value.get()
             dts_id = id_value.get()
 
             self.update_item_backend(dts_id, dts_customer, dts_location)
             self.populate_listree(listtree)
-            UpdateMsg('Update Successful!')
+            UpdateMsg("Update Successful!")
 
         def add_item():
+            """add an item to an order"""
             dts_id = id_value.get()
             root.destroy()
             fields = "menu_item", "quantity"
             BaseAddForm("item", fields, "Add_item", dts_id)
 
         def remove_item():
+            """remove an item and all of its quantity from an order"""
             dts_id = id_value.get()
             dts_item = item_value.get()
             order = self.backend.existing_order(dts_id)
             order.remove_items(dts_item)
             self.populate_items_tree(dts_id)
-            UpdateMsg('Item Deleted!')
+            UpdateMsg("Item Deleted!")
 
         def delete_order():
+            """delete and order entirely"""
             dts_id = id_value.get()
-            self.delete_item_backend(dts_id)
+            self.delete_order_backend(dts_id)
             clear_selected_from_input()
             self.populate_listree(listtree)
-            UpdateMsg('Item Deleted!')
+            UpdateMsg("Order Deleted!")
+
 
         root = Tk()
         root.title("order List")
@@ -270,8 +279,8 @@ class orderListForm:
         listtree = self.create_list_tree(list_frame)
         self.itemstree = self.create_itemsTree(item_frame)
 
-        listtree.bind('<<TreeviewSelect>>', listtreeitem_selected)
-        self.itemstree.bind('<<TreeviewSelect>>', itemtreeitem_selected)
+        listtree.bind('<<TreeviewSelect>>', list_tree_selected)
+        self.itemstree.bind('<<TreeviewSelect>>', items_tree_selected)
 
         self.populate_listree(listtree)
 
@@ -280,20 +289,26 @@ class orderListForm:
     def get_orders(self):
         return self.backend.view_orders()
 
-    def update_item_backend(self, id, customer, location):
-        item = self.backend.existing_order(id)
+    def update_item_backend(self, order_id: int, customer: str, location: str):
+        """backend methods to update an item in the db
+        Args:
+            id (int): order if
+            customer (str): name of customer (unique)
+            location (str): location placed with order (unique)
+        """
+        item = self.backend.existing_order(order_id)
         item.customer = customer
         item.location_co_ords = location
         item.set_order_date()
         item.save()
 
-    def delete_item_backend(self, id_value):
+    def delete_order_backend(self, id_value: str):
+        """delete an order from the order DB
+        Args:
+            id_value (str): selected order id from listtree
+        """
         item = self.backend.existing_order(id_value)
         item.delete()
-
-    def get_items(self, order_id):
-        order = self.backend.existing_order(order_id)
-        return order.get_items()
 
     def populate_items_tree(self, order_id: str):
         """get items from order and populate tree
@@ -317,56 +332,78 @@ class orderListForm:
                     values=(item_values),
                 )
 
-    def populate_listree(self, listtree):
+    def populate_listree(self, listtree: ttk.Treeview):
+        """populate a tree view with data
+        Args:
+            listtree (ttk.Treeview): tk tree view to populate
+            page (str): what type of page its in,
+              to tell the function what type of data to populate with.
+        """
         listtree.delete(*listtree.get_children())
-        orders = self.get_orders()  # TODO change this to string date at end
+        if self.page_type == "menu":
+            orders = self.backend.view_menu()
+        else:
+            orders = self.backend.view_orders()
 
         added_orders = []
         for order in orders:
-            orderValues = list(order)
+            values = list(order)
 
-            if orderValues not in added_orders:  # catching duplicates
+            if values not in added_orders:  # catching duplicates
                 listtree.insert(
-                    '', index='end', iid=orderValues[0], text=orderValues[0], values=(orderValues))
-                added_orders.append(orderValues)
+                    "",
+                    index="end",
+                    iid=values[0],
+                    text=values[0],
+                    values=(values),
+                )
+                added_orders.append(values)
 
-    def create_list_tree(self, listframe):
-        listtree = ttk.Treeview(listframe,
-                                column=("id", "customer",
-                                        "location", "order_date"),
-                                show='headings', selectmode='browse')
-        listtree.heading('id', text='id')
-        listtree.heading('customer', text='customer')
-        listtree.heading('location', text='location')
-        listtree.heading('order_date', text='order date')
-        listtree.column('id', width=70)
-        listtree.column('customer', width=70)
-        listtree.column('location', width=70)
-        listtree.column('order_date', width=70)
+    def create_list_tree(self, listframe: object) -> ttk.Treeview:
+        """create list tree for orders
+        Args:
+            listframe (object): frame to put list tree into
+        Returns:
+            ttk.Treeview: list tree full of orders
+        """
+        listtree = ttk.Treeview(
+            listframe,
+            column=("id", "customer", "location", "order_date"),
+            show="headings",
+            selectmode="browse",
+        )
+        listtree.heading("id", text="id")
+        listtree.heading("customer", text="customer")
+        listtree.heading("location", text="location")
+        listtree.heading("order_date", text="order date")
+        listtree.column("id", width=70)
+        listtree.column("customer", width=70)
+        listtree.column("location", width=70)
+        listtree.column("order_date", width=70)
         listtree = configure_listree(listtree, listframe)
-
         return listtree
 
-    def create_itemsTree(self, listframe):
-        listtree = ttk.Treeview(listframe,
-                                column=("order_id", "menu_item", "quantity"),
-                                show='headings', selectmode='browse')
-        listtree.heading('order_id', text='order_id')
-        listtree.heading('menu_item', text='menu_item')
-        listtree.heading('quantity', text='quantity')
-        listtree.column('order_id', width=70)
-        listtree.column('menu_item', width=70)
-        listtree.column('quantity', width=70)
-        listtree.tag_configure('font', font=('Arial', 10))
-        listtree.grid(column=0, row=0, sticky=(N, W, E, S))
-
-        treescrolly = ttk.Scrollbar(
-            listframe, orient=VERTICAL, command=listtree.yview)
-        listtree.configure(yscrollcommand=treescrolly.set)
-        treescrolly.grid(column=3, row=0, sticky=(NS))
-
+    def create_items_tree(self, listframe: object) -> ttk.Treeview:
+        """create list tree full of items
+        Args:
+            listframe (object): frame to put list tree into
+        Returns:
+            ttk.Treeview: tree view full of items
+        """
+        listtree = ttk.Treeview(
+            listframe,
+            column=("order_id", "menu_item", "quantity"),
+            show="headings",
+            selectmode="browse",
+        )
+        listtree.heading("order_id", text="order_id")
+        listtree.heading("menu_item", text="menu_item")
+        listtree.heading("quantity", text="quantity")
+        listtree.column("order_id", width=70)
+        listtree.column("menu_item", width=70)
+        listtree.column("quantity", width=70)
+        listtree = configure_listree(listtree, listframe)
         return listtree
-
 
 class UpdateMsg:
     """display message when something is succesfully updated or otherwise"""
