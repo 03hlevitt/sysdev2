@@ -41,7 +41,7 @@ def test_save():
         global date_time
         date_time = order.date # to test existing order
         order.save()
-        assert (id, "mike", "index.home.raft", order.date.strftime("%Y-%m-%d %H:%M:%S.%f")) in order.view_orders()
+        assert (id, "mike", "index.home.raft", order.date.strftime("%Y-%m-%d %H:%M:%S.%f")) in backend.view_orders()
 
 def test_date_not_set():
     order = backend.new_order("mike", [51.521251, -0.203586])
@@ -95,7 +95,7 @@ def test_update_item_quanity_to_0():
 def test_delete_order():
     order = backend.existing_order(id)
     order.delete()
-    assert (id, "mike", "dermatologists.discusses.unroll", order.date) not in order.view_orders()
+    assert (id, "mike", "dermatologists.discusses.unroll", order.date) not in backend.view_orders()
     assert order.view_order_items() == []
 
 @patch('backend.order.DBClass.execute_sql')
