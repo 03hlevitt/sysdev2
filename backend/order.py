@@ -31,26 +31,6 @@ class Order(DBClass):
             print("date not set, set it with set_order_date(), %s", error)
             return "date not set"
 
-    # def update_items(self, menu_item: str, quantity: int):
-    #     """constructor for a new menu item
-
-    #     Args:
-    #         name (str): name of menu item (must be unique!)
-    #         quantity (int): price fo menu item
-    #     """
-    #     if quantity == 0:
-    #         self.execute_sql(
-    #             """DELETE FROM order_items WHERE
-    #               order_id = '%s' AND menu_item = '%s'"""
-    #             % (self.order_id, menu_item)
-    #         )
-    #     else:
-    #         self.execute_sql(
-    #             """UPDATE order_items SET quantity = '%s' WHERE
-    #               order_id = '%s' AND menu_item = '%s'"""
-    #             % (quantity, self.order_id, menu_item)
-    #         )
-
     def view_orders(self) -> list:
         """view all orders in teh db without their items
 
@@ -170,7 +150,7 @@ class ExistingOrder(Order):
         return words_to_coordinates(self.location_words)
 
     @location_co_ords.setter
-    def location_co_ords(self, value):
+    def location_co_ords(self, value: str):
         """converts what co ords to what three words
 
         Args:
