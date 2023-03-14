@@ -135,7 +135,7 @@ class ExistingOrder(Order):
         self.order_id = order_id
         self.customer = self.execute_sql(
             "SELECT customer FROM orders WHERE id = '%s'" % self.order_id
-        )[0][0]
+        )[0]
         self.location_words = self.execute_sql(
             "SELECT location FROM orders WHERE id = '%s'" % self.order_id
         )[0][0]
@@ -187,7 +187,7 @@ class ExistingOrder(Order):
             if item:
                 current_quantity = item[0][2]
                 name = item[0][1]
-                quantity = int(quantity) + int(current_quantity)
+                quantity = int(quantity) + int(current_quantity) # value errors are caught
                 self.execute_sql(
                     """UPDATE order_items SET quantity = '%s'
                     WHERE order_id = '%s' AND menu_item = '%s'"""

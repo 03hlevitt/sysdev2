@@ -7,7 +7,7 @@ from backend.order import Order, NewOrder, ExistingOrder
 class Backend:
     """handle returning of objects for interacting with the database"""
 
-    def new_item(self, name: str, price: int) -> NewMenuItem:
+    def new_item(self, name: str, price: str) -> NewMenuItem:
         """instantiates a new item object
 
         Args:
@@ -52,7 +52,7 @@ class Backend:
         """
         return NewOrder(customer, location_co_ords)
 
-    def existing_order(self, order_id: int) -> ExistingOrder:
+    def existing_order(self, order_id: str) -> ExistingOrder:
         """instantiates na existing order object
 
         Args:
