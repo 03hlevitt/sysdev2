@@ -23,7 +23,7 @@ def test_order_with_args(mock_time: patch):
         mock_time.utcnow.return_value = "test"
         order = backend.new_order("mike", "51.521251,-0.203586")
         order.set_order_date()
-        assert isinstance(order.order_id, int) # can only assert type
+        assert isinstance(order.order_id, int)  # can only assert type
         assert order.customer == "mike"
         assert order.location_words == "index.home.raft"
         assert order.date == "test"
@@ -51,6 +51,7 @@ def test_save():
             "index.home.raft",
             order.date.strftime("%Y-%m-%d %H:%M:%S.%f"),
         ) in backend.view_orders()
+
 
 def test_new_order():
     """test new order"""

@@ -8,7 +8,9 @@ from sqlite3 import OperationalError
 
 @mark.parametrize("no_key_resp", [("InvalidKey"), ("MissingKey")])
 @patch("backend.common.json.loads")
-def test_error_raised_when_no_key_co_ords(mock_response: patch, no_key_resp: str):
+def test_error_raised_when_no_key_co_ords(
+    mock_response: patch, no_key_resp: str
+):
     """test error raised when no key"""
     mock_response.return_value = {"error": {"code": no_key_resp}}
     """test error raised when no key"""
@@ -18,7 +20,9 @@ def test_error_raised_when_no_key_co_ords(mock_response: patch, no_key_resp: str
 
 @mark.parametrize("no_key_resp", [("InvalidKey"), ("MissingKey")])
 @patch("backend.common.json.loads")
-def test_error_raised_when_no_key_words(mock_response: patch, no_key_resp: str):
+def test_error_raised_when_no_key_words(
+    mock_response: patch, no_key_resp: str
+):
     """test error raised when no key"""
     mock_response.return_value = {"error": {"code": no_key_resp}}
     """test error raised when no key"""
@@ -64,8 +68,11 @@ def test_init_tables():
     """test init tables"""
     Backend().init_db()
     db = DBClass()
-    assert db.execute_sql(
-        """SELECT name FROM sqlite_schema
+    assert (
+        db.execute_sql(
+            """SELECT name FROM sqlite_schema
           WHERE type ='table' AND
             name NOT LIKE 'sqlite_%';"""
-    ) == [("orders",), ("menu_items",), ("order_items",)]
+        )
+        == [("orders",), ("menu_items",), ("order_items",)]
+    )
