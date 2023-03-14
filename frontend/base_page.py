@@ -14,12 +14,13 @@ from frontend.front_end_utils import (
     create_cmdframe,
     configure_listree,
 )
+from tkinter.ttk import Treeview
 
 
 class orderListForm:
     """base order page"""
 
-    def __init__(self, page_type):
+    def __init__(self, page_type: str) -> None:
         """constructure for the order page class,
           shows everything seen in the page when it first pops up
         understandably its not the most pythonic
@@ -194,6 +195,7 @@ class orderListForm:
                 item_value.set(selected_item)
                 update_buttons_items_tree()
 
+        @handle_3words_exceptions
         def order_tree_selected(event: object):
             """populate input boxes with values selected in order list tree
             Args:
@@ -319,7 +321,7 @@ class orderListForm:
         root.mainloop()
 
     @handle_db_exceptions
-    def update_menu_item_backend(self, item, new_price):
+    def update_menu_item_backend(self, item: str, new_price: str) -> None:
         """update the price of an item in the backend"""
         item = self.backend.existing_item(item)
         item.price = new_price
@@ -348,7 +350,7 @@ class orderListForm:
         item = self.backend.existing_order(id_value)
         item.delete()
 
-    def delete_menu_item_backend(self, item):
+    def delete_menu_item_backend(self, item: str) -> None:
         """deete an item from the db"""
         item = self.backend.existing_item(item)
         item.delete_from_db()
@@ -375,7 +377,7 @@ class orderListForm:
                     values=(item_values),
                 )
 
-    def populate_listree(self, listtree: ttk.Treeview):
+    def populate_listree(self, listtree: ttk.Treeview) -> None:
         """populate a tree view with data
         Args:
             listtree (ttk.Treeview): tk tree view to populate
@@ -467,7 +469,3 @@ class orderListForm:
         listtree.column("quantity", width=70)
         listtree = configure_listree(listtree, listframe)
         return listtree
-
-
-if __name__ == "__main__":
-    orderListForm("order")

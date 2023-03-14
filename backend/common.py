@@ -27,11 +27,11 @@ def coordinates_to_words(lat: str, lon: str) -> dict:
         return response_dict["words"]
     except KeyError as error:
         if response_dict["error"]["code"] == "BadCoordinates":
+            print(error)
             raise ValueError("Bad co ords")
+        elif response_dict["error"]["code"] == "InvalidKey" or response_dict["error"]["code"] == "MissingKey":
             print(error)
-        elif response_dict["error"]["code"] == "InvalidKey":
             raise NoKeyError("No key found")
-            print(error)
         else:
             raise WhatThreeWordsError("Unknown error")
             print(error)    
@@ -47,14 +47,22 @@ def words_to_coordinates(words: str) -> str:
     Returns:
         str: co ords location in a string e.e. (1.1,1.1)
     """
-    key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
-    url = "https://api.what3words.com/v3/convert-to-coordinates"
-    params = {"words": words, "key": key}
-    response = requests.get(url, params=params, timeout=30)
-    response_dict = json.loads(response.text)
-    co_ords = response_dict["coordinates"]
-    co_ords_string = f"{co_ords['lat']},{co_ords['lng']}"
-    return co_ords_string
+    try:
+        key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
+        url = "https://api.what3words.com/v3/convert-to-coordinates"
+        params = {"words": words, "key": key}
+        response = requests.get(url, params=params, timeout=30)
+        response_dict = json.loads(response.text)
+        co_ords = response_dict["coordinates"]
+        co_ords_string = f"{co_ords['lat']},{co_ords['lng']}"
+        return co_ords_string
+    except KeyError as error:
+        if response_dict["error"]["code"] == "InvalidKey" or response_dict["error"]["code"] == "MissingKey":
+            print(error)
+            raise NoKeyError("No key found")
+        else:
+            print(error)
+            raise WhatThreeWordsError("Unknown error") 
 
 
 class DBClass:
