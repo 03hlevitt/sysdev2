@@ -113,7 +113,7 @@ class NewOrder(Order):
         try:
             co_ords = self.location_co_ords.split(",")
             return coordinates_to_words(co_ords[0], co_ords[1])
-        except IndexError as error:
+        except (IndexError, AttributeError) as error:
             print("location co ords not set, %s", error)
             raise ValueError("location co ords not set, %s", error)
 
@@ -135,10 +135,26 @@ class ExistingOrder(Order):
         self.order_id = order_id
         self.customer = self.execute_sql(
             "SELECT customer FROM orders WHERE id = '%s'" % self.order_id
-        )[0]
+        )[0][0]
         self.location_words = self.execute_sql(
             "SELECT location FROM orders WHERE id = '%s'" % self.order_id
         )[0][0]
+        self.date = self.__set_date()
+    
+    def __set_date(self) -> datetime:
+        """get the date of the order from the db and
+          overwrite the date in the super class,
+        if not found set to none, added to super class
+        both classes needed set order
+
+        Returns:
+            datetime: date of the order
+        """
+        try:
+            return self.execute_sql("SELECT date FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+        except IndexError as error:
+            print("order not found in db, setting to none as init %s", error)
+            return None
 
     @property
     def location_co_ords(self):

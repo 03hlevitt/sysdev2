@@ -36,8 +36,10 @@ def test_save():
     else:
         order = backend.new_order("mike", "51.521251,-0.203586")
         order.set_order_date()
-        global id # for later assertions
+        global id # to test existing order
         id = order.order_id
+        global date_string
+        date_string = order.date_string # to test existing order
         order.save()
         assert (id, "mike", "index.home.raft", order.date_string) in order.view_orders()
 
@@ -47,7 +49,15 @@ def test_date_not_set():
 
 def test_new_order():
     order = backend.new_order(1, [51.521251, -0.203586])
-    assert type(order.order_id) == type(6) 
+    assert type(order.order_id) == type(6)
+    with raises(ValueError):
+        order.location_words
+
+def test_existing_order():
+    order = backend.existing_order(id)
+    assert order.customer == "mike"
+    assert order.location_words == "index.home.raft"
+    assert order.date == date_string
 
 # These will all fail if an api key is not set!!!! You were warned in line 16!
 def test_add_item():
