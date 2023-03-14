@@ -73,3 +73,9 @@ class Backend:
         order = Order()
         return order.view_orders()
     
+    @classmethod
+    def init_db(cls) -> None:
+        """initialise the db"""
+        menu = Menu()
+        menu.init_tables()
+    

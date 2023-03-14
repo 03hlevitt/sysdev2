@@ -1,4 +1,5 @@
 from backend.common import DBClass, coordinates_to_words, words_to_coordinates
+from backend.main import Backend
 from custom.exceptions import NoKeyError
 from pytest import raises, mark
 from unittest.mock import patch
@@ -50,6 +51,6 @@ def test_execute_sql_fail():
 
 def test_init_tables():
     """test init tables"""
+    Backend().init_db()
     db = DBClass()
-    db.init_tables()
     assert db.execute_sql("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';") == [('orders',), ('menu_items',), ('order_items',)]
