@@ -1,8 +1,7 @@
 """base order/order page ui - NOTE: this is hideously long -
- as there is no way to make it shorter without either tkinter breaking or 
+ as there is no way to make it shorter without either tkinter breaking or
  having lots of duplicate code"""
-from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, Tk, StringVar, N, E, S, W
 from backend.main import Backend
 from frontend.handle_exceptions import (
     handle_3words_exceptions,
@@ -21,9 +20,11 @@ class orderListForm:
     """base order page"""
 
     def __init__(self, page_type):
-        """constructure for the order page class, shows everything seen in the page when it first pops up
-        understandably its not the most pythonic but I would rather make the app more usable as everything can be controled
-        from two pages"""
+        """constructure for the order page class,
+          shows everything seen in the page when it first pops up
+        understandably its not the most pythonic
+          but I would rather make the app more usable
+            as everything can be controled from two pages"""
         self.backend = Backend()
         self.page_type = page_type
 
@@ -137,7 +138,8 @@ class orderListForm:
             return listframe, itemframe
 
         def update_buttons_list_tree(page):
-            """sets buttons to desired state when an order/menu item is selected"""
+            """sets buttons to desired state
+            when an order/menu item is selected"""
             self.cmd_update.config(state="active")
             self.cmd_delete.config(state="active")
             if page == "order":

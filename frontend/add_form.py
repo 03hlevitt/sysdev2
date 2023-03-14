@@ -10,12 +10,6 @@ from tkinter import (
     RIGHT,
     LEFT,
     X,
-    VERTICAL,
-    NS,
-    N,
-    E,
-    S,
-    W,
     TOP,
     BOTTOM,
 )
@@ -24,7 +18,6 @@ from frontend.handle_exceptions import (
     handle_db_exceptions,
     handle_3words_exceptions,
 )
-from frontend.pop_up import UpdateMsg
 
 
 class BaseAddForm:
