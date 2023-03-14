@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>frontend.base_page &mdash; SYSDEV2  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SYSDEV2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SYSDEV2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">frontend.base_page</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for frontend.base_page</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;base order/order page ui - NOTE: this is hideously long -</span>
+<span class="sd"> as there is no way to make it shorter without either tkinter breaking or</span>
+<span class="sd"> having lots of duplicate code&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span><span class="p">,</span> <span class="n">Tk</span><span class="p">,</span> <span class="n">StringVar</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">W</span>
+<span class="kn">from</span> <span class="nn">backend.main</span> <span class="kn">import</span> <span class="n">Backend</span>
+<span class="kn">from</span> <span class="nn">frontend.handle_exceptions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">handle_3words_exceptions</span><span class="p">,</span>
+    <span class="n">handle_db_exceptions</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">frontend.pop_up</span> <span class="kn">import</span> <span class="n">UpdateMsg</span>
+<span class="kn">from</span> <span class="nn">frontend.add_form</span> <span class="kn">import</span> <span class="n">BaseAddForm</span>
+<span class="kn">from</span> <span class="nn">frontend.front_end_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_list_frame</span><span class="p">,</span>
+    <span class="n">create_cmdframe</span><span class="p">,</span>
+    <span class="n">configure_listree</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Treeview</span>
+
+
+<div class="viewcode-block" id="orderListForm"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm">[docs]</a><span class="k">class</span> <span class="nc">orderListForm</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;base order page&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="orderListForm.__init__"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructure for the order page class,</span>
+<span class="sd">          shows everything seen in the page when it first pops up</span>
+<span class="sd">        understandably its not the most pythonic</span>
+<span class="sd">          but I would rather make the app more usable</span>
+<span class="sd">            as everything can be controled from two pages&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_type</span> <span class="o">=</span> <span class="n">page_type</span>
+
+        <span class="k">def</span> <span class="nf">create_detail_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;create three panels with control panel in the middle&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">page_type</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+                <span class="n">cmdframe_config</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;Update&quot;</span><span class="p">:</span> <span class="n">update_order</span><span class="p">,</span>
+                    <span class="s2">&quot;Back&quot;</span><span class="p">:</span> <span class="n">go_to_menu</span><span class="p">,</span>
+                    <span class="s2">&quot;Create&quot;</span><span class="p">:</span> <span class="n">make_order</span><span class="p">,</span>
+                    <span class="s2">&quot;Delete&quot;</span><span class="p">:</span> <span class="n">delete_order</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">input1</span> <span class="o">=</span> <span class="s2">&quot;Customer&quot;</span>
+                <span class="n">input2</span> <span class="o">=</span> <span class="s2">&quot;Location&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cmdframe_config</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;Update&quot;</span><span class="p">:</span> <span class="n">update_menu_item</span><span class="p">,</span>
+                    <span class="s2">&quot;Back&quot;</span><span class="p">:</span> <span class="n">go_to_orders</span><span class="p">,</span>
+                    <span class="s2">&quot;Create&quot;</span><span class="p">:</span> <span class="n">add_menu_item</span><span class="p">,</span>
+                    <span class="s2">&quot;Delete&quot;</span><span class="p">:</span> <span class="n">delete_menu_item</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">input1</span> <span class="o">=</span> <span class="s2">&quot;Item&quot;</span>
+                <span class="n">input2</span> <span class="o">=</span> <span class="s2">&quot;Price&quot;</span>
+            <span class="n">detailsframe</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span>
+                <span class="n">baseframe</span><span class="p">,</span>
+                <span class="n">borderwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">relief</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                <span class="n">height</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">detailsframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">details_lname_label</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">detailsframe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">input1</span><span class="p">)</span>
+            <span class="n">details_lname_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">details_lname</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span>
+                <span class="n">detailsframe</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="n">input1_variable</span>
+            <span class="p">)</span>
+            <span class="n">details_lname</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">details_street_label</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">detailsframe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">input2</span><span class="p">)</span>
+            <span class="n">details_street_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">details_street</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span>
+                <span class="n">detailsframe</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="n">input2_variable</span>
+            <span class="p">)</span>
+            <span class="n">details_street</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">cmdframe</span> <span class="o">=</span> <span class="n">create_cmdframe</span><span class="p">(</span><span class="n">detailsframe</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_update</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                <span class="n">cmdframe</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Update&quot;</span><span class="p">,</span>
+                <span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="n">cmdframe_config</span><span class="p">[</span><span class="s2">&quot;Update&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_update</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_back</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                <span class="n">cmdframe</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Return&quot;</span><span class="p">,</span>
+                <span class="n">state</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="n">cmdframe_config</span><span class="p">[</span><span class="s2">&quot;Back&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_back</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_add</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                <span class="n">cmdframe</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Create&quot;</span><span class="p">,</span>
+                <span class="n">state</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="n">cmdframe_config</span><span class="p">[</span><span class="s2">&quot;Create&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_add</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_delete</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                <span class="n">cmdframe</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Delete&quot;</span><span class="p">,</span>
+                <span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="n">cmdframe_config</span><span class="p">[</span><span class="s2">&quot;Delete&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_delete</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">page_type</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_remove_item</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                    <span class="n">cmdframe</span><span class="p">,</span>
+                    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;remove items from an order&quot;</span><span class="p">,</span>
+                    <span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+                    <span class="n">command</span><span class="o">=</span><span class="n">remove_item</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_remove_item</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_add_item</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                    <span class="n">cmdframe</span><span class="p">,</span>
+                    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;add items to an order&quot;</span><span class="p">,</span>
+                    <span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+                    <span class="n">command</span><span class="o">=</span><span class="n">add_item</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_add_item</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">listframe</span> <span class="o">=</span> <span class="n">create_list_frame</span><span class="p">(</span><span class="n">baseframe</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">page_type</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+                <span class="n">itemframe</span> <span class="o">=</span> <span class="n">create_list_frame</span><span class="p">(</span><span class="n">baseframe</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">itemframe</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">listframe</span><span class="p">,</span> <span class="n">itemframe</span>
+
+        <span class="k">def</span> <span class="nf">update_buttons_list_tree</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;sets buttons to desired state</span>
+<span class="sd">            when an order/menu item is selected&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_update</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_delete</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">page</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_add_item</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_buttons_items_tree</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;sets buttons to desired state when an order item is selected&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_remove_item</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_buttons_to_default</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;sets buttons to default state&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_update</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_delete</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">page</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_remove_item</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_add_item</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">go_to_menu</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;go to the menu page&quot;&quot;&quot;</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">orderListForm</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">go_to_orders</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;go to the order page&quot;&quot;&quot;</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">orderListForm</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">make_order</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;generate the add order page&quot;&quot;&quot;</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span>
+            <span class="n">BaseAddForm</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="s2">&quot;Make an Order&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">add_menu_item</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;generate the add item page&quot;&quot;&quot;</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span>
+            <span class="n">BaseAddForm</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="s2">&quot;order&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">clear_selected_from_input</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;clear text from input boxes and reset buttons&quot;&quot;&quot;</span>
+            <span class="n">input1_variable</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">input2_variable</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">update_buttons_to_default</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">items_tree_selected</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;populate input boxes with values selected in item list tree</span>
+<span class="sd">            Args:</span>
+<span class="sd">                event (object): event when clicking on item list tree</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">selected_item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itemstree</span><span class="o">.</span><span class="n">selection</span><span class="p">():</span>
+                <span class="n">item_value</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">selected_item</span><span class="p">)</span>
+                <span class="n">update_buttons_items_tree</span><span class="p">()</span>
+
+        <span class="nd">@handle_3words_exceptions</span>
+        <span class="k">def</span> <span class="nf">order_tree_selected</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;populate input boxes with values selected in order list tree</span>
+<span class="sd">            Args:</span>
+<span class="sd">                event (object): event when clicking on order list tree</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">selected_order</span> <span class="ow">in</span> <span class="n">listtree</span><span class="o">.</span><span class="n">selection</span><span class="p">():</span>
+                <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_order</span><span class="p">(</span><span class="n">selected_order</span><span class="p">)</span>
+                <span class="n">id_value</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">order_id</span><span class="p">)</span>
+                <span class="n">input1_variable</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">customer</span><span class="p">)</span>
+                <span class="n">input2_variable</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">location_co_ords</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">populate_items_tree</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">order_id</span><span class="p">)</span>
+
+            <span class="n">update_buttons_list_tree</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">menu_tree_selected</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;set values for later inputs when selecting the listree</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                event (object): user selecting the listree</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">selected_item</span> <span class="ow">in</span> <span class="n">listtree</span><span class="o">.</span><span class="n">selection</span><span class="p">():</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_item</span><span class="p">(</span><span class="n">selected_item</span><span class="p">)</span>
+
+                <span class="n">input1_variable</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">selected_item</span><span class="p">)</span>
+                <span class="n">input2_variable</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">price</span><span class="p">)</span>
+
+            <span class="n">update_buttons_list_tree</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">)</span>
+
+        <span class="nd">@handle_3words_exceptions</span>
+        <span class="k">def</span> <span class="nf">update_order</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;update the values attributed to an order by order id&quot;&quot;&quot;</span>
+            <span class="n">dts_customer</span> <span class="o">=</span> <span class="n">input1_variable</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">dts_location</span> <span class="o">=</span> <span class="n">input2_variable</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">dts_id</span> <span class="o">=</span> <span class="n">id_value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_order_backend</span><span class="p">(</span><span class="n">dts_id</span><span class="p">,</span> <span class="n">dts_customer</span><span class="p">,</span> <span class="n">dts_location</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">)</span>
+            <span class="n">UpdateMsg</span><span class="p">(</span><span class="s2">&quot;Update Successful!&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">add_item</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;add an item to an order&quot;&quot;&quot;</span>
+            <span class="n">dts_id</span> <span class="o">=</span> <span class="n">id_value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="s2">&quot;menu_item&quot;</span><span class="p">,</span> <span class="s2">&quot;quantity&quot;</span>
+            <span class="n">BaseAddForm</span><span class="p">(</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="s2">&quot;Add_item&quot;</span><span class="p">,</span> <span class="n">dts_id</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">remove_item</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;remove an item and all of its quantity from an order&quot;&quot;&quot;</span>
+            <span class="n">dts_id</span> <span class="o">=</span> <span class="n">id_value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">dts_item</span> <span class="o">=</span> <span class="n">item_value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_order</span><span class="p">(</span><span class="n">dts_id</span><span class="p">)</span>
+            <span class="n">order</span><span class="o">.</span><span class="n">remove_items</span><span class="p">(</span><span class="n">dts_item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_items_tree</span><span class="p">(</span><span class="n">dts_id</span><span class="p">)</span>
+            <span class="n">UpdateMsg</span><span class="p">(</span><span class="s2">&quot;Item Deleted!&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">delete_order</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;delete and order entirely&quot;&quot;&quot;</span>
+            <span class="n">dts_id</span> <span class="o">=</span> <span class="n">id_value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_order_backend</span><span class="p">(</span><span class="n">dts_id</span><span class="p">)</span>
+            <span class="n">clear_selected_from_input</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">)</span>
+            <span class="n">UpdateMsg</span><span class="p">(</span><span class="s2">&quot;Order Deleted!&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">delete_menu_item</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;delete a menu item from the backend&quot;&quot;&quot;</span>
+            <span class="n">dts_item</span> <span class="o">=</span> <span class="n">input1_variable</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_menu_item_backend</span><span class="p">(</span><span class="n">dts_item</span><span class="p">)</span>
+            <span class="n">clear_selected_from_input</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">)</span>
+            <span class="n">UpdateMsg</span><span class="p">(</span><span class="s2">&quot;Item Deleted!&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_menu_item</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;update the price of an item in the backend&quot;&quot;&quot;</span>
+            <span class="n">dts_item</span> <span class="o">=</span> <span class="n">input1_variable</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">dts_price</span> <span class="o">=</span> <span class="n">input2_variable</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_menu_item_backend</span><span class="p">(</span><span class="n">dts_item</span><span class="p">,</span> <span class="n">dts_price</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">)</span>
+            <span class="n">UpdateMsg</span><span class="p">(</span><span class="s2">&quot;Update Successful!&quot;</span><span class="p">)</span>
+
+        <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_type</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Order Page&quot;</span><span class="p">)</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;1400x600&quot;</span><span class="p">)</span>
+            <span class="n">item_value</span> <span class="o">=</span> <span class="n">StringVar</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Menu Page&quot;</span><span class="p">)</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;900x600&quot;</span><span class="p">)</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">baseframe</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">baseframe</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+        <span class="n">baseframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">baseframe</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">baseframe</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">baseframe</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">baseframe</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">window_title_label</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span>
+            <span class="n">baseframe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_type</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">window_title_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">window_title_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">relx</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">rely</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="n">input1_variable</span> <span class="o">=</span> <span class="n">StringVar</span><span class="p">()</span>
+        <span class="n">input2_variable</span> <span class="o">=</span> <span class="n">StringVar</span><span class="p">()</span>
+        <span class="n">id_value</span> <span class="o">=</span> <span class="n">StringVar</span><span class="p">()</span>
+
+        <span class="n">list_frame</span><span class="p">,</span> <span class="n">item_frame</span> <span class="o">=</span> <span class="n">create_detail_view</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_type</span> <span class="o">==</span> <span class="s2">&quot;order&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">itemstree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_items_tree</span><span class="p">(</span><span class="n">item_frame</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">itemstree</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;TreeviewSelect&gt;&gt;&quot;</span><span class="p">,</span> <span class="n">items_tree_selected</span><span class="p">)</span>
+
+            <span class="n">listtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_order_tree</span><span class="p">(</span><span class="n">list_frame</span><span class="p">)</span>
+            <span class="n">listtree</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;TreeviewSelect&gt;&gt;&quot;</span><span class="p">,</span> <span class="n">order_tree_selected</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">listtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_menu_tree</span><span class="p">(</span><span class="n">list_frame</span><span class="p">)</span>
+            <span class="n">listtree</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;TreeviewSelect&gt;&gt;&quot;</span><span class="p">,</span> <span class="n">menu_tree_selected</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">populate_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">)</span>
+
+        <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="orderListForm.update_menu_item_backend"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.update_menu_item_backend">[docs]</a>    <span class="nd">@handle_db_exceptions</span>
+    <span class="k">def</span> <span class="nf">update_menu_item_backend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_price</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;update the price of an item in the backend&quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">new_price</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="orderListForm.update_order_backend"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.update_order_backend">[docs]</a>    <span class="k">def</span> <span class="nf">update_order_backend</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">customer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;backend methods to update an item in the db</span>
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): order if</span>
+<span class="sd">            customer (str): name of customer (unique)</span>
+<span class="sd">            location (str): location placed with order (unique)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_order</span><span class="p">(</span><span class="n">order_id</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">customer</span> <span class="o">=</span> <span class="n">customer</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">location_co_ords</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">set_order_date</span><span class="p">()</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">update_order</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="orderListForm.delete_order_backend"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.delete_order_backend">[docs]</a>    <span class="k">def</span> <span class="nf">delete_order_backend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;delete an order from the order DB</span>
+<span class="sd">        Args:</span>
+<span class="sd">            id_value (str): selected order id from listtree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_order</span><span class="p">(</span><span class="n">id_value</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="orderListForm.delete_menu_item_backend"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.delete_menu_item_backend">[docs]</a>    <span class="k">def</span> <span class="nf">delete_menu_item_backend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;deete an item from the db&quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">delete_from_db</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="orderListForm.populate_items_tree"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.populate_items_tree">[docs]</a>    <span class="k">def</span> <span class="nf">populate_items_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get items from order and populate tree</span>
+<span class="sd">        Args:</span>
+<span class="sd">            order_id (string): order id to populate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">itemstree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">itemstree</span><span class="o">.</span><span class="n">get_children</span><span class="p">())</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">existing_order</span><span class="p">(</span><span class="n">order_id</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">view_order_items</span><span class="p">()</span>
+
+        <span class="n">added_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">item_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">item_values</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">added_items</span><span class="p">:</span>
+                <span class="n">added_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_values</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">itemstree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">index</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span>
+                    <span class="n">iid</span><span class="o">=</span><span class="n">item_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">item_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">values</span><span class="o">=</span><span class="p">(</span><span class="n">item_values</span><span class="p">),</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="orderListForm.populate_listree"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.populate_listree">[docs]</a>    <span class="k">def</span> <span class="nf">populate_listree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">listtree</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;populate a tree view with data</span>
+<span class="sd">        Args:</span>
+<span class="sd">            listtree (ttk.Treeview): tk tree view to populate</span>
+<span class="sd">            page (str): what type of page its in,</span>
+<span class="sd">              to tell the function what type of data to populate with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">*</span><span class="n">listtree</span><span class="o">.</span><span class="n">get_children</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_type</span> <span class="o">==</span> <span class="s2">&quot;menu&quot;</span><span class="p">:</span>
+            <span class="n">orders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">view_menu</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">orders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">view_orders</span><span class="p">()</span>
+
+        <span class="n">added_orders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">values</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">added_orders</span><span class="p">:</span>  <span class="c1"># catching duplicates</span>
+                <span class="n">listtree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">index</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span>
+                    <span class="n">iid</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">values</span><span class="o">=</span><span class="p">(</span><span class="n">values</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">added_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="orderListForm.create_menu_tree"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.create_menu_tree">[docs]</a>    <span class="k">def</span> <span class="nf">create_menu_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">listframe</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;create tkinter treeview of menu</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            listframe (object): tk inter frame to put list tree in</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ttk.Treeview: list tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listtree</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
+            <span class="n">listframe</span><span class="p">,</span>
+            <span class="n">column</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">),</span>
+            <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span>
+            <span class="n">selectmode</span><span class="o">=</span><span class="s2">&quot;browse&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span> <span class="o">=</span> <span class="n">configure_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">,</span> <span class="n">listframe</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">listtree</span></div>
+
+<div class="viewcode-block" id="orderListForm.create_order_tree"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.create_order_tree">[docs]</a>    <span class="k">def</span> <span class="nf">create_order_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">listframe</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;create list tree for orders</span>
+<span class="sd">        Args:</span>
+<span class="sd">            listframe (object): frame to put list tree into</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ttk.Treeview: list tree full of orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listtree</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
+            <span class="n">listframe</span><span class="p">,</span>
+            <span class="n">column</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;order_date&quot;</span><span class="p">),</span>
+            <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span>
+            <span class="n">selectmode</span><span class="o">=</span><span class="s2">&quot;browse&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;customer&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;order date&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span> <span class="o">=</span> <span class="n">configure_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">,</span> <span class="n">listframe</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">listtree</span></div>
+
+<div class="viewcode-block" id="orderListForm.create_items_tree"><a class="viewcode-back" href="../../index.html#frontend.base_page.orderListForm.create_items_tree">[docs]</a>    <span class="k">def</span> <span class="nf">create_items_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">listframe</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;create list tree full of items</span>
+<span class="sd">        Args:</span>
+<span class="sd">            listframe (object): frame to put list tree into</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ttk.Treeview: tree view full of items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listtree</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
+            <span class="n">listframe</span><span class="p">,</span>
+            <span class="n">column</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;menu_item&quot;</span><span class="p">,</span> <span class="s2">&quot;quantity&quot;</span><span class="p">),</span>
+            <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span>
+            <span class="n">selectmode</span><span class="o">=</span><span class="s2">&quot;browse&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;menu_item&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;menu_item&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s2">&quot;quantity&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;quantity&quot;</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;menu_item&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s2">&quot;quantity&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">listtree</span> <span class="o">=</span> <span class="n">configure_listree</span><span class="p">(</span><span class="n">listtree</span><span class="p">,</span> <span class="n">listframe</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">listtree</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, anonymous.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

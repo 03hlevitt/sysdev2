@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to SYSDEV2’s documentation! &mdash; SYSDEV2  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            SYSDEV2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to SYSDEV2’s documentation!</a><ul>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm"><code class="docutils literal notranslate"><span class="pre">BaseAddForm</span></code></a><ul>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.__init__"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.__weakref__"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.__weakref__</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.add"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.add()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.cancel"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.cancel()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.destroy"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.destroy()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.destroy_both"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.destroy_both()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.fetch"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.fetch()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.init_ui"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.init_ui()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.message"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.message()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.add_form.BaseAddForm.return_back"><code class="docutils literal notranslate"><span class="pre">BaseAddForm.return_back()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm"><code class="docutils literal notranslate"><span class="pre">orderListForm</span></code></a><ul>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.__init__"><code class="docutils literal notranslate"><span class="pre">orderListForm.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.__weakref__"><code class="docutils literal notranslate"><span class="pre">orderListForm.__weakref__</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.create_items_tree"><code class="docutils literal notranslate"><span class="pre">orderListForm.create_items_tree()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.create_menu_tree"><code class="docutils literal notranslate"><span class="pre">orderListForm.create_menu_tree()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.create_order_tree"><code class="docutils literal notranslate"><span class="pre">orderListForm.create_order_tree()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.delete_menu_item_backend"><code class="docutils literal notranslate"><span class="pre">orderListForm.delete_menu_item_backend()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.delete_order_backend"><code class="docutils literal notranslate"><span class="pre">orderListForm.delete_order_backend()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.populate_items_tree"><code class="docutils literal notranslate"><span class="pre">orderListForm.populate_items_tree()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.populate_listree"><code class="docutils literal notranslate"><span class="pre">orderListForm.populate_listree()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.update_menu_item_backend"><code class="docutils literal notranslate"><span class="pre">orderListForm.update_menu_item_backend()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.base_page.orderListForm.update_order_backend"><code class="docutils literal notranslate"><span class="pre">orderListForm.update_order_backend()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#frontend.front_end_utils.configure_listree"><code class="docutils literal notranslate"><span class="pre">configure_listree()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.front_end_utils.create_cmdframe"><code class="docutils literal notranslate"><span class="pre">create_cmdframe()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.front_end_utils.create_list_frame"><code class="docutils literal notranslate"><span class="pre">create_list_frame()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.handle_exceptions.handle_3words_exceptions"><code class="docutils literal notranslate"><span class="pre">handle_3words_exceptions()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.handle_exceptions.handle_db_exceptions"><code class="docutils literal notranslate"><span class="pre">handle_db_exceptions()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.pop_up.UpdateMsg"><code class="docutils literal notranslate"><span class="pre">UpdateMsg</span></code></a><ul>
+<li><a class="reference internal" href="#frontend.pop_up.UpdateMsg.__init__"><code class="docutils literal notranslate"><span class="pre">UpdateMsg.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#frontend.pop_up.UpdateMsg.__weakref__"><code class="docutils literal notranslate"><span class="pre">UpdateMsg.__weakref__</span></code></a></li>
+<li><a class="reference internal" href="#frontend.pop_up.UpdateMsg.destroy"><code class="docutils literal notranslate"><span class="pre">UpdateMsg.destroy()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.common.DBClass"><code class="docutils literal notranslate"><span class="pre">DBClass</span></code></a><ul>
+<li><a class="reference internal" href="#backend.common.DBClass.__sql_attempt"><code class="docutils literal notranslate"><span class="pre">DBClass.__sql_attempt()</span></code></a></li>
+<li><a class="reference internal" href="#backend.common.DBClass.__weakref__"><code class="docutils literal notranslate"><span class="pre">DBClass.__weakref__</span></code></a></li>
+<li><a class="reference internal" href="#backend.common.DBClass.execute_sql"><code class="docutils literal notranslate"><span class="pre">DBClass.execute_sql()</span></code></a></li>
+<li><a class="reference internal" href="#backend.common.DBClass.init_tables"><code class="docutils literal notranslate"><span class="pre">DBClass.init_tables()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.common.coordinates_to_words"><code class="docutils literal notranslate"><span class="pre">coordinates_to_words()</span></code></a></li>
+<li><a class="reference internal" href="#backend.common.words_to_coordinates"><code class="docutils literal notranslate"><span class="pre">words_to_coordinates()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend"><code class="docutils literal notranslate"><span class="pre">Backend</span></code></a><ul>
+<li><a class="reference internal" href="#backend.main.Backend.__weakref__"><code class="docutils literal notranslate"><span class="pre">Backend.__weakref__</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.existing_item"><code class="docutils literal notranslate"><span class="pre">Backend.existing_item()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.existing_order"><code class="docutils literal notranslate"><span class="pre">Backend.existing_order()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.init_db"><code class="docutils literal notranslate"><span class="pre">Backend.init_db()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.new_item"><code class="docutils literal notranslate"><span class="pre">Backend.new_item()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.new_order"><code class="docutils literal notranslate"><span class="pre">Backend.new_order()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.view_menu"><code class="docutils literal notranslate"><span class="pre">Backend.view_menu()</span></code></a></li>
+<li><a class="reference internal" href="#backend.main.Backend.view_orders"><code class="docutils literal notranslate"><span class="pre">Backend.view_orders()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.menu.ExistingMenuItem"><code class="docutils literal notranslate"><span class="pre">ExistingMenuItem</span></code></a><ul>
+<li><a class="reference internal" href="#backend.menu.ExistingMenuItem.__init__"><code class="docutils literal notranslate"><span class="pre">ExistingMenuItem.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#backend.menu.ExistingMenuItem.price"><code class="docutils literal notranslate"><span class="pre">ExistingMenuItem.price</span></code></a></li>
+<li><a class="reference internal" href="#backend.menu.ExistingMenuItem.save"><code class="docutils literal notranslate"><span class="pre">ExistingMenuItem.save()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.menu.Menu"><code class="docutils literal notranslate"><span class="pre">Menu</span></code></a><ul>
+<li><a class="reference internal" href="#backend.menu.Menu.__init__"><code class="docutils literal notranslate"><span class="pre">Menu.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#backend.menu.Menu.delete_from_db"><code class="docutils literal notranslate"><span class="pre">Menu.delete_from_db()</span></code></a></li>
+<li><a class="reference internal" href="#backend.menu.Menu.view_menu"><code class="docutils literal notranslate"><span class="pre">Menu.view_menu()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.menu.NewMenuItem"><code class="docutils literal notranslate"><span class="pre">NewMenuItem</span></code></a><ul>
+<li><a class="reference internal" href="#backend.menu.NewMenuItem.__init__"><code class="docutils literal notranslate"><span class="pre">NewMenuItem.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#backend.menu.NewMenuItem.save"><code class="docutils literal notranslate"><span class="pre">NewMenuItem.save()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.order.ExistingOrder"><code class="docutils literal notranslate"><span class="pre">ExistingOrder</span></code></a><ul>
+<li><a class="reference internal" href="#backend.order.ExistingOrder.__init__"><code class="docutils literal notranslate"><span class="pre">ExistingOrder.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.ExistingOrder.__set_date"><code class="docutils literal notranslate"><span class="pre">ExistingOrder.__set_date()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.ExistingOrder.add_items"><code class="docutils literal notranslate"><span class="pre">ExistingOrder.add_items()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.ExistingOrder.location_co_ords"><code class="docutils literal notranslate"><span class="pre">ExistingOrder.location_co_ords</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.ExistingOrder.remove_items"><code class="docutils literal notranslate"><span class="pre">ExistingOrder.remove_items()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.ExistingOrder.update_order"><code class="docutils literal notranslate"><span class="pre">ExistingOrder.update_order()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.order.NewOrder"><code class="docutils literal notranslate"><span class="pre">NewOrder</span></code></a><ul>
+<li><a class="reference internal" href="#backend.order.NewOrder.__init__"><code class="docutils literal notranslate"><span class="pre">NewOrder.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.NewOrder.location_words"><code class="docutils literal notranslate"><span class="pre">NewOrder.location_words</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.NewOrder.order_id"><code class="docutils literal notranslate"><span class="pre">NewOrder.order_id</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.NewOrder.save"><code class="docutils literal notranslate"><span class="pre">NewOrder.save()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backend.order.Order"><code class="docutils literal notranslate"><span class="pre">Order</span></code></a><ul>
+<li><a class="reference internal" href="#backend.order.Order.__init__"><code class="docutils literal notranslate"><span class="pre">Order.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.Order.delete"><code class="docutils literal notranslate"><span class="pre">Order.delete()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.Order.get_total"><code class="docutils literal notranslate"><span class="pre">Order.get_total()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.Order.set_order_date"><code class="docutils literal notranslate"><span class="pre">Order.set_order_date()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.Order.view_order_items"><code class="docutils literal notranslate"><span class="pre">Order.view_order_items()</span></code></a></li>
+<li><a class="reference internal" href="#backend.order.Order.view_orders"><code class="docutils literal notranslate"><span class="pre">Order.view_orders()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom.exceptions.NoKeyError"><code class="docutils literal notranslate"><span class="pre">NoKeyError</span></code></a><ul>
+<li><a class="reference internal" href="#custom.exceptions.NoKeyError.__weakref__"><code class="docutils literal notranslate"><span class="pre">NoKeyError.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom.exceptions.WhatThreeWordsError"><code class="docutils literal notranslate"><span class="pre">WhatThreeWordsError</span></code></a><ul>
+<li><a class="reference internal" href="#custom.exceptions.WhatThreeWordsError.__weakref__"><code class="docutils literal notranslate"><span class="pre">WhatThreeWordsError.__weakref__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">SYSDEV2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to SYSDEV2’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-main">
+<span id="welcome-to-sysdev2-s-documentation"></span><h1>Welcome to SYSDEV2’s documentation!<a class="headerlink" href="#module-main" title="Permalink to this heading"></a></h1>
+<span class="target" id="module-frontend.add_form"></span><p>customer facing add form</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frontend.add_form.</span></span><span class="sig-name descname"><span class="pre">BaseAddForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>base form for adding things to the db</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#frontend.add_form.BaseAddForm.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.add" title="Permalink to this definition"></a></dt>
+<dd><p>add the item to backend</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>list</em>) – inputs from the form</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.cancel" title="Permalink to this definition"></a></dt>
+<dd><p>cancel action to go back to main page, on cancel button</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.destroy">
+<span class="sig-name descname"><span class="pre">destroy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.destroy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.destroy" title="Permalink to this definition"></a></dt>
+<dd><p>destroy root error message</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.destroy_both">
+<span class="sig-name descname"><span class="pre">destroy_both</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.destroy_both"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.destroy_both" title="Permalink to this definition"></a></dt>
+<dd><p>destroy error message and input window</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.fetch">
+<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.fetch" title="Permalink to this definition"></a></dt>
+<dd><p>get input text to list to input to backend</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>entries</strong> (<em>tuple</em>) – tkinter input fields, .get() transforms to strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.init_ui">
+<span class="sig-name descname"><span class="pre">init_ui</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.init_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.init_ui" title="Permalink to this definition"></a></dt>
+<dd><p>initialise what is shown in the window namely labels and input boxes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> (<em>Frame</em>) – root frame</p></li>
+<li><p><strong>fields</strong> (<em>tuple</em>) – fields to be labled</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.message">
+<span class="sig-name descname"><span class="pre">message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.message" title="Permalink to this definition"></a></dt>
+<dd><p>displays message to user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – message to be displayed ot the user</p></li>
+<li><p><strong>command</strong> (<em>object</em>) – command after pressing the ok button</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.add_form.BaseAddForm.return_back">
+<span class="sig-name descname"><span class="pre">return_back</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/add_form.html#BaseAddForm.return_back"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.add_form.BaseAddForm.return_back" title="Permalink to this definition"></a></dt>
+<dd><p>go back to main page</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-frontend.base_page"></span><p>base order/order page ui - NOTE: this is hideously long -
+as there is no way to make it shorter without either tkinter breaking or
+having lots of duplicate code</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frontend.base_page.</span></span><span class="sig-name descname"><span class="pre">orderListForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>base order page</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>constructure for the order page class,</dt><dd><p>shows everything seen in the page when it first pops up</p>
+</dd>
+<dt>understandably its not the most pythonic</dt><dd><dl class="simple">
+<dt>but I would rather make the app more usable</dt><dd><p>as everything can be controled from two pages</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#frontend.base_page.orderListForm.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.create_items_tree">
+<span class="sig-name descname"><span class="pre">create_items_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Treeview</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.create_items_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.create_items_tree" title="Permalink to this definition"></a></dt>
+<dd><p>create list tree full of items
+:param listframe: frame to put list tree into
+:type listframe: object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tree view full of items</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ttk.Treeview</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.create_menu_tree">
+<span class="sig-name descname"><span class="pre">create_menu_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Treeview</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.create_menu_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.create_menu_tree" title="Permalink to this definition"></a></dt>
+<dd><p>create tkinter treeview of menu</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listframe</strong> (<em>object</em>) – tk inter frame to put list tree in</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list tree</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ttk.Treeview</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.create_order_tree">
+<span class="sig-name descname"><span class="pre">create_order_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Treeview</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.create_order_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.create_order_tree" title="Permalink to this definition"></a></dt>
+<dd><p>create list tree for orders
+:param listframe: frame to put list tree into
+:type listframe: object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list tree full of orders</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ttk.Treeview</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.delete_menu_item_backend">
+<span class="sig-name descname"><span class="pre">delete_menu_item_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.delete_menu_item_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.delete_menu_item_backend" title="Permalink to this definition"></a></dt>
+<dd><p>deete an item from the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.delete_order_backend">
+<span class="sig-name descname"><span class="pre">delete_order_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.delete_order_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.delete_order_backend" title="Permalink to this definition"></a></dt>
+<dd><p>delete an order from the order DB
+:param id_value: selected order id from listtree
+:type id_value: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.populate_items_tree">
+<span class="sig-name descname"><span class="pre">populate_items_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.populate_items_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.populate_items_tree" title="Permalink to this definition"></a></dt>
+<dd><p>get items from order and populate tree
+:param order_id: order id to populate
+:type order_id: string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.populate_listree">
+<span class="sig-name descname"><span class="pre">populate_listree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listtree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Treeview</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.populate_listree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.populate_listree" title="Permalink to this definition"></a></dt>
+<dd><p>populate a tree view with data
+:param listtree: tk tree view to populate
+:type listtree: ttk.Treeview
+:param page: what type of page its in,</p>
+<blockquote>
+<div><p>to tell the function what type of data to populate with.</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.update_menu_item_backend">
+<span class="sig-name descname"><span class="pre">update_menu_item_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_price</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.update_menu_item_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.update_menu_item_backend" title="Permalink to this definition"></a></dt>
+<dd><p>update the price of an item in the backend</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.base_page.orderListForm.update_order_backend">
+<span class="sig-name descname"><span class="pre">update_order_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">customer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/base_page.html#orderListForm.update_order_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.base_page.orderListForm.update_order_backend" title="Permalink to this definition"></a></dt>
+<dd><p>backend methods to update an item in the db
+:param id: order if
+:type id: int
+:param customer: name of customer (unique)
+:type customer: str
+:param location: location placed with order (unique)
+:type location: str</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-frontend.front_end_utils"></span><p>common utils code used in the front end</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="frontend.front_end_utils.configure_listree">
+<span class="sig-prename descclassname"><span class="pre">frontend.front_end_utils.</span></span><span class="sig-name descname"><span class="pre">configure_listree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listtree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Treeview</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Treeview</span></span></span><a class="reference internal" href="_modules/frontend/front_end_utils.html#configure_listree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.front_end_utils.configure_listree" title="Permalink to this definition"></a></dt>
+<dd><p>configure a tree view for the main pages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listtree</strong> (<em>ttk.Treeview</em>) – tree view to configure</p></li>
+<li><p><strong>listframe</strong> (<em>Frame</em>) – frame which tree veiw is placed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>configured tree view</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ttk.Treeview</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="frontend.front_end_utils.create_cmdframe">
+<span class="sig-prename descclassname"><span class="pre">frontend.front_end_utils.</span></span><span class="sig-name descname"><span class="pre">create_cmdframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailsframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Frame</span></span></span><a class="reference internal" href="_modules/frontend/front_end_utils.html#create_cmdframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.front_end_utils.create_cmdframe" title="Permalink to this definition"></a></dt>
+<dd><p>command frame to put buttons into</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>detailsframe</strong> (<em>Frame</em>) – control panel to place into</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a command frame</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="frontend.front_end_utils.create_list_frame">
+<span class="sig-prename descclassname"><span class="pre">frontend.front_end_utils.</span></span><span class="sig-name descname"><span class="pre">create_list_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Frame</span></span></span><a class="reference internal" href="_modules/frontend/front_end_utils.html#create_list_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.front_end_utils.create_list_frame" title="Permalink to this definition"></a></dt>
+<dd><p>create a frame for tree views</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>baseframe</strong> (<em>Frame</em>) – base window frame ot put into</p></li>
+<li><p><strong>column</strong> (<em>int</em><em>, </em><em>optional</em>) – column to place this into in the baseframe.
+Defaults to 0.</p></li>
+<li><p><strong>row</strong> (<em>int</em><em>, </em><em>optional</em>) – row to place this into in the baseframe.
+Defaults to 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>frame for tree views</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-frontend.handle_exceptions"></span><dl class="py function">
+<dt class="sig sig-object py" id="frontend.handle_exceptions.handle_3words_exceptions">
+<span class="sig-prename descclassname"><span class="pre">frontend.handle_exceptions.</span></span><span class="sig-name descname"><span class="pre">handle_3words_exceptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/handle_exceptions.html#handle_3words_exceptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.handle_exceptions.handle_3words_exceptions" title="Permalink to this definition"></a></dt>
+<dd><p>handle exceptions from the what three words api</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – function to be decorated</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>decorator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="frontend.handle_exceptions.handle_db_exceptions">
+<span class="sig-prename descclassname"><span class="pre">frontend.handle_exceptions.</span></span><span class="sig-name descname"><span class="pre">handle_db_exceptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/handle_exceptions.html#handle_db_exceptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.handle_exceptions.handle_db_exceptions" title="Permalink to this definition"></a></dt>
+<dd><p>decorator to handle exceptions from the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – function to be decorated</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>decorator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-frontend.pop_up"></span><dl class="py class">
+<dt class="sig sig-object py" id="frontend.pop_up.UpdateMsg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">frontend.pop_up.</span></span><span class="sig-name descname"><span class="pre">UpdateMsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frontend/pop_up.html#UpdateMsg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.pop_up.UpdateMsg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>display message when something is succesfully updated or otherwise</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.pop_up.UpdateMsg.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/pop_up.html#UpdateMsg.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.pop_up.UpdateMsg.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>constructor for class for displaying update messages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – message to be displayed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="frontend.pop_up.UpdateMsg.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#frontend.pop_up.UpdateMsg.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="frontend.pop_up.UpdateMsg.destroy">
+<span class="sig-name descname"><span class="pre">destroy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/frontend/pop_up.html#UpdateMsg.destroy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#frontend.pop_up.UpdateMsg.destroy" title="Permalink to this definition"></a></dt>
+<dd><p>destroy window</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-backend.common"></span><p>utils code for the backend</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.common.DBClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.common.</span></span><span class="sig-name descname"><span class="pre">DBClass</span></span><a class="reference internal" href="_modules/backend/common.html#DBClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.common.DBClass" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>class used by all backend classes for interacting with sqllite</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.common.DBClass.__sql_attempt">
+<span class="sig-name descname"><span class="pre">__sql_attempt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#backend.common.DBClass.__sql_attempt" title="Permalink to this definition"></a></dt>
+<dd><p>wrapper for a sql attempt to connect/commit to db (private)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sql</strong> (<em>str</em>) – sql query in a string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>return from db</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="backend.common.DBClass.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#backend.common.DBClass.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.common.DBClass.execute_sql">
+<span class="sig-name descname"><span class="pre">execute_sql</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/backend/common.html#DBClass.execute_sql"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.common.DBClass.execute_sql" title="Permalink to this definition"></a></dt>
+<dd><p>wrapper for a sql attempt with try/ except</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sql</strong> (<em>str</em>) – sql in string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>return from db</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.common.DBClass.init_tables">
+<span class="sig-name descname"><span class="pre">init_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/common.html#DBClass.init_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.common.DBClass.init_tables" title="Permalink to this definition"></a></dt>
+<dd><p>creates tables if hasnt already been created</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend.common.coordinates_to_words">
+<span class="sig-prename descclassname"><span class="pre">backend.common.</span></span><span class="sig-name descname"><span class="pre">coordinates_to_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/backend/common.html#coordinates_to_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.common.coordinates_to_words" title="Permalink to this definition"></a></dt>
+<dd><p>convert to co ords to words using the what three words api</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<em>str</em>) – latitude</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – longitude</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>threewords location string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend.common.words_to_coordinates">
+<span class="sig-prename descclassname"><span class="pre">backend.common.</span></span><span class="sig-name descname"><span class="pre">words_to_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/backend/common.html#words_to_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.common.words_to_coordinates" title="Permalink to this definition"></a></dt>
+<dd><p>turn what three words location into latitude and location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>str</em>) – what three words as a string
+with each word separated with a .</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>co ords location in a string e.e. (1.1,1.1)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-backend.main"></span><p>handler class for returning objects for interacting with the db
+or select all type functions</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.main.Backend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.main.</span></span><span class="sig-name descname"><span class="pre">Backend</span></span><a class="reference internal" href="_modules/backend/main.html#Backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>handle returning of objects for interacting with the database</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="backend.main.Backend.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#backend.main.Backend.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.existing_item">
+<span class="sig-name descname"><span class="pre">existing_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#backend.menu.ExistingMenuItem" title="backend.menu.ExistingMenuItem"><span class="pre">ExistingMenuItem</span></a></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.existing_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.existing_item" title="Permalink to this definition"></a></dt>
+<dd><p>instantiates an existing item object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – of existing menu item</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instantiates object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#backend.menu.ExistingMenuItem" title="backend.menu.ExistingMenuItem">ExistingMenuItem</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.existing_order">
+<span class="sig-name descname"><span class="pre">existing_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#backend.order.ExistingOrder" title="backend.order.ExistingOrder"><span class="pre">ExistingOrder</span></a></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.existing_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.existing_order" title="Permalink to this definition"></a></dt>
+<dd><p>instantiates na existing order object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>order_id</strong> (<em>int</em>) – order id of exisitng order</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instantiated order object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#backend.order.ExistingOrder" title="backend.order.ExistingOrder">ExistingOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.init_db">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.init_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.init_db" title="Permalink to this definition"></a></dt>
+<dd><p>initialise the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.new_item">
+<span class="sig-name descname"><span class="pre">new_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#backend.menu.NewMenuItem" title="backend.menu.NewMenuItem"><span class="pre">NewMenuItem</span></a></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.new_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.new_item" title="Permalink to this definition"></a></dt>
+<dd><p>instantiates a new item object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of new menu item</p></li>
+<li><p><strong>price</strong> (<em>int</em>) – Price</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instanciated object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#backend.menu.NewMenuItem" title="backend.menu.NewMenuItem">NewMenuItem</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.new_order">
+<span class="sig-name descname"><span class="pre">new_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_co_ords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#backend.order.NewOrder" title="backend.order.NewOrder"><span class="pre">NewOrder</span></a></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.new_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.new_order" title="Permalink to this definition"></a></dt>
+<dd><p>instantiates a new order object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer</strong> (<em>str</em>) – customer username</p></li>
+<li><p><strong>location_co_ords</strong> (<em>str</em>) – latitude and longitude separated by a comma</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instantiated new order object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#backend.order.NewOrder" title="backend.order.NewOrder">NewOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.view_menu">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">view_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.view_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.view_menu" title="Permalink to this definition"></a></dt>
+<dd><p>shows alll menu items and their prices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list returned by db of all menu items i.e. [(“hotdog”, 1)]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.main.Backend.view_orders">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">view_orders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/backend/main.html#Backend.view_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.main.Backend.view_orders" title="Permalink to this definition"></a></dt>
+<dd><p>show all orders from the db (no items attatched)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list returned by db of all orders</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-backend.menu"></span><p>all interactions with the menu</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.menu.ExistingMenuItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.menu.</span></span><span class="sig-name descname"><span class="pre">ExistingMenuItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/menu.html#ExistingMenuItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.ExistingMenuItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.menu.Menu" title="backend.menu.Menu"><code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code></a></p>
+<p>instantiates a new menu item object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.ExistingMenuItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/menu.html#ExistingMenuItem.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.ExistingMenuItem.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>init method for a new menu item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – unqiue name for menu item already in db</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="backend.menu.ExistingMenuItem.price">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">price</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#backend.menu.ExistingMenuItem.price" title="Permalink to this definition"></a></dt>
+<dd><p>fetches price of a menu item from the db</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>price of menu item</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.ExistingMenuItem.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/menu.html#ExistingMenuItem.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.ExistingMenuItem.save" title="Permalink to this definition"></a></dt>
+<dd><p>save the menu item stored in the object to the db</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.menu.Menu">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.menu.</span></span><span class="sig-name descname"><span class="pre">Menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/menu.html#Menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.Menu" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.common.DBClass" title="backend.common.DBClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBClass</span></code></a></p>
+<p>SUperclass with basic methods for interacting with the menu</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.Menu.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/menu.html#Menu.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.Menu.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.Menu.delete_from_db">
+<span class="sig-name descname"><span class="pre">delete_from_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/menu.html#Menu.delete_from_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.Menu.delete_from_db" title="Permalink to this definition"></a></dt>
+<dd><p>Delete teh menu item (stored in the object) from the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.Menu.view_menu">
+<span class="sig-name descname"><span class="pre">view_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/backend/menu.html#Menu.view_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.Menu.view_menu" title="Permalink to this definition"></a></dt>
+<dd><p>view the menu as it currently is in the db</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>e.g. [(“name1”, price)]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.menu.NewMenuItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.menu.</span></span><span class="sig-name descname"><span class="pre">NewMenuItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/menu.html#NewMenuItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.NewMenuItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.menu.Menu" title="backend.menu.Menu"><code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code></a></p>
+<p>instantiates a new menu item object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.NewMenuItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/menu.html#NewMenuItem.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.NewMenuItem.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>constructor for a new menu item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of menu item (must be unique!)</p></li>
+<li><p><strong>price</strong> (<em>int</em>) – price fo menu item</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.menu.NewMenuItem.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/menu.html#NewMenuItem.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.menu.NewMenuItem.save" title="Permalink to this definition"></a></dt>
+<dd><p>save the menu item stored in the object</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-backend.order"></span><p>all interactions with orders</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.order.</span></span><span class="sig-name descname"><span class="pre">ExistingOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/order.html#ExistingOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.ExistingOrder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.order.Order" title="backend.order.Order"><code class="xref py py-class docutils literal notranslate"><span class="pre">Order</span></code></a></p>
+<p>class for all interactions with existing orders</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#ExistingOrder.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.ExistingOrder.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>constructor for existing order, found by id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder.__set_date">
+<span class="sig-name descname"><span class="pre">__set_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime</span></span></span><a class="headerlink" href="#backend.order.ExistingOrder.__set_date" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>get the date of the order from the db and</dt><dd><p>overwrite the date in the super class,</p>
+</dd>
+</dl>
+<p>if not found set to none, added to super class
+both classes needed set order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>date of the order</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder.add_items">
+<span class="sig-name descname"><span class="pre">add_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#ExistingOrder.add_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.ExistingOrder.add_items" title="Permalink to this definition"></a></dt>
+<dd><p>add a given quantity of an item to the db</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of menu item (must be unique!)</p></li>
+<li><p><strong>quantity</strong> (<em>int</em>) – amount of the item to add the db</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder.location_co_ords">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location_co_ords</span></span><a class="headerlink" href="#backend.order.ExistingOrder.location_co_ords" title="Permalink to this definition"></a></dt>
+<dd><p>converts what three words to co ords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>lat and long in a string e.g. “1,1”</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder.remove_items">
+<span class="sig-name descname"><span class="pre">remove_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#ExistingOrder.remove_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.ExistingOrder.remove_items" title="Permalink to this definition"></a></dt>
+<dd><p>remove an item and all of its quantities from the db</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of menu item (must be unique!)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.ExistingOrder.update_order">
+<span class="sig-name descname"><span class="pre">update_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#ExistingOrder.update_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.ExistingOrder.update_order" title="Permalink to this definition"></a></dt>
+<dd><p>updates order in db with new values stored in object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.order.NewOrder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.order.</span></span><span class="sig-name descname"><span class="pre">NewOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_co_ords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/order.html#NewOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.NewOrder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.order.Order" title="backend.order.Order"><code class="xref py py-class docutils literal notranslate"><span class="pre">Order</span></code></a></p>
+<p>new order object which can later be added to db</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.NewOrder.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_co_ords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#NewOrder.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.NewOrder.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>constructor for a new order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer</strong> (<em>str</em>) – custoemr name (must be unique)</p></li>
+<li><p><strong>location_co_ords</strong> (<em>str</em>) – lat and long in a string e.g. “1,1”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="backend.order.NewOrder.location_words">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location_words</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#backend.order.NewOrder.location_words" title="Permalink to this definition"></a></dt>
+<dd><p>converts co ords to what three words</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>what threee words str separated by . e.g. “hello.my.name”</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="backend.order.NewOrder.order_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">order_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#backend.order.NewOrder.order_id" title="Permalink to this definition"></a></dt>
+<dd><p>find next available order id for order to take</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>id of the orders</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.NewOrder.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#NewOrder.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.NewOrder.save" title="Permalink to this definition"></a></dt>
+<dd><p>save teh order stored in the object to the database</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="backend.order.Order">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend.order.</span></span><span class="sig-name descname"><span class="pre">Order</span></span><a class="reference internal" href="_modules/backend/order.html#Order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.common.DBClass" title="backend.common.DBClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBClass</span></code></a></p>
+<p>super class for all order interactions</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.Order.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#Order.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>constructor for superclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.Order.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#Order.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order.delete" title="Permalink to this definition"></a></dt>
+<dd><p>delete the order stored in the object from the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.Order.get_total">
+<span class="sig-name descname"><span class="pre">get_total</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/backend/order.html#Order.get_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order.get_total" title="Permalink to this definition"></a></dt>
+<dd><p>return total cost of items in an order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>total cost of items in an order</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.Order.set_order_date">
+<span class="sig-name descname"><span class="pre">set_order_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/backend/order.html#Order.set_order_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order.set_order_date" title="Permalink to this definition"></a></dt>
+<dd><p>set the date of the order to now</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.Order.view_order_items">
+<span class="sig-name descname"><span class="pre">view_order_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/backend/order.html#Order.view_order_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order.view_order_items" title="Permalink to this definition"></a></dt>
+<dd><p>view items and their quantities in a specific order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>return from db; [(x,y),(a,b)]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend.order.Order.view_orders">
+<span class="sig-name descname"><span class="pre">view_orders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/backend/order.html#Order.view_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.order.Order.view_orders" title="Permalink to this definition"></a></dt>
+<dd><p>view all orders in teh db without their items</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>db return i.e. [(x,y,z),(a,b,c)]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-custom.exceptions"></span><p>custom exceptions used by both front end and backend
+whislt this technically counts as higher coupling, I would
+argue that this would normally be imported in a package
+and therfore would not be a problem, I cannot so instead
+have produced this. It could have been avoided by misusing python
+exceptions but theis was less pythonic than making custom ones
+and sufferign the higher coupling</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="custom.exceptions.NoKeyError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoKeyError</span></span><a class="reference internal" href="_modules/custom/exceptions.html#NoKeyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom.exceptions.NoKeyError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>raised when no key is found in the environment</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="custom.exceptions.NoKeyError.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#custom.exceptions.NoKeyError.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="custom.exceptions.WhatThreeWordsError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom.exceptions.</span></span><span class="sig-name descname"><span class="pre">WhatThreeWordsError</span></span><a class="reference internal" href="_modules/custom/exceptions.html#WhatThreeWordsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom.exceptions.WhatThreeWordsError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>raised when there is a problem with the what three words api</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="custom.exceptions.WhatThreeWordsError.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#custom.exceptions.WhatThreeWordsError.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, anonymous.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
