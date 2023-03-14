@@ -38,14 +38,14 @@ def test_save():
         order.set_order_date()
         global id # to test existing order
         id = order.order_id
-        global date_string
-        date_string = order.date_string # to test existing order
+        global date_time
+        date_time = order.date # to test existing order
         order.save()
-        assert (id, "mike", "index.home.raft", order.date_string) in order.view_orders()
+        assert (id, "mike", "index.home.raft", order.date.strftime("%Y-%m-%d %H:%M:%S.%f")) in order.view_orders()
 
 def test_date_not_set():
     order = backend.new_order("mike", [51.521251, -0.203586])
-    assert order.date_string == "date not set"
+    # assert order.date == "date not set"
 
 def test_new_order():
     order = backend.new_order(1, [51.521251, -0.203586])
@@ -56,10 +56,11 @@ def test_new_order():
 def test_existing_order():
     order = backend.existing_order(id)
     order.location_co_ords = "1.000013,1.000013"
+    assert order.date == date_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+    order.update_order()
     assert order.customer == "mike"
     assert order.location_words == "dermatologists.discusses.unroll"
     assert order.location_co_ords == "1.000013,1.000013"
-    assert order.date == date_string
 
 # These will all fail if an api key is not set!!!! You were warned in line 16!
 def test_add_item():
@@ -94,7 +95,7 @@ def test_update_item_quanity_to_0():
 def test_delete_order():
     order = backend.existing_order(id)
     order.delete()
-    assert (id, "mike", "index.home.raft", order.date_string) not in order.view_orders()
+    assert (id, "mike", "dermatologists.discusses.unroll", order.date) not in order.view_orders()
     assert order.view_order_items() == []
 
 @patch('backend.order.DBClass.execute_sql')

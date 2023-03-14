@@ -10,26 +10,10 @@ class Order(DBClass):
     def __init__(self) -> None:
         """constructor for superclass"""
         super().__init__()
-        self.date = (
-            None  # init to None so that it can be set to a datetime later
-        )
 
     def set_order_date(self) -> None:
         """set the date of the order to now"""
         self.date = datetime.utcnow()
-
-    @property
-    def date_string(self) -> str:
-        """return stringified date
-
-        Returns:
-            str: datetime in the form year-month-day hour:minute:seconds.miliseconds
-        """
-        try:
-            return self.date.strftime("%Y-%m-%d %H:%M:%S.%f")
-        except AttributeError as error:
-            print("date not set, set it with set_order_date(), %s", error)
-            return "date not set"
 
     def view_orders(self) -> list:
         """view all orders in teh db without their items
