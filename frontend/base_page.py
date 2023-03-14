@@ -13,7 +13,9 @@ class orderListForm:
     """base order page"""
 
     def __init__(self, page_type):
-        """constructure for the order page class"""
+        """constructure for the order page class, shows everything seen in the page when it first pops up
+        understandably its not the most pythonic but I would rather make the app more usable as everything can be controled
+        from two pages"""
         self.backend = Backend()
         self.page_type = page_type
 
