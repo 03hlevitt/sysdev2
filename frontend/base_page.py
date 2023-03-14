@@ -14,7 +14,6 @@ from frontend.front_end_utils import (
     create_cmdframe,
     configure_listree,
 )
-from tkinter.ttk import Treeview
 
 
 class orderListForm:

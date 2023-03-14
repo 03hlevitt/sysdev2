@@ -24,7 +24,13 @@ from typing import Optional, Tuple
 class BaseAddForm:
     """base form for adding things to the db"""
 
-    def __init__(self, page: str, fields: Tuple[str, str], title: str, order_id: Optional[str]=None) -> None:
+    def __init__(
+        self,
+        page: str,
+        fields: Tuple[str, str],
+        title: str,
+        order_id: Optional[str] = None,
+    ) -> None:
         self.order_id = order_id
         self.page = page
         self.root = Tk()

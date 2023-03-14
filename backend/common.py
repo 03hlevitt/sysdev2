@@ -29,12 +29,15 @@ def coordinates_to_words(lat: str, lon: str) -> dict:
         if response_dict["error"]["code"] == "BadCoordinates":
             print(error)
             raise ValueError("Bad co ords")
-        elif response_dict["error"]["code"] == "InvalidKey" or response_dict["error"]["code"] == "MissingKey":
+        elif (
+            response_dict["error"]["code"] == "InvalidKey"
+            or response_dict["error"]["code"] == "MissingKey"
+        ):
             print(error)
             raise NoKeyError("No key found")
         else:
-            print(error) 
-            raise WhatThreeWordsError("Unknown error")   
+            print(error)
+            raise WhatThreeWordsError("Unknown error")
 
 
 def words_to_coordinates(words: str) -> str:
@@ -59,12 +62,15 @@ def words_to_coordinates(words: str) -> str:
         co_ords_string = f"{co_ords['lat']},{co_ords['lng']}"
         return co_ords_string
     except KeyError as error:
-        if response_dict["error"]["code"] == "InvalidKey" or response_dict["error"]["code"] == "MissingKey":
+        if (
+            response_dict["error"]["code"] == "InvalidKey"
+            or response_dict["error"]["code"] == "MissingKey"
+        ):
             print(error)
             raise NoKeyError("No key found")
         else:
             print(error)
-            raise WhatThreeWordsError("Unknown error") 
+            raise WhatThreeWordsError("Unknown error")
 
 
 class DBClass:

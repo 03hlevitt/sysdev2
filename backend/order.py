@@ -61,7 +61,8 @@ class Order(DBClass):
 
 class NewOrder(Order):
     """new order object which can later be added to db"""
-    def __init__(self, customer: str, location_co_ords:str) -> None:
+
+    def __init__(self, customer: str, location_co_ords: str) -> None:
         """constructor for a new order
 
         Args:
@@ -80,7 +81,9 @@ class NewOrder(Order):
             int: id of the orders
         """
         try:
-            last_order_id = self.execute_sql("SELECT id FROM orders ORDER BY id DESC LIMIT 1")[0][0]
+            last_order_id = self.execute_sql(
+                "SELECT id FROM orders ORDER BY id DESC LIMIT 1"
+            )[0][0]
             order_id = last_order_id + 1
             return order_id
         except (TypeError, IndexError) as error:
@@ -124,7 +127,7 @@ class ExistingOrder(Order):
             "SELECT location FROM orders WHERE id = '%s'" % self.order_id
         )[0][0]
         self.date = self.__set_date()
-    
+
     def __set_date(self) -> datetime:
         """get the date of the order from the db and
           overwrite the date in the super class,
@@ -134,7 +137,9 @@ class ExistingOrder(Order):
         Returns:
             datetime: date of the order
         """
-        return self.execute_sql("SELECT date FROM orders WHERE id = '%s'" % self.order_id)[0][0]
+        return self.execute_sql(
+            "SELECT date FROM orders WHERE id = '%s'" % self.order_id
+        )[0][0]
 
     @property
     def location_co_ords(self):
@@ -154,13 +159,13 @@ class ExistingOrder(Order):
         """
         co_ords = value.split(",")
         self.location_words = coordinates_to_words(co_ords[0], co_ords[1])
-        
 
     def update_order(self) -> None:
         """updates order in db with new values stored in object"""
         self.set_order_date()
         self.execute_sql(
-            "UPDATE orders SET (customer, location, date) = ('%s', '%s', '%s') WHERE id = '%s'"
+            """UPDATE orders SET (customer, location, date)
+              = ('%s', '%s', '%s') WHERE id = '%s'"""
             % (self.customer, self.location_words, self.date, self.order_id)
         )
 
@@ -171,7 +176,9 @@ class ExistingOrder(Order):
             name (str): name of menu item (must be unique!)
             quantity (int): amount of the item to add the db
         """
-        if not self.execute_sql("SELECT price FROM menu_items WHERE name = '%s'" % name):
+        if not self.execute_sql(
+            "SELECT price FROM menu_items WHERE name = '%s'" % name
+        ):
             print("item not in menu")
             raise NotImplementedError("item not in menu")
         else:
@@ -183,14 +190,17 @@ class ExistingOrder(Order):
             if item:
                 current_quantity = item[0][2]
                 name = item[0][1]
-                quantity = int(quantity) + int(current_quantity) # value errors are caught
+                quantity = int(quantity) + int(
+                    current_quantity
+                )  # value errors are caught
                 self.execute_sql(
                     """UPDATE order_items SET quantity = '%s'
                     WHERE order_id = '%s' AND menu_item = '%s'"""
                     % (quantity, self.order_id, name)
                 )
             else:
-                string = """INSERT INTO order_items (order_id, menu_item, quantity)
+                string = """INSERT INTO order_items
+                  (order_id, menu_item, quantity)
                     VALUES ('%s', '%s', '%s')""" % (
                     self.order_id,
                     name,

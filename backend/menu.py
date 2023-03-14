@@ -3,14 +3,16 @@ from backend.common import DBClass
 from typing import Optional
 
 
-#todo exception if not unique!
+# todo exception if not unique!
+
 
 class Menu(DBClass):
     """SUperclass with basic methods for interacting with the menu"""
-    def __init__(self, name: Optional[str]=None) -> None:
+
+    def __init__(self, name: Optional[str] = None) -> None:
         self.name = name
 
-    def view_menu(self)->list:
+    def view_menu(self) -> list:
         """view the menu as it currently is in the db
 
         Returns:
@@ -19,14 +21,15 @@ class Menu(DBClass):
         return self.execute_sql("SELECT * FROM menu_items")
 
     def delete_from_db(self) -> None:
-        """Delete teh menu item (stored in the object) from the db
-        """
+        """Delete teh menu item (stored in the object) from the db"""
         self.execute_sql(
-            "DELETE FROM menu_items WHERE name = '%s'" % self.name)
+            "DELETE FROM menu_items WHERE name = '%s'" % self.name
+        )
 
 
 class NewMenuItem(Menu):
     """instantiates a new menu item object"""
+
     def __init__(self, name: str, price_input: str) -> None:
         """constructor for a new menu item
 
@@ -53,6 +56,7 @@ class NewMenuItem(Menu):
 
 class ExistingMenuItem(Menu):
     """instantiates a new menu item object"""
+
     def __init__(self, name: str) -> None:
         """init method for a new menu item
 
@@ -72,7 +76,7 @@ class ExistingMenuItem(Menu):
             int: price of menu item
         """
         return self._price
-    
+
     @price.setter
     def price(self, value: str):
         """setter for price out of safety"""
