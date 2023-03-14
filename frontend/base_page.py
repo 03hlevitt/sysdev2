@@ -4,10 +4,18 @@
 from tkinter import *
 from tkinter import ttk
 from backend.main import Backend
-from frontend.handle_exceptions import handle_3words_exceptions, handle_db_exceptions
+from frontend.handle_exceptions import (
+    handle_3words_exceptions,
+    handle_db_exceptions,
+)
 from frontend.pop_up import UpdateMsg
 from frontend.add_form import BaseAddForm
-from frontend.front_end_utils import create_list_frame, create_cmdframe, configure_listree
+from frontend.front_end_utils import (
+    create_list_frame,
+    create_cmdframe,
+    configure_listree,
+)
+
 
 class orderListForm:
     """base order page"""
@@ -23,24 +31,29 @@ class orderListForm:
             """create three panels with control panel in the middle"""
             if page_type == "order":
                 cmdframe_config = {
-                    "Update":update_order,
-                    "Back":go_to_menu,
-                    "Create":make_order,
-                    "Delete":delete_order,
+                    "Update": update_order,
+                    "Back": go_to_menu,
+                    "Create": make_order,
+                    "Delete": delete_order,
                 }
                 input1 = "Customer"
                 input2 = "Location"
             else:
                 cmdframe_config = {
-                    "Update":update_menu_item,
-                    "Back":go_to_orders,
-                    "Create":add_menu_item,
-                    "Delete":delete_menu_item,
+                    "Update": update_menu_item,
+                    "Back": go_to_orders,
+                    "Create": add_menu_item,
+                    "Delete": delete_menu_item,
                 }
                 input1 = "Item"
                 input2 = "Price"
             detailsframe = ttk.Frame(
-                baseframe, borderwidth=10, relief="ridge", width=100, height=100)
+                baseframe,
+                borderwidth=10,
+                relief="ridge",
+                width=100,
+                height=100,
+            )
             detailsframe.grid(column=1, row=1, sticky=(N, E, S))
 
             detailsframe.columnconfigure(0, weight=1)
@@ -54,32 +67,46 @@ class orderListForm:
             details_lname_label = ttk.Label(detailsframe, text=input1)
             details_lname_label.grid(column=0, row=1)
             details_lname = ttk.Entry(
-                detailsframe, textvariable=input1_variable)
+                detailsframe, textvariable=input1_variable
+            )
             details_lname.grid(column=1, row=1)
 
             details_street_label = ttk.Label(detailsframe, text=input2)
             details_street_label.grid(column=0, row=2)
             details_street = ttk.Entry(
-                detailsframe, textvariable=input2_variable)
+                detailsframe, textvariable=input2_variable
+            )
             details_street.grid(column=1, row=2)
             cmdframe = create_cmdframe(detailsframe)
             self.cmd_update = ttk.Button(
-                cmdframe, text="Update", state="disabled", command=cmdframe_config["Update"]
+                cmdframe,
+                text="Update",
+                state="disabled",
+                command=cmdframe_config["Update"],
             )
             self.cmd_update.grid(column=0, row=0)
 
             self.cmd_back = ttk.Button(
-                cmdframe, text="Return", state="active", command=cmdframe_config["Back"]
+                cmdframe,
+                text="Return",
+                state="active",
+                command=cmdframe_config["Back"],
             )
             self.cmd_back.grid(column=1, row=0)
 
             self.cmd_add = ttk.Button(
-                cmdframe, text="Create", state="active", command=cmdframe_config["Create"]
+                cmdframe,
+                text="Create",
+                state="active",
+                command=cmdframe_config["Create"],
             )
             self.cmd_add.grid(column=2, row=0)
 
             self.cmd_delete = ttk.Button(
-                cmdframe, text="Delete", state="disabled", command=cmdframe_config["Delete"]
+                cmdframe,
+                text="Delete",
+                state="disabled",
+                command=cmdframe_config["Delete"],
             )
             self.cmd_delete.grid(column=3, row=0)
 
@@ -152,8 +179,8 @@ class orderListForm:
 
         def clear_selected_from_input(page):
             """clear text from input boxes and reset buttons"""
-            input1_variable.set('')
-            input2_variable.set('')
+            input1_variable.set("")
+            input2_variable.set("")
             update_buttons_to_default(page)
 
         def items_tree_selected(event: object):
@@ -245,7 +272,6 @@ class orderListForm:
             self.populate_listree(listtree)
             UpdateMsg("Update Successful!")
 
-
         root = Tk()
         if self.page_type == "order":
             root.title("Order Page")
@@ -265,31 +291,31 @@ class orderListForm:
         baseframe.columnconfigure(2, weight=1)
 
         window_title_label = ttk.Label(
-            baseframe, text=self.page_type, font=("Arial", 25))
+            baseframe, text=self.page_type, font=("Arial", 25)
+        )
         window_title_label.grid(column=0, row=0)
         window_title_label.place(relx=0.0, rely=0.0)
 
         input1_variable = StringVar()
         input2_variable = StringVar()
         id_value = StringVar()
-            
 
         list_frame, item_frame = create_detail_view(self)
 
         if self.page_type == "order":
             self.itemstree = self.create_items_tree(item_frame)
-            self.itemstree.bind('<<TreeviewSelect>>', items_tree_selected)
+            self.itemstree.bind("<<TreeviewSelect>>", items_tree_selected)
 
             listtree = self.create_order_tree(list_frame)
-            listtree.bind('<<TreeviewSelect>>', order_tree_selected)
+            listtree.bind("<<TreeviewSelect>>", order_tree_selected)
         else:
             listtree = self.create_menu_tree(list_frame)
-            listtree.bind('<<TreeviewSelect>>', menu_tree_selected)
+            listtree.bind("<<TreeviewSelect>>", menu_tree_selected)
 
         self.populate_listree(listtree)
 
         root.mainloop()
-    
+
     @handle_db_exceptions
     def update_menu_item_backend(self, item, new_price):
         """update the price of an item in the backend"""
@@ -297,7 +323,9 @@ class orderListForm:
         item.price = new_price
         item.save()
 
-    def update_order_backend(self, order_id: int, customer: str, location: str):
+    def update_order_backend(
+        self, order_id: int, customer: str, location: str
+    ):
         """backend methods to update an item in the db
         Args:
             id (int): order if

@@ -1,5 +1,6 @@
 from tkinter import Tk, TOP, BOTTOM, ttk
 
+
 class UpdateMsg:
     """display message when something is succesfully updated or otherwise"""
 

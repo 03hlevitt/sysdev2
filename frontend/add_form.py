@@ -1,7 +1,29 @@
 """customer facing add form"""
-from tkinter import Tk, Frame, Button, Label, Entry, RAISED, BOTH, RIGHT, LEFT, X, VERTICAL, NS, N, E, S, W, TOP, BOTTOM
+from tkinter import (
+    Tk,
+    Frame,
+    Button,
+    Label,
+    Entry,
+    RAISED,
+    BOTH,
+    RIGHT,
+    LEFT,
+    X,
+    VERTICAL,
+    NS,
+    N,
+    E,
+    S,
+    W,
+    TOP,
+    BOTTOM,
+)
 from backend.main import Backend
-from frontend.handle_exceptions import handle_db_exceptions, handle_3words_exceptions
+from frontend.handle_exceptions import (
+    handle_db_exceptions,
+    handle_3words_exceptions,
+)
 from frontend.pop_up import UpdateMsg
 
 
@@ -119,6 +141,7 @@ class BaseAddForm:
     def return_back(self):
         """go back to main page"""
         from frontend.base_page import orderListForm
+
         if self.page in ("order", "item"):
             orderListForm("order")
         if self.page == "menu":

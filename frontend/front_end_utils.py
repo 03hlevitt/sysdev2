@@ -11,7 +11,6 @@ from tkinter import (
 from tkinter import ttk
 
 
-
 def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
     """create a frame for tree views
 

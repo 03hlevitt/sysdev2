@@ -13,6 +13,7 @@ def handle_3words_exceptions(func: object):
     Returns:
         decorator
     """
+
     @wraps(func)
     def decorated(*args, **kwargs):
         try:
@@ -29,6 +30,7 @@ def handle_3words_exceptions(func: object):
         except Exception as error:
             UpdateMsg("Something went wrong!")
             print(error)
+
     return decorated
 
 
@@ -41,6 +43,7 @@ def handle_db_exceptions(func: object):
     Returns:
         decorator
     """
+
     @wraps(func)
     def decorated(*args, **kwargs):
         try:
@@ -57,4 +60,5 @@ def handle_db_exceptions(func: object):
         except Exception as error:
             print(error)
             UpdateMsg("Something went wrong!")
+
     return decorated
