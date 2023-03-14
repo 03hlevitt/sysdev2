@@ -1,4 +1,4 @@
-"""customer facing menu page"""
+"""customer facing add form"""
 from tkinter import Tk, Frame, Button, Label, Entry, RAISED, BOTH, RIGHT, LEFT, X, VERTICAL, NS, N, E, S, W, TOP, BOTTOM
 from backend.main import Backend
 from frontend.handle_exceptions import handle_db_exceptions, handle_3words_exceptions

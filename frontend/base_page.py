@@ -1,4 +1,6 @@
-"""order page ui"""
+"""base order/order page ui - NOTE: this is hideously long -
+ as there is no way to make it shorter without either tkinter breaking or 
+ having lots of duplicate code"""
 from tkinter import *
 from tkinter import ttk
 from backend.main import Backend
