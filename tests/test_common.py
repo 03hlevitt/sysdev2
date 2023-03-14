@@ -8,7 +8,8 @@ from sqlite3 import OperationalError
 
 @mark.parametrize("no_key_resp", [("InvalidKey"), ("MissingKey")])
 @patch("backend.common.json.loads")
-def test_error_raised_when_no_key_co_ords(mock_response, no_key_resp):
+def test_error_raised_when_no_key_co_ords(mock_response: patch, no_key_resp: str):
+    """test error raised when no key"""
     mock_response.return_value = {"error": {"code": no_key_resp}}
     """test error raised when no key"""
     with raises(NoKeyError):
@@ -17,7 +18,8 @@ def test_error_raised_when_no_key_co_ords(mock_response, no_key_resp):
 
 @mark.parametrize("no_key_resp", [("InvalidKey"), ("MissingKey")])
 @patch("backend.common.json.loads")
-def test_error_raised_when_no_key_words(mock_response, no_key_resp):
+def test_error_raised_when_no_key_words(mock_response: patch, no_key_resp: str):
+    """test error raised when no key"""
     mock_response.return_value = {"error": {"code": no_key_resp}}
     """test error raised when no key"""
     with raises(NoKeyError):
@@ -25,7 +27,8 @@ def test_error_raised_when_no_key_words(mock_response, no_key_resp):
 
 
 @patch("backend.common.json.loads")
-def test_error_raised_when_bad_co_ords(mock_response):
+def test_error_raised_when_bad_co_ords(mock_response: patch):
+    """test error raised when bad co ords"""
     mock_response.return_value = {"error": {"code": "BadCoordinates"}}
     """test error raised when bad co ords"""
     with raises(ValueError):
@@ -33,7 +36,8 @@ def test_error_raised_when_bad_co_ords(mock_response):
 
 
 @patch("backend.common.json.loads")
-def test_error_raised_when_unknown_error_co_ords(mock_response):
+def test_error_raised_when_unknown_error_co_ords(mock_response: patch):
+    """test error raised when unknown error"""
     mock_response.return_value = {"error": {"code": "UnknownError"}}
     """test error raised when unknown error"""
     with raises(Exception):
@@ -41,7 +45,8 @@ def test_error_raised_when_unknown_error_co_ords(mock_response):
 
 
 @patch("backend.common.json.loads")
-def test_error_raised_when_unknown_error_words(mock_response):
+def test_error_raised_when_unknown_error_words(mock_response: patch):
+    """test error raised when unknown error"""
     mock_response.return_value = {"error": {"code": "UnknownError"}}
     """test error raised when unknown error"""
     with raises(Exception):
@@ -60,5 +65,7 @@ def test_init_tables():
     Backend().init_db()
     db = DBClass()
     assert db.execute_sql(
-        "SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';"
+        """SELECT name FROM sqlite_schema
+          WHERE type ='table' AND
+            name NOT LIKE 'sqlite_%';"""
     ) == [("orders",), ("menu_items",), ("order_items",)]
