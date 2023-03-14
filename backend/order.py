@@ -99,7 +99,7 @@ class NewOrder(Order):
             last_order_id = self.execute_sql("SELECT id FROM orders ORDER BY id DESC LIMIT 1")[0][0]
             order_id = last_order_id + 1
             return order_id
-        except TypeError as error:
+        except (TypeError, IndexError) as error:
             print("no orders yet, so setting order id to one, %s", error)
             return 1
 

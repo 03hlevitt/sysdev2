@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from pytest import raises
 from backend.main import Backend
 from custom.exceptions import NoKeyError, WhatThreeWordsError
@@ -84,3 +84,9 @@ def test_delete_order():
     order.delete()
     assert (id, "mike", "index.home.raft", order.date_string) not in order.view_orders()
     assert order.view_order_items() == []
+
+@patch('backend.order.DBClass.execute_sql')
+def test_first_order_id(mock_dbclass):
+    mock_dbclass.return_value = []
+    order = backend.new_order("mike", [51.521251, -0.203586])
+    assert order.order_id == 1
