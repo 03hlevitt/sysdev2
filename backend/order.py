@@ -150,11 +150,7 @@ class ExistingOrder(Order):
         Returns:
             datetime: date of the order
         """
-        try:
-            return self.execute_sql("SELECT date FROM orders WHERE id = '%s'" % self.order_id)[0][0]
-        except IndexError as error:
-            print("order not found in db, setting to none as init %s", error)
-            return None
+        return self.execute_sql("SELECT date FROM orders WHERE id = '%s'" % self.order_id)[0][0]
 
     @property
     def location_co_ords(self):

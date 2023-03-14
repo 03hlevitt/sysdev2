@@ -57,6 +57,7 @@ def test_existing_order():
     order = backend.existing_order(id)
     assert order.customer == "mike"
     assert order.location_words == "index.home.raft"
+    assert order.location_co_ords == "51.521251,-0.203586"
     assert order.date == date_string
 
 # These will all fail if an api key is not set!!!! You were warned in line 16!
