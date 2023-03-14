@@ -20,10 +20,10 @@ def coordinates_to_words(lat: str, lon: str) -> dict:
         key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
         url = "https://api.what3words.com/v3/convert-to-3wa"
         params = {"coordinates": f"{lat},{lon}", "key": key}
-        print("***", params)
+        print("sending to what3words:", params)
         response = requests.get(url, params=params, timeout=30)
         response_dict = json.loads(response.text)
-        print("***", response_dict)
+        print("response from what3 words", response_dict)
         return response_dict["words"]
     except KeyError as error:
         if response_dict["error"]["code"] == "BadCoordinates":
@@ -33,8 +33,8 @@ def coordinates_to_words(lat: str, lon: str) -> dict:
             print(error)
             raise NoKeyError("No key found")
         else:
-            raise WhatThreeWordsError("Unknown error")
-            print(error)    
+            print(error) 
+            raise WhatThreeWordsError("Unknown error")   
 
 
 def words_to_coordinates(words: str) -> str:
@@ -51,8 +51,10 @@ def words_to_coordinates(words: str) -> str:
         key = os.environ.get("THREEWORDS_SUBSCRIPTION_KEY")
         url = "https://api.what3words.com/v3/convert-to-coordinates"
         params = {"words": words, "key": key}
+        print("sending to what3words:", params)
         response = requests.get(url, params=params, timeout=30)
         response_dict = json.loads(response.text)
+        print("response from what3 words", response_dict)
         co_ords = response_dict["coordinates"]
         co_ords_string = f"{co_ords['lat']},{co_ords['lng']}"
         return co_ords_string
@@ -75,12 +77,9 @@ class DBClass:
         with open("./backend/models.sql", mode="r", encoding="utf-8") as file:
             sql = str(file.read())
             print(sql)
-            try:
-                cursor.executescript(sql)
-                cursor.close()
-                conn.close()
-            except sqlite3.Error as error:
-                print(error)
+            cursor.executescript(sql)
+            cursor.close()
+            conn.close()
 
     def __sql_attempt(self, sql: str) -> list:
         """wrapper for a sql attempt to connect/commit to db (private)
