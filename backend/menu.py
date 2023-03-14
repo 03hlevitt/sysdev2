@@ -82,7 +82,6 @@ class ExistingMenuItem(Menu):
 
     def save(self) -> None:
         """save the menu item stored in the object to the db"""
-        print("********", self.price)
         self.execute_sql(
             "UPDATE menu_items SET price = '%s' WHERE name = '%s'"
             % (self.price, self.name)
