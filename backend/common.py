@@ -105,5 +105,5 @@ class DBClass:
         except sqlite3.Error as error:
             self.conn.rollback()
             self.conn.close()
-            print("rolling back to prevnt db lock")
+            print("rolling back to prevnt db lock, %s", error)
             raise error

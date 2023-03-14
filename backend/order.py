@@ -116,9 +116,8 @@ class NewOrder(Order):
             int: id of the orders
         """
         try:
-            orders_list = self.view_orders()
-            print("current orders in db:, %s", len(orders_list))
-            order_id = len(orders_list) + 1
+            last_order_id = self.execute_sql("SELECT id FROM orders ORDER BY id DESC LIMIT 1")[0][0]
+            order_id = last_order_id + 1
             return order_id
         except TypeError as error:
             print("no orders yet, so setting order id to one, %s", error)
