@@ -7,14 +7,14 @@ from backend.common import DBClass, coordinates_to_words, words_to_coordinates
 class Order(DBClass):
     """super class for all order interactions"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """constructor for superclass"""
         super().__init__()
         self.date = (
             None  # init to None so that it can be set to a datetime later
         )
 
-    def set_order_date(self):
+    def set_order_date(self) -> None:
         """set the date of the order to now"""
         self.date = datetime.utcnow()
 
@@ -71,7 +71,7 @@ class Order(DBClass):
             % self.order_id
         )
 
-    def delete(self):
+    def delete(self) -> None:
         """delete the order stored in the object from the db"""
         self.execute_sql("DELETE FROM orders WHERE id = '%s'" % self.order_id)
         self.execute_sql(
@@ -97,7 +97,7 @@ class Order(DBClass):
 
 class NewOrder(Order):
     """new order object which can later be added to db"""
-    def __init__(self, customer: str, location_co_ords:str):
+    def __init__(self, customer: str, location_co_ords:str) -> None:
         """constructor for a new order
 
         Args:
@@ -137,7 +137,7 @@ class NewOrder(Order):
             print("location co ords not set, %s", error)
             raise ValueError("location co ords not set, %s", error)
 
-    def save(self):
+    def save(self) -> None:
         """save teh order stored in the object to the database"""
         self.execute_sql(
             """INSERT INTO orders (id, customer, location, date)
@@ -149,7 +149,7 @@ class NewOrder(Order):
 class ExistingOrder(Order):
     """class for all interactions with existing orders"""
 
-    def __init__(self, order_id):
+    def __init__(self, order_id: str) -> None:
         """constructor for existing order, found by id"""
         super().__init__()
         self.order_id = order_id
@@ -180,7 +180,7 @@ class ExistingOrder(Order):
         self.location_words = coordinates_to_words(co_ords[0], co_ords[1])
         
 
-    def update_order(self):
+    def update_order(self) -> None:
         """updates order in db with new values stored in object"""
         self.set_order_date()
         self.execute_sql(
@@ -188,7 +188,7 @@ class ExistingOrder(Order):
             % (self.customer, self.location_words, self.date, self.order_id)
         )
 
-    def add_items(self, name: str, quantity: int):
+    def add_items(self, name: str, quantity: int) -> None:
         """add a given quantity of an item to the db
 
         Args:
@@ -223,7 +223,7 @@ class ExistingOrder(Order):
                 print(string)
                 self.execute_sql(string)
 
-    def remove_items(self, name: str):
+    def remove_items(self, name: str) -> None:
         """remove an item and all of its quantities from the db
 
         Args:
