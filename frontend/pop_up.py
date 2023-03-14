@@ -4,7 +4,7 @@ from tkinter import Tk, TOP, BOTTOM, ttk
 class UpdateMsg:
     """display message when something is succesfully updated or otherwise"""
 
-    def __init__(self, message: str):
+    def __init__(self, message: str) -> None:
         """constructor for class for displaying update messages
 
         Args:
@@ -26,6 +26,6 @@ class UpdateMsg:
         self.ok_button.pack(side=BOTTOM, pady=10)
         self.root_update_msg.mainloop()
 
-    def destroy(self):
+    def destroy(self) -> None:
         """destroy window"""
         self.root_update_msg.destroy()

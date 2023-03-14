@@ -1,12 +1,13 @@
 """all interactions with the menu"""
 from backend.common import DBClass
+from typing import Optional
 
 
 #todo exception if not unique!
 
 class Menu(DBClass):
     """SUperclass with basic methods for interacting with the menu"""
-    def __init__(self, name=None):
+    def __init__(self, name: Optional[str]=None) -> None:
         self.name = name
 
     def view_menu(self)->list:
@@ -17,7 +18,7 @@ class Menu(DBClass):
         """
         return self.execute_sql("SELECT * FROM menu_items")
 
-    def delete_from_db(self):
+    def delete_from_db(self) -> None:
         """Delete teh menu item (stored in the object) from the db
         """
         self.execute_sql(
@@ -26,7 +27,7 @@ class Menu(DBClass):
 
 class NewMenuItem(Menu):
     """instantiates a new menu item object"""
-    def __init__(self, name: str, price_input: str):
+    def __init__(self, name: str, price_input: str) -> None:
         """constructor for a new menu item
 
         Args:
@@ -37,12 +38,12 @@ class NewMenuItem(Menu):
         self.__price_input = price_input
 
     @property
-    def price(self):
+    def price(self) -> str:
         if not self.__price_input.isdigit():
             raise ValueError("Price must be a number")
         return self.__price_input
 
-    def save(self):
+    def save(self) -> None:
         """save the menu item stored in the object"""
         self.execute_sql(
             "INSERT INTO menu_items (name, price) VALUES ('%s', '%s')"
@@ -52,7 +53,7 @@ class NewMenuItem(Menu):
 
 class ExistingMenuItem(Menu):
     """instantiates a new menu item object"""
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         """init method for a new menu item
 
         Args:
@@ -79,7 +80,7 @@ class ExistingMenuItem(Menu):
             raise ValueError("Price must be a number")
         self._price = value
 
-    def save(self):
+    def save(self) -> None:
         """save the menu item stored in the object to the db"""
         print("********", self.price)
         self.execute_sql(

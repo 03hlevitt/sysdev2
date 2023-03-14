@@ -9,9 +9,10 @@ from tkinter import (
     NS,
 )
 from tkinter import ttk
+from tkinter.ttk import Treeview
 
 
-def create_list_frame(baseframe: Frame, column=0, row=1) -> Frame:
+def create_list_frame(baseframe: Frame, column: int=0, row: int=1) -> Frame:
     """create a frame for tree views
 
     Args:

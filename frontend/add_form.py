@@ -18,12 +18,13 @@ from frontend.handle_exceptions import (
     handle_db_exceptions,
     handle_3words_exceptions,
 )
+from typing import Optional, Tuple
 
 
 class BaseAddForm:
     """base form for adding things to the db"""
 
-    def __init__(self, page, fields, title, order_id=None):
+    def __init__(self, page: str, fields: Tuple[str, str], title: str, order_id: Optional[str]=None) -> None:
         self.order_id = order_id
         self.page = page
         self.root = Tk()
@@ -47,7 +48,7 @@ class BaseAddForm:
         self.ok_button.pack(side=RIGHT)
         self.root.mainloop()
 
-    def fetch(self, entries: tuple):
+    def fetch(self, entries: tuple) -> None:
         """get input text to list to input to backend
 
         Args:
@@ -62,7 +63,7 @@ class BaseAddForm:
 
     @handle_3words_exceptions
     @handle_db_exceptions
-    def add(self, inputs: list):
+    def add(self, inputs: list) -> None:
         """add the item to backend
 
         Args:
@@ -131,7 +132,7 @@ class BaseAddForm:
         """destroy root error message"""
         self.root_error_msg.destroy()
 
-    def return_back(self):
+    def return_back(self) -> None:
         """go back to main page"""
         from frontend.base_page import orderListForm
 
@@ -146,7 +147,7 @@ class BaseAddForm:
         self.root.destroy()
         self.return_back()
 
-    def cancel(self):
+    def cancel(self) -> None:
         """cancel action to go back to main page, on cancel button"""
         self.root.destroy()
         self.return_back()

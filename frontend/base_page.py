@@ -329,7 +329,7 @@ class orderListForm:
 
     def update_order_backend(
         self, order_id: int, customer: str, location: str
-    ):
+    ) -> None:
         """backend methods to update an item in the db
         Args:
             id (int): order if
@@ -342,7 +342,7 @@ class orderListForm:
         item.set_order_date()
         item.update_order()
 
-    def delete_order_backend(self, id_value: str):
+    def delete_order_backend(self, id_value: str) -> None:
         """delete an order from the order DB
         Args:
             id_value (str): selected order id from listtree
@@ -355,7 +355,7 @@ class orderListForm:
         item = self.backend.existing_item(item)
         item.delete_from_db()
 
-    def populate_items_tree(self, order_id: str):
+    def populate_items_tree(self, order_id: str) -> None:
         """get items from order and populate tree
         Args:
             order_id (string): order id to populate
